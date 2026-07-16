@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>🎉 La Ruleta de León · 9 años</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul: #3B82F6;
+    --rojo: #EF4444;
+    --amarillo: #FACC15;
+    --verde: #22C55E;
+    --morado: #A855F7;
+    --naranjo: #FB923C;
+    --rosa: #EC4899;
+    --cyan: #06B6D4;
+    --oscuro: #1E293B;
+    --texto: #16213E;
+    --crema: #FFF9F0;
+    --sombra: 0 10px 30px rgba(30, 41, 59, 0.18);
+    --sombra-fuerte: 0 16px 44px rgba(30, 41, 59, 0.28);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    width: 100%;
+    min-height: 100%;
+    font-family: 'Nunito', sans-serif;
+    color: var(--texto);
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  body {
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at 12% 15%, rgba(168, 85, 247, 0.16) 0%, transparent 42%),
+      radial-gradient(circle at 88% 12%, rgba(59, 130, 246, 0.16) 0%, transparent 42%),
+      radial-gradient(circle at 80% 88%, rgba(250, 204, 21, 0.18) 0%, transparent 42%),
+      radial-gradient(circle at 18% 85%, rgba(236, 72, 153, 0.14) 0%, transparent 42%),
+      var(--crema);
+    overflow-x: hidden;
+  }
+
+  .screen { display: none; min-height: 100vh; padding: 20px 18px 32px; }
+  .screen.active { display: flex; flex-direction: column; align-items: center; }
+
+  h1, h2, h3, .fuente-titulo { font-family: 'Baloo 2', cursive; }
+
+  /* ============ INICIO ============ */
+  #screen-inicio { justify-content: center; text-align: center; gap: 6px; }
+  .balloons { font-size: 46px; letter-spacing: 6px; margin-bottom: 4px; animation: flotar 3s ease-in-out infinite; }
+  @keyframes flotar { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+  .titulo-inicio { font-size: clamp(38px, 11vw, 66px); line-height: 1; color: var(--texto); text-shadow: 0 3px 0 rgba(255,255,255,.6); }
+  .titulo-inicio .n1 { color: var(--rosa); }
+  .titulo-inicio .n2 { color: var(--azul); }
+  .edad-badge {
+    display: inline-block; margin: 10px auto 4px;
+    background: linear-gradient(120deg, var(--amarillo), var(--naranjo));
+    color: #6b3b00; font-family: 'Baloo 2'; font-weight: 800; font-size: 20px;
+    padding: 6px 22px; border-radius: 999px; box-shadow: var(--sombra);
+    transform: rotate(-3deg);
+  }
+  .sub-inicio { font-size: 17px; color: #475569; max-width: 340px; margin: 8px auto 4px; font-weight: 600; }
+
+  .setup-card {
+    background: #fff; border-radius: 26px; padding: 18px 18px 20px; margin-top: 14px;
+    box-shadow: var(--sombra); width: 100%; max-width: 380px; border: 3px solid #fff;
+  }
+  .setup-label { font-family: 'Baloo 2'; font-weight: 700; font-size: 16px; color: var(--texto); margin-bottom: 10px; }
+  .equipo-selector { display: flex; gap: 8px; justify-content: center; margin-bottom: 14px; }
+  .eq-btn {
+    flex: 1; border: none; background: #F1F5F9; color: #64748B; font-family: 'Baloo 2'; font-weight: 700;
+    font-size: 16px; padding: 12px 0; border-radius: 16px; cursor: pointer; transition: .15s;
+  }
+  .eq-btn.sel { background: var(--morado); color: #fff; transform: translateY(-2px); box-shadow: 0 6px 14px rgba(168,85,247,.35); }
+  .team-inputs { display: flex; flex-direction: column; gap: 8px; margin-bottom: 4px; }
+  .team-row { display: flex; align-items: center; gap: 10px; }
+  .team-dot { width: 22px; height: 22px; border-radius: 50%; flex: none; box-shadow: inset 0 -2px 4px rgba(0,0,0,.15); }
+  .team-input {
+    flex: 1; border: 2px solid #E2E8F0; background: #F8FAFC; border-radius: 12px;
+    padding: 10px 12px; font-family: 'Nunito'; font-weight: 700; font-size: 16px; color: var(--texto);
+  }
+  .team-input:focus { outline: none; border-color: var(--morado); background: #fff; }
+
+  .btn-grande {
+    border: none; cursor: pointer; font-family: 'Baloo 2'; font-weight: 800;
+    color: #fff; border-radius: 20px; box-shadow: var(--sombra-fuerte); transition: transform .12s;
+  }
+  .btn-grande:active { transform: scale(.96); }
+  .btn-jugar {
+    margin-top: 18px; font-size: 26px; padding: 16px 46px;
+    background: linear-gradient(120deg, var(--verde), #16a34a);
+  }
+  .tipos-mini { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; max-width: 380px; margin: 18px auto 0; }
+  .tipo-chip { background: #fff; border-radius: 999px; padding: 5px 11px; font-size: 12.5px; font-weight: 700; color: #475569; box-shadow: 0 3px 8px rgba(0,0,0,.06); }
+
+  /* Foto de León */
+  .foto-marco { position: relative; width: 148px; height: 148px; margin: 0 auto 2px; animation: flotar 3.5s ease-in-out infinite; }
+  .foto-marco::before {
+    content: ''; position: absolute; inset: -8px; border-radius: 50%;
+    background: conic-gradient(var(--rosa), var(--amarillo), var(--verde), var(--azul), var(--morado), var(--rosa));
+    z-index: 0; filter: blur(1px);
+  }
+  .foto-leon, .foto-fallback {
+    position: relative; z-index: 1; width: 148px; height: 148px; border-radius: 50%;
+    object-fit: cover; border: 6px solid #fff; box-shadow: var(--sombra-fuerte); display: block;
+  }
+  .foto-fallback { display: none; align-items: center; justify-content: center; font-size: 66px;
+    background: linear-gradient(135deg, var(--morado), var(--azul)); }
+  .foto-badge {
+    position: absolute; z-index: 2; bottom: 0; right: 0; width: 46px; height: 46px; border-radius: 50%;
+    background: linear-gradient(120deg, var(--amarillo), var(--naranjo)); color: #6b3b00;
+    font-family: 'Baloo 2'; font-weight: 800; font-size: 23px; display: flex; align-items: center; justify-content: center;
+    border: 4px solid #fff; box-shadow: var(--sombra); transform: rotate(8deg);
+  }
+
+  /* Temporizador */
+  .timer-wrap { display: none; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .timer-icon { font-size: 22px; }
+  .timer-track { flex: 1; height: 14px; background: #E2E8F0; border-radius: 999px; overflow: hidden; }
+  .timer-bar { height: 100%; width: 100%; border-radius: 999px; background: var(--verde); transition: width 1s linear, background .3s; }
+  .timer-num { font-family: 'Baloo 2'; font-weight: 800; font-size: 22px; min-width: 34px; text-align: center; color: var(--texto); }
+  .sin-tiempo { display: none; text-align: center; font-family: 'Baloo 2'; font-weight: 700; font-size: 13px;
+    color: #64748B; background: #F1F5F9; padding: 6px 14px; border-radius: 999px; margin: 0 auto 14px; width: fit-content; }
+
+  /* Visual de logos */
+  .reto-visual { display: none; justify-content: center; align-items: center; margin: 2px auto 14px; min-height: 130px; }
+  .reto-visual svg { width: 150px; height: 150px; display: block; }
+  .reto-visual .lg-emoji { font-size: 106px; line-height: 1; }
+  .reto-visual .lg-circle { width: 138px; height: 138px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 70px; box-shadow: var(--sombra); }
+  .reto-visual .lg-box { width: 148px; height: 148px; border-radius: 16px; display: flex; align-items: center; justify-content: center; }
+  .reto-visual .lg-letter { font-family: 'Baloo 2', cursive; font-weight: 800; line-height: 1; }
+
+  /* ============ JUEGO / RULETA ============ */
+  #screen-juego { justify-content: flex-start; gap: 10px; }
+  .topbar { width: 100%; max-width: 480px; display: flex; align-items: center; justify-content: space-between; }
+  .topbar .party-name { font-family: 'Baloo 2'; font-weight: 800; font-size: 20px; color: var(--texto); }
+  .party-name .em { color: var(--rosa); }
+  .btn-fin {
+    border: none; background: #fff; color: #64748B; font-weight: 800; font-size: 13px;
+    padding: 8px 14px; border-radius: 999px; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,.08);
+  }
+
+  .scoreboard { width: 100%; max-width: 480px; display: flex; gap: 8px; }
+  .scoreboard.grid2 { display: grid; grid-template-columns: repeat(2, 1fr); }
+  .score-item {
+    flex: 1 1 0; min-width: 0; background: #fff; border-radius: 16px; padding: 9px 6px; text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,.07); border: 3px solid transparent; transition: .2s; position: relative;
+  }
+  .score-item.active { border-color: var(--activo, var(--morado)); transform: translateY(-3px); box-shadow: 0 8px 18px rgba(0,0,0,.14); }
+  .score-item.active::after {
+    content: '🎲 TURNO'; position: absolute; top: -11px; left: 50%; transform: translateX(-50%);
+    background: var(--activo, var(--morado)); color: #fff; font-family: 'Baloo 2'; font-weight: 800; font-size: 9.5px;
+    padding: 2px 9px; border-radius: 999px; white-space: nowrap;
+  }
+  .score-name { font-family: 'Baloo 2'; font-weight: 700; font-size: 13px; color: var(--texto); line-height: 1.12;
+    overflow-wrap: break-word; }
+  .score-pts { font-family: 'Baloo 2'; font-weight: 800; font-size: 26px; color: var(--pts, var(--morado)); line-height: 1; margin-top: 2px; }
+  .score-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 5px; vertical-align: middle; }
+
+  .turno-titulo { font-family: 'Baloo 2'; font-weight: 700; font-size: 18px; color: #475569; margin-top: 2px; }
+  .turno-titulo b { color: var(--activo, var(--morado)); }
+
+  /* La zona ocupa todo el espacio sobrante; JS calcula el tamaño máximo de la ruleta.
+     La ruleta va en posición absoluta para NO inflar la altura de la zona. */
+  .wheel-area { position: relative; flex: 1 1 auto; min-height: 0; width: calc(100% + 24px); margin: 0 -12px; }
+  .wheel-wrap { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: min(88vw, 400px); height: min(88vw, 400px); }
+  .pointer {
+    position: absolute; top: -6px; left: 50%; transform: translateX(-50%); z-index: 5;
+    width: 0; height: 0; border-left: 20px solid transparent; border-right: 20px solid transparent;
+    border-top: 34px solid var(--rojo); filter: drop-shadow(0 4px 4px rgba(0,0,0,.25));
+  }
+  .pointer::after {
+    content: ''; position: absolute; top: -40px; left: -13px; width: 26px; height: 26px;
+    border-radius: 50%; background: var(--rojo); box-shadow: 0 3px 6px rgba(0,0,0,.2);
+  }
+  #ruleta-svg { width: 100%; height: 100%; transition: transform 4s cubic-bezier(0.18, 0.9, 0.22, 1); filter: drop-shadow(0 12px 24px rgba(0,0,0,.2)); }
+  .hub {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 4;
+    width: 58px; height: 58px; border-radius: 50%; background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,.25);
+    display: flex; align-items: center; justify-content: center; font-size: 28px;
+  }
+
+  .btn-girar {
+    margin-top: 16px; font-size: 24px; padding: 15px 54px;
+    background: linear-gradient(120deg, var(--rosa), #db2777);
+  }
+  .btn-girar:disabled { opacity: .55; cursor: default; }
+
+  /* ============ RETO ============ */
+  #screen-reto { justify-content: flex-start; }
+  .reto-card {
+    background: #fff; border-radius: 28px; width: 100%; max-width: 480px; margin-top: 6px;
+    box-shadow: var(--sombra-fuerte); overflow: hidden; border: 4px solid #fff;
+  }
+  .reto-banner { padding: 16px 20px; color: #fff; display: flex; align-items: center; gap: 12px; }
+  .reto-banner .b-icon { font-size: 34px; }
+  .reto-banner .b-tipo { font-family: 'Baloo 2'; font-weight: 800; font-size: 20px; line-height: 1.05; }
+  .reto-banner .b-turno { font-size: 12.5px; font-weight: 700; opacity: .92; }
+  .reto-body { padding: 20px; }
+  .reto-pregunta { font-family: 'Baloo 2'; font-weight: 700; font-size: clamp(20px, 5.4vw, 25px); line-height: 1.2; color: var(--texto); text-align: center; margin-bottom: 6px; }
+  .reto-instr { font-size: 17px; font-weight: 600; color: #475569; text-align: center; margin-top: 4px; }
+
+  .opciones { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+  .opcion {
+    border: 3px solid #E2E8F0; background: #F8FAFC; border-radius: 16px; padding: 14px 16px;
+    font-family: 'Nunito'; font-weight: 700; font-size: 17px; color: var(--texto); cursor: pointer;
+    text-align: left; display: flex; align-items: center; gap: 12px; transition: .12s;
+  }
+  .opcion:active { transform: scale(.98); }
+  .opcion .letra { width: 30px; height: 30px; border-radius: 10px; background: #E2E8F0; color: #64748B;
+    font-family: 'Baloo 2'; font-weight: 800; display: flex; align-items: center; justify-content: center; flex: none; }
+  .opcion.correcta { border-color: var(--verde); background: #F0FDF4; }
+  .opcion.correcta .letra { background: var(--verde); color: #fff; }
+  .opcion.incorrecta { border-color: var(--rojo); background: #FEF2F2; }
+  .opcion.incorrecta .letra { background: var(--rojo); color: #fff; }
+  .opcion.bloq { pointer-events: none; }
+  .opcion.atenuada { opacity: .5; }
+
+  .dato {
+    margin-top: 16px; background: #FFFBEB; border: 2px dashed var(--amarillo);
+    border-radius: 16px; padding: 14px 16px; font-size: 15.5px; font-weight: 600; color: #713f12;
+    display: none;
+  }
+  .dato.show { display: block; }
+  .dato b { font-family: 'Baloo 2'; }
+
+  /* Acción (físico, mímica, baile, búsqueda) */
+  .accion-buttons { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+  .accion-q { text-align: center; font-family: 'Baloo 2'; font-weight: 700; font-size: 18px; color: #475569; margin-top: 18px; }
+  .ab {
+    border: none; border-radius: 16px; padding: 15px; font-family: 'Baloo 2'; font-weight: 800;
+    font-size: 18px; color: #fff; cursor: pointer; box-shadow: var(--sombra); transition: transform .12s;
+  }
+  .ab:active { transform: scale(.97); }
+  .ab.si { background: linear-gradient(120deg, var(--verde), #16a34a); }
+  .ab.casi { background: linear-gradient(120deg, var(--naranjo), #ea580c); }
+  .ab.saltar { background: #E2E8F0; color: #64748B; box-shadow: none; font-size: 15px; padding: 11px; }
+
+  .btn-continuar {
+    margin-top: 18px; font-size: 22px; padding: 15px 44px;
+    background: linear-gradient(120deg, var(--azul), #2563eb); display: none;
+  }
+  .btn-continuar.show { display: inline-block; }
+  .puntos-flash { text-align: center; font-family: 'Baloo 2'; font-weight: 800; font-size: 30px; margin-top: 14px; display: none; }
+  .puntos-flash.show { display: block; animation: pop .4s ease; }
+  @keyframes pop { 0%{transform:scale(.4);opacity:0} 60%{transform:scale(1.15)} 100%{transform:scale(1);opacity:1} }
+
+  /* ============ FINAL ============ */
+  #screen-final { justify-content: center; text-align: center; gap: 8px; }
+  .final-emoji { font-size: 60px; animation: flotar 2.5s ease-in-out infinite; }
+  .final-titulo { font-family: 'Baloo 2'; font-weight: 800; font-size: clamp(30px, 9vw, 48px); color: var(--texto); }
+  .ganador-card {
+    background: linear-gradient(120deg, var(--amarillo), var(--naranjo)); color: #6b3b00;
+    border-radius: 24px; padding: 16px 30px; margin: 8px auto; box-shadow: var(--sombra-fuerte);
+    font-family: 'Baloo 2'; font-weight: 800;
+  }
+  .ganador-card .g-nombre { font-size: 34px; line-height: 1.1; }
+  .ganador-card .g-pts { font-size: 18px; }
+  .ranking { width: 100%; max-width: 360px; margin: 14px auto 0; display: flex; flex-direction: column; gap: 8px; }
+  .rank-row { background: #fff; border-radius: 14px; padding: 11px 16px; display: flex; align-items: center; gap: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.07); }
+  .rank-pos { font-family: 'Baloo 2'; font-weight: 800; font-size: 18px; width: 26px; }
+  .rank-name { font-family: 'Baloo 2'; font-weight: 700; font-size: 17px; flex: 1; text-align: left; }
+  .rank-pts { font-family: 'Baloo 2'; font-weight: 800; font-size: 20px; }
+  .btn-reiniciar {
+    margin-top: 20px; font-size: 20px; padding: 14px 40px;
+    background: linear-gradient(120deg, var(--morado), #7c3aed);
+  }
+
+  #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 50; }
+
+  @media (min-height: 780px) {
+    #screen-juego { gap: 12px; }
+  }
+  /* Pantallas muy bajas (teléfono horizontal): ocultamos el texto de turno redundante para dar aire a la ruleta */
+  @media (max-height: 560px) {
+    .turno-titulo { display: none; }
+    #screen-juego { gap: 8px; }
+    .screen { padding-top: 12px; padding-bottom: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ PANTALLA INICIO ============ -->
+<div id="screen-inicio" class="screen active">
+  <div class="foto-marco">
+    <img id="foto-leon" class="foto-leon" src="leon.jpg" alt="León" onerror="fotoError(this)">
+    <div id="foto-fallback" class="foto-fallback">🥳</div>
+    <span class="foto-badge">9</span>
+  </div>
+  <div class="balloons" style="font-size:26px;letter-spacing:4px;margin:2px 0 0">🎈🎉🎂🎈</div>
+  <h1 class="titulo-inicio">La <span class="n1">Ruleta</span><br>de <span class="n2">León</span></h1>
+  <div class="edad-badge">¡9 AÑOS! 🥳</div>
+  <p class="sub-inicio">Gira la ruleta, completa el reto y suma puntos para tu equipo.</p>
+
+  <div class="setup-card">
+    <div class="setup-label">¿Cuántos equipos juegan?</div>
+    <div class="equipo-selector" id="equipo-selector">
+      <button class="eq-btn sel" data-n="2" onclick="setEquipos(2)">2</button>
+      <button class="eq-btn" data-n="3" onclick="setEquipos(3)">3</button>
+      <button class="eq-btn" data-n="4" onclick="setEquipos(4)">4</button>
+    </div>
+    <div class="setup-label">Nombres de los equipos</div>
+    <div class="team-inputs" id="team-inputs"></div>
+  </div>
+
+  <button class="btn-grande btn-jugar" onclick="iniciarJuego()">¡A JUGAR! 🎲</button>
+
+  <div class="tipos-mini">
+    <span class="tipo-chip">⚽ Fútbol</span>
+    <span class="tipo-chip">🎮 Videojuegos</span>
+    <span class="tipo-chip">🦖 Animales</span>
+    <span class="tipo-chip">🚀 Ciencia</span>
+    <span class="tipo-chip">🔷 Logos</span>
+    <span class="tipo-chip">🎬 Emojis</span>
+    <span class="tipo-chip">💪 Ejercicio</span>
+    <span class="tipo-chip">🎭 Mímica</span>
+    <span class="tipo-chip">😂 Chistes</span>
+    <span class="tipo-chip">🕺 Baile</span>
+    <span class="tipo-chip">🔍 Ojo de águila</span>
+  </div>
+</div>
+
+<!-- ============ PANTALLA JUEGO ============ -->
+<div id="screen-juego" class="screen">
+  <div class="topbar">
+    <div class="party-name">🎂 Cumpleaños de <span class="em">León</span></div>
+    <button class="btn-fin" onclick="terminar()">Terminar 🏁</button>
+  </div>
+  <div class="scoreboard" id="scoreboard"></div>
+  <div class="turno-titulo" id="turno-titulo"></div>
+
+  <div class="wheel-area">
+    <div class="wheel-wrap">
+      <div class="pointer"></div>
+      <svg id="ruleta-svg" viewBox="-210 -210 420 420">
+        <g id="ruleta-grupo"></g>
+      </svg>
+      <div class="hub">🎯</div>
+    </div>
+  </div>
+
+  <button class="btn-grande btn-girar" id="btn-girar" onclick="girar()">¡GIRAR! 🌀</button>
+</div>
+
+<!-- ============ PANTALLA RETO ============ -->
+<div id="screen-reto" class="screen">
+  <div class="reto-card">
+    <div class="reto-banner" id="reto-banner">
+      <div class="b-icon" id="reto-icon">⚽</div>
+      <div>
+        <div class="b-tipo" id="reto-tipo">Fútbol</div>
+        <div class="b-turno" id="reto-turno">Turno de: Equipo 1</div>
+      </div>
+    </div>
+    <div class="reto-body">
+      <div class="timer-wrap" id="timer-wrap">
+        <span class="timer-icon">⏱️</span>
+        <div class="timer-track"><div class="timer-bar" id="timer-bar"></div></div>
+        <span class="timer-num" id="timer-num">30</span>
+      </div>
+      <div class="sin-tiempo" id="sin-tiempo">🐢 Sin tiempo · háganlo con calma</div>
+      <div class="reto-visual" id="reto-visual"></div>
+      <div class="reto-pregunta" id="reto-pregunta"></div>
+      <div class="reto-instr" id="reto-instr"></div>
+      <div class="opciones" id="opciones"></div>
+      <div class="accion-buttons" id="accion-zona"></div>
+      <div class="dato" id="dato"></div>
+      <div class="puntos-flash" id="puntos-flash"></div>
+    </div>
+  </div>
+  <button class="btn-grande btn-continuar" id="btn-continuar" onclick="continuar()">Siguiente equipo ➡️</button>
+</div>
+
+<!-- ============ PANTALLA FINAL ============ -->
+<div id="screen-final" class="screen">
+  <div class="final-emoji">🏆</div>
+  <div class="final-titulo">¡Se acabó el juego!</div>
+  <div class="ganador-card" id="ganador-card"></div>
+  <div class="ranking" id="ranking"></div>
+  <button class="btn-grande btn-reiniciar" onclick="reiniciar()">Jugar de nuevo 🔄</button>
+</div>
+
+<canvas id="confetti"></canvas>
+
+<script>
+/* ==================== DATOS ==================== */
+const PALETA = ['#3B82F6','#EF4444','#22C55E','#FACC15'];
+const NOMBRES_DEFAULT = ['Equipo Azul','Equipo Rojo','Equipo Verde','Equipo Amarillo'];
+
+// Categorías de la ruleta (8 segmentos)
+const CATEGORIES = [
+  { id:'futbol',      icon:'⚽', label:'FÚTBOL',   color:'#22C55E', textColor:'#fff', tipo:'pregunta', t:30 },
+  { id:'videojuegos', icon:'🎮', label:'GAMER',    color:'#A855F7', textColor:'#fff', tipo:'pregunta', t:30 },
+  { id:'animales',    icon:'🦖', label:'ANIMALES', color:'#FB923C', textColor:'#fff', tipo:'pregunta', t:30 },
+  { id:'ciencia',     icon:'🚀', label:'CIENCIA',  color:'#06B6D4', textColor:'#fff', tipo:'pregunta', t:30 },
+  { id:'logos',       icon:'🔷', label:'LOGOS',    color:'#6366F1', textColor:'#fff', tipo:'pregunta', t:25 },
+  { id:'emojis',      icon:'🎬', label:'EMOJIS',   color:'#14B8A6', textColor:'#fff', tipo:'pregunta', t:25 },
+  { id:'fisico',      icon:'💪', label:'FÍSICO',   color:'#EF4444', textColor:'#fff', tipo:'accion',   t:0  },
+  { id:'mimica',      icon:'🎭', label:'MÍMICA',   color:'#EC4899', textColor:'#fff', tipo:'accion',   t:40 },
+  { id:'chistes',     icon:'😂', label:'CHISTES',  color:'#FACC15', textColor:'#7c4a03', tipo:'accion', t:0  },
+  { id:'baile',       icon:'🕺', label:'BAILE',    color:'#8B5CF6', textColor:'#fff', tipo:'accion',   t:0  },
+  { id:'busqueda',    icon:'🔍', label:'ÁGUILA',   color:'#3B82F6', textColor:'#fff', tipo:'accion',   t:30 },
+];
+const SEGMENTOS = CATEGORIES.length;
+const ANGULO_SEG = 360 / SEGMENTOS;
+
+// Preguntas de trivia (multiple opción). c = índice de la correcta.
+const PREGUNTAS = {
+  futbol: [
+    { q:'¿Qué país ganó el Mundial de Qatar 2022?', o:['Argentina','Francia','Brasil'], c:0, d:'Argentina campeona, ¡con Messi de capitán!' },
+    { q:'¿Cuál es el país con MÁS Mundiales ganados en la historia?', o:['Brasil','Alemania','Argentina'], c:0, d:'Brasil tiene 5 títulos, el récord.' },
+    { q:'¿Qué jugador ha ganado más veces el Balón de Oro?', o:['Lionel Messi','Cristiano Ronaldo','Pelé'], c:0, d:'Messi lo ha ganado 8 veces.' },
+    { q:'¿Qué significa que un delantero esté en "fuera de juego" (offside)?', o:['Está pasado del último defensa al recibir el pase','Toca la pelota con la mano','Le pega a un rival'], c:0, d:'La regla evita que se escondan junto al arco rival.' },
+    { q:'¿Cuántas tarjetas amarillas hacen que te expulsen del partido?', o:['2','3','1'], c:0, d:'Dos amarillas suman una roja: ¡a la calle!' },
+    { q:'¿Cómo se llama el torneo de los mejores CLUBES de Europa?', o:['La Champions League','La Copa América','La Libertadores'], c:0, d:'La UEFA Champions League.' },
+    { q:'¿De qué país es la estrella Kylian Mbappé?', o:['Francia','Brasil','Bélgica'], c:0, d:'Mbappé juega para Francia.' },
+    { q:'¿Cuánto llega a correr un jugador durante TODO un partido?', o:['Unos 10 kilómetros','1 kilómetro','30 kilómetros'], c:0, d:'¡Por eso terminan agotados!' },
+    { q:'Si una final termina empatada tras el alargue, ¿cómo se define?', o:['Con tiros penales','Se repite otro día','Gana el equipo local'], c:0, d:'La tanda de penales decide al campeón.' },
+    { q:'¿Cuánto mide de largo, más o menos, una cancha profesional?', o:['Unos 100 metros','30 metros','300 metros'], c:0, d:'Entre 90 y 120 metros de largo.' },
+  ],
+  videojuegos: [
+    { q:'En Minecraft, ¿qué mob se teletransporta y se enoja si lo miras a los ojos?', o:['El Enderman','El Creeper','El Zombie'], c:0, d:'El Enderman; mejor no mirarlo directo.' },
+    { q:'En Minecraft, ¿qué necesitas para abrir el portal al End y pelear con el Ender Dragon?', o:['Ojos de Ender','Diamantes','Una cama'], c:0, d:'Los Ojos de Ender activan el portal del End.' },
+    { q:'¿Cuál de estos materiales es el MÁS resistente en Minecraft?', o:['Netherita','Diamante','Hierro'], c:0, d:'La netherita supera incluso al diamante.' },
+    { q:'En Minecraft, ¿qué criatura verde EXPLOTA si te acercas mucho?', o:['El Creeper','El Aldeano','La vaca'], c:0, d:'¡Ssss... BOOM! Corre o tápalo con bloques.' },
+    { q:'¿Cómo se llama el dinosaurio verde que ayuda a Mario?', o:['Yoshi','Bowser','Toad'], c:0, d:'Yoshi atrapa enemigos con la lengua.' },
+    { q:'¿Quién es el villano que secuestra a la Princesa Peach?', o:['Bowser','Wario','Donkey Kong'], c:0, d:'Bowser, el rey de los Koopa.' },
+    { q:'¿En qué Pokémon evoluciona FINALMENTE Charmander?', o:['Charizard','Blastoise','Gengar'], c:0, d:'Charmander → Charmeleon → Charizard 🔥.' },
+    { q:'¿Qué empresa creó a Mario, a Zelda y la consola Switch?', o:['Nintendo','Sony','Microsoft'], c:0, d:'Nintendo, de Japón.' },
+    { q:'En Roblox, ¿cómo se llama la moneda del juego?', o:['Robux','V-Bucks','Gemas'], c:0, d:'Los V-Bucks son de Fortnite, no de Roblox.' },
+    { q:'En Minecraft, ¿qué bloque explota al prenderlo y sirve para volar cosas?', o:['La TNT','La obsidiana','La bedrock'], c:0, d:'La TNT; la bedrock es indestructible.' },
+  ],
+  animales: [
+    { q:'¿Qué dinosaurio tenía TRES cuernos y un gran collar óseo en la cabeza?', o:['Triceratops','Estegosaurio','Velociraptor'], c:0, d:'Triceratops significa "cara con tres cuernos".' },
+    { q:'¿Qué dinosaurio tenía placas en la espalda y púas en la cola?', o:['Estegosaurio','Braquiosaurio','Tyrannosaurus'], c:0, d:'Usaba la cola con púas para defenderse.' },
+    { q:'¿Cuándo se extinguieron los dinosaurios?', o:['Hace millones de años','Hace 100 años','El año pasado'], c:0, d:'Un enorme meteorito cayó hace unos 66 millones de años.' },
+    { q:'El Velociraptor de verdad era del tamaño de un...', o:['Pavo (con plumas)','Autobús','Elefante'], c:0, d:'Era mucho más chico que en las películas, ¡y con plumas!' },
+    { q:'¿A qué grupo pertenecen los animales de sangre fría con escamas, como las serpientes?', o:['Reptiles','Anfibios','Mamíferos'], c:0, d:'Reptiles: serpientes, lagartos, tortugas y cocodrilos.' },
+    { q:'El delfín parece pez, pero en realidad es un...', o:['Mamífero','Pez','Anfibio'], c:0, d:'Respira aire y da leche a sus crías.' },
+    { q:'¿Cuál es el animal terrestre MÁS ALTO del mundo?', o:['La jirafa','El elefante','El oso polar'], c:0, d:'La jirafa mide entre 5 y 6 metros.' },
+    { q:'¿Qué animal marino puede regenerar (hacer crecer de nuevo) un brazo?', o:['La estrella de mar','El tiburón','La ballena'], c:0, d:'Las estrellas de mar regeneran sus brazos.' },
+    { q:'¿Cómo respiran los peces bajo el agua?', o:['Con branquias','Con pulmones','Por las aletas'], c:0, d:'Las branquias sacan el oxígeno del agua.' },
+    { q:'¿Cuántos corazones tiene un pulpo?', o:['Tres','Uno','Diez'], c:0, d:'¡Tres! Y su sangre es azulada.' },
+  ],
+  ciencia: [
+    { q:'¿Cuál es el planeta MÁS GRANDE del Sistema Solar?', o:['Júpiter','Saturno','La Tierra'], c:0, d:'En Júpiter cabrían más de mil Tierras.' },
+    { q:'¿Cuál es el planeta MÁS CERCANO al Sol?', o:['Mercurio','Venus','Marte'], c:0, d:'Mercurio, el más pequeño y cercano.' },
+    { q:'¿Qué planeta es conocido como "el planeta rojo"?', o:['Marte','Saturno','Neptuno'], c:0, d:'Marte se ve rojizo por el óxido (fierro oxidado) de su suelo.' },
+    { q:'¿Qué planeta es famoso por tener anillos?', o:['Saturno','Mercurio','Venus'], c:0, d:'Los anillos de Saturno son de hielo y roca.' },
+    { q:'¿Qué fuerza hace que las cosas caigan al suelo?', o:['La gravedad','El magnetismo','La electricidad'], c:0, d:'La gravedad nos mantiene pegados a la Tierra.' },
+    { q:'El agua (H₂O) está formada por oxígeno e...', o:['Hidrógeno','Nitrógeno','Helio'], c:0, d:'Dos partes de hidrógeno y una de oxígeno.' },
+    { q:'¿Qué gas sueltan las plantas que a nosotros nos sirve para respirar?', o:['Oxígeno','Dióxido de carbono','Humo'], c:0, d:'Las plantas toman CO₂ y liberan oxígeno.' },
+    { q:'¿En qué mundo caminó el ser humano por primera vez fuera de la Tierra?', o:['La Luna','Marte','El Sol'], c:0, d:'Los astronautas llegaron a la Luna en 1969.' },
+    { q:'¿Por qué ves el relámpago ANTES de escuchar el trueno?', o:['La luz viaja más rápido que el sonido','El trueno llega después a propósito','Es pura casualidad'], c:0, d:'La luz es muchísimo más veloz que el sonido.' },
+    { q:'¿De qué está hecho principalmente el Sol?', o:['Gases muy calientes','Roca sólida','Lava líquida'], c:0, d:'Es una bola gigante de gas (hidrógeno) hirviendo.' },
+  ],
+  logos: [
+    { q:'¿Qué logo es este?', visual:'<div class="lg-emoji">🍎</div>', o:['Apple','Samsung','Huawei'], c:0, d:'La manzana mordida de Apple 🍎 (iPhone, iPad, Mac).' },
+    { q:'¿Qué logo es este?', visual:'<svg viewBox="0 0 120 60"><path d="M6 50 C40 20 82 4 116 6 C86 16 50 36 26 54 C20 58 10 56 6 50Z" fill="#111"/></svg>', o:['Nike','Adidas','Puma'], c:0, d:'El "swoosh" de Nike: Just Do It.' },
+    { q:'¿Qué logo es este?', visual:'<svg viewBox="0 0 120 72"><g fill="#111"><polygon points="10,64 26,64 40,34 24,34"/><polygon points="34,64 50,64 66,26 50,26"/><polygon points="58,64 74,64 92,16 76,16"/></g></svg>', o:['Adidas','Nike','Reebok'], c:0, d:'Las tres tiras de Adidas.' },
+    { q:'¿Qué logo es este?', visual:'<div class="lg-letter" style="font-size:130px;color:#FFC72C">M</div>', o:['McDonald\'s','Burger King','KFC'], c:0, d:'Los arcos dorados de McDonald\'s.' },
+    { q:'¿Qué logo es este?', visual:'<div class="lg-circle" style="background:#25D366;color:#fff">📞</div>', o:['WhatsApp','Telegram','Messenger'], c:0, d:'WhatsApp, para enviar mensajes.' },
+    { q:'¿Qué logo es este?', visual:'<svg viewBox="0 0 120 84"><rect x="4" y="4" width="112" height="76" rx="20" fill="#FF0000"/><polygon points="50,26 50,58 78,42" fill="#fff"/></svg>', o:['YouTube','Netflix','Twitch'], c:0, d:'El botón de play de YouTube.' },
+    { q:'¿Qué logo es este?', visual:'<div class="lg-box" style="background:#111"><span class="lg-letter" style="font-size:112px;color:#E50914">N</span></div>', o:['Netflix','Nintendo','Hulu'], c:0, d:'La N roja de Netflix.' },
+    { q:'¿Qué logo es este?', visual:'<svg viewBox="0 0 120 90"><g fill="#D01012"><rect x="14" y="26" width="92" height="54" rx="6"/><circle cx="31" cy="24" r="8"/><circle cx="54" cy="24" r="8"/><circle cx="77" cy="24" r="8"/><circle cx="100" cy="24" r="8"/></g></svg>', o:['LEGO','Playmobil','Rasti'], c:0, d:'¡Un ladrillo de LEGO!' },
+    { q:'¿Qué logo es este?', visual:'<svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" fill="#fff" stroke="#111" stroke-width="6"/><path d="M8 60 A52 52 0 0 1 112 60 Z" fill="#EE1515"/><rect x="8" y="57" width="104" height="6" fill="#111"/><circle cx="60" cy="60" r="16" fill="#fff" stroke="#111" stroke-width="6"/></svg>', o:['Pokémon','Beyblade','Dragon Ball'], c:0, d:'La Pokébola para atrapar Pokémon.' },
+    { q:'¿Qué logo es este?', visual:'<svg viewBox="0 0 120 120" fill="none" stroke-width="7"><polygon points="60,16 73,40 47,40" stroke="#4CAF50"/><circle cx="96" cy="60" r="13" stroke="#F44336"/><line x1="16" y1="48" x2="34" y2="66" stroke="#2196F3"/><line x1="34" y1="48" x2="16" y2="66" stroke="#2196F3"/><rect x="49" y="86" width="24" height="24" stroke="#E040A0"/></svg>', o:['PlayStation','Xbox','Nintendo'], c:0, d:'Los botones ▲ ● ✖ ■ de PlayStation.' },
+    { q:'¿Qué logo es este?', visual:'<div class="lg-emoji">🐦</div>', o:['Twitter (X)','Facebook','Instagram'], c:0, d:'El pajarito de Twitter, hoy llamado X.' },
+  ],
+  emojis: [
+    { q:'🦁👑  →  ¿Qué película es?', o:['El Rey León','Madagascar','Zootopia'], c:0, d:'El Rey León 🦁.' },
+    { q:'❄️👭⛄  →  ¿Qué película es?', o:['Frozen','La Era de Hielo','Moana'], c:0, d:'Frozen: Elsa y Anna.' },
+    { q:'🐟🔍🐠  →  ¿Qué película es?', o:['Buscando a Nemo','La Sirenita','Bob Esponja'], c:0, d:'Buscando a Nemo 🐠.' },
+    { q:'🕷️🧑  →  ¿Qué superhéroe es?', o:['Spider-Man','Batman','Hulk'], c:0, d:'El Hombre Araña 🕷️.' },
+    { q:'🟩⛏️🧟  →  ¿Qué videojuego es?', o:['Minecraft','Roblox','Fortnite'], c:0, d:'Minecraft: bloques y zombies.' },
+    { q:'🍄🔧👨  →  ¿Qué personaje es?', o:['Super Mario','Sonic','Kirby'], c:0, d:'Super Mario 🍄.' },
+    { q:'🦖🏝️  →  ¿Qué película es?', o:['Jurassic Park','King Kong','Godzilla'], c:0, d:'Jurassic Park 🦖.' },
+    { q:'🧙⚡🤓  →  ¿Qué personaje es?', o:['Harry Potter','Gandalf','Merlín'], c:0, d:'Harry Potter, con su cicatriz de rayo ⚡.' },
+    { q:'🚗⚡🏁  →  ¿Qué película es?', o:['Cars','Turbo','Rápidos y Furiosos'], c:0, d:'Cars: ¡Rayo McQueen!' },
+    { q:'🐭🏰✨  →  ¿Qué estudio de películas es?', o:['Disney','Pixar','DreamWorks'], c:0, d:'Disney y su castillo 🏰.' },
+    { q:'🦇🧑🌃  →  ¿Qué superhéroe es?', o:['Batman','Superman','Flash'], c:0, d:'Batman, el hombre murciélago 🦇.' },
+    { q:'🐢🥷🍕  →  ¿Qué personajes son?', o:['Las Tortugas Ninja','Pokémon','Los Pitufos'], c:0, d:'¡Las Tortugas Ninja y su pizza! 🐢🍕' },
+  ],
+};
+
+// Retos de acción (físico, mímica, baile, ojo de águila)
+const ACCIONES = {
+  fisico: [
+    { t:'15 saltos de tijera', d:'¡Abre y cierra brazos y piernas 15 veces! (jumping jacks)' },
+    { t:'10 sentadillas', d:'Baja como si te sentaras en una silla invisible, 10 veces.' },
+    { t:'20 saltos de conejo', d:'Salta con los dos pies juntos 20 veces.' },
+    { t:'Carrera ida y vuelta', d:'Corre hasta la pared y vuelve 3 veces, lo más rápido que puedas.' },
+    { t:'Plancha por 20 segundos', d:'Apóyate en brazos y pies, cuerpo recto. ¡Aguanta 20 segundos!' },
+    { t:'15 abdominales', d:'Acuéstate y sube el cuerpo 15 veces. ¡Pueden ayudarte sujetando los pies!' },
+    { t:'10 flexiones (lagartijas)', d:'Baja y sube apoyando las manos. Se vale hacerlas con las rodillas apoyadas.' },
+    { t:'Salta en un pie', d:'Salta 15 veces solo con el pie derecho... ¡y 15 con el izquierdo!' },
+    { t:'Estatua congelada', d:'Baila y cuando alguien diga "¡YA!" quédate congelado 10 segundos.' },
+    { t:'Festejo de gol', d:'Da 20 saltos festejando un gol como tu jugador favorito.' },
+  ],
+  mimica: [
+    { t:'Un futbolista metiendo un gol', d:'¡Sin hablar! Que tu equipo adivine qué haces.' },
+    { t:'Un dinosaurio T-rex', d:'Camina y ruge... pero sin sonido, solo con gestos.' },
+    { t:'Un gato', d:'Muévete, estírate y "maúlla" solo con la cara.' },
+    { t:'Jugar Minecraft picando bloques', d:'Haz como que picas y construyes, en silencio.' },
+    { t:'Un astronauta en la Luna', d:'Camina flotando en cámara lenta.' },
+    { t:'Un mono comiendo plátano', d:'Rásca, salta y come como monito, sin palabras.' },
+    { t:'Alguien con muuucho sueño', d:'Bosteza y cabecea sin decir nada.' },
+    { t:'Un robot', d:'Muévete tieso y a saltitos, como una máquina.' },
+    { t:'Nadar en el mar', d:'Haz como que nadas y flotas en el agua.' },
+    { t:'Un superhéroe volando', d:'Pose de vuelo y salva el día... ¡mudo!' },
+  ],
+  baile: [
+    { t:'Baila 20 segundos', d:'¡Muéstranos tu mejor paso de baile por 20 segundos!' },
+    { t:'Feliz cumpleaños robot', d:'Cántale "Feliz cumpleaños" a León con voz de robot.' },
+    { t:'Habla como pollito', d:'Di lo que quieras "piando" como pollito por 15 segundos.' },
+    { t:'Camina como cangrejo', d:'Cruza la sala caminando de lado, como un cangrejo.' },
+    { t:'Cara de miedo y de risa', d:'Haz tu cara más terrorífica y luego la más chistosa.' },
+    { t:'Inventa un festejo de gol', d:'Crea un baile nuevo para celebrar goles. ¡Pónganle nombre!' },
+    { t:'Risa contagiosa', d:'Ríete fuerte durante 10 segundos... ¡a ver quién no se contagia!' },
+    { t:'Imita a tu animal favorito', d:'Con movimiento Y sonido. ¿Adivinan cuál es?' },
+    { t:'Trabalenguas', d:'Di 2 veces seguidas: "Tres tristes tigres tragaban trigo".' },
+    { t:'Baile del piso', d:'Haz el paso más gracioso que puedas... ¡todo el equipo junto!' },
+  ],
+  busqueda: [
+    { t:'Busca 3 cosas ROJAS', d:'Encuentra y trae 3 objetos de color rojo antes de contar hasta 20.' },
+    { t:'Cuenta las zapatillas', d:'¿Cuántas personas en la sala tienen puestas zapatillas? Cuéntalas.' },
+    { t:'Algo con la letra "P"', d:'Encuentra un objeto cuyo nombre empiece con P y muéstralo.' },
+    { t:'Choca los cinco azul', d:'Busca a alguien que tenga puesto algo azul y chócala.' },
+    { t:'2 cosas redondas', d:'Encuentra y trae 2 objetos con forma redonda.' },
+    { t:'Cuenta las ventanas', d:'¿Cuántas ventanas hay en este lugar? Cuéntalas en voz alta.' },
+    { t:'Algo suavecito', d:'Trae algo que sea suave al tacto y pásalo por el equipo.' },
+    { t:'Más chico que tu mano', d:'Encuentra un objeto más pequeño que tu mano.' },
+    { t:'La persona más alta', d:'Busca a la persona más alta de la fiesta y ponte a su lado.' },
+    { t:'Algo que suene', d:'Encuentra algo que haga ruido... ¡y hazlo sonar!' },
+  ],
+  chistes: [
+    { t:'Cuenta tu chiste favorito 😄', d:'Si haces reír a tu equipo, ¡puntos asegurados!' },
+    { t:'Cuenta un chiste que te sepas 🤣', d:'El que quieras... ¡pero que dé risa!' },
+    { t:'Invéntate un chiste ahora mismo 💡', d:'Aunque sea medio malo, ¡a reír!' },
+    { t:'Cuenta el chiste MÁS malo que sepas 😅', d:'Tan malo que igual da risa.' },
+    { t:'Cuenta un chiste con voz de robot 🤖', d:'Bip bop... ¡cuéntalo como robot!' },
+    { t:'Cuenta un chiste sin reírte tú 😂', d:'Si te ríes tú primero... ¡no vale!' },
+    { t:'Cuenta un colmo o una adivinanza chistosa 🤔', d:'"¿Cuál es el colmo de...?"' },
+    { t:'Haz reír a tu equipo en 20 segundos 😆', d:'Chiste, cara chistosa o lo que se te ocurra.' },
+    { t:'Cuenta un chiste de animales 🐒', d:'De perros, gatos, monos... ¡el que sea!' },
+    { t:'Cuenta el chiste típico de tu familia 👨‍👩‍👧', d:'Ese que siempre cuentan en tu casa.' },
+    { t:'Pon tu cara más chistosa 10 segundos 😜', d:'A ver quién aguanta sin reírse.' },
+    { t:'Guerra de risas 👀', d:'Mira a un rival 10 segundos sin reírte. Si aguantas, ganas.' },
+  ],
+};
+
+/* ==================== ESTADO ==================== */
+let state = {
+  numEquipos: 2,
+  teams: [],
+  turno: 0,
+  pools: {},        // baraja por categoría, se rebaraja al agotarse
+  rotacion: 0,
+  currentCat: null,
+  currentReto: null,
+  resuelto: false,
+  timerId: null,
+};
+
+/* ==================== AUDIO ==================== */
+let audioCtx = null;
+function getAudio(){ if(!audioCtx){ try{ audioCtx = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } return audioCtx; }
+function tono(freq, dur, type='sine', vol=0.22){
+  const ac = getAudio(); if(!ac) return;
+  const o = ac.createOscillator(), g = ac.createGain();
+  o.type = type; o.frequency.value = freq;
+  g.gain.setValueAtTime(vol, ac.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.0001, ac.currentTime + dur);
+  o.connect(g); g.connect(ac.destination);
+  o.start(); o.stop(ac.currentTime + dur);
+}
+function sBtn(){ tono(660,0.06,'sine',0.14); }
+function sSpin(){ const ac=getAudio(); if(!ac)return; let t=0; const iv=setInterval(()=>{ tono(700+Math.random()*300,0.05,'square',0.06); t+=120; if(t>3600)clearInterval(iv); },120); }
+function sBien(){ [523,659,784,1046].forEach((f,i)=>setTimeout(()=>tono(f,0.18,'triangle',0.2),i*90)); }
+function sMal(){ tono(300,0.25,'sawtooth',0.16); setTimeout(()=>tono(200,0.3,'sawtooth',0.16),140); }
+function sWin(){ [523,587,659,784,880,1046].forEach((f,i)=>setTimeout(()=>tono(f,0.22,'triangle',0.2),i*110)); }
+function sTick(){ tono(1000,0.04,'sine',0.09); }
+function sTimeout(){ tono(420,0.22,'sawtooth',0.16); setTimeout(()=>tono(300,0.28,'sawtooth',0.16),170); }
+
+/* ==================== FOTO ==================== */
+const FOTO_INTENTOS = ['leon.jpg','leon.jpeg','leon.png','leon.JPG','leon.PNG','leon.HEIC'];
+let fotoIdx = 0;
+function fotoError(img){
+  fotoIdx++;
+  if(fotoIdx < FOTO_INTENTOS.length){ img.src = FOTO_INTENTOS[fotoIdx]; }
+  else { img.style.display='none'; document.getElementById('foto-fallback').style.display='flex'; }
+}
+
+/* ==================== TEMPORIZADOR ==================== */
+function iniciarTimer(segundos, onEnd){
+  pararTimer();
+  const wrap=document.getElementById('timer-wrap');
+  const bar=document.getElementById('timer-bar');
+  const num=document.getElementById('timer-num');
+  wrap.style.display='flex';
+  let restante=segundos; const total=segundos;
+  const pintar=()=>{
+    num.textContent=restante;
+    bar.style.width=Math.max(0,(restante/total)*100)+'%';
+    bar.style.background = restante<=5 ? 'var(--rojo)' : (restante<=10 ? 'var(--naranjo)' : 'var(--verde)');
+  };
+  pintar();
+  state.timerId=setInterval(()=>{
+    restante--;
+    pintar();
+    if(restante<=5 && restante>0) sTick();
+    if(restante<=0){ clearInterval(state.timerId); state.timerId=null; sTimeout(); onEnd(); }
+  },1000);
+}
+function pararTimer(){
+  if(state.timerId){ clearInterval(state.timerId); state.timerId=null; }
+  const w=document.getElementById('timer-wrap'); if(w) w.style.display='none';
+}
+function tiempoAgotadoTrivia(){
+  if(state.resuelto) return;
+  state.resuelto=true;
+  pararTimer();
+  const r=state.currentReto;
+  const opciones=document.querySelectorAll('#opciones .opcion');
+  opciones.forEach(o=>o.classList.add('bloq'));
+  opciones[r.c].classList.add('correcta');
+  opciones.forEach((o,i)=>{ if(i!==r.c) o.classList.add('atenuada'); });
+  flashPuntos('⏰ ¡Se acabó el tiempo! +0', '#94A3B8');
+  const dato=document.getElementById('dato');
+  dato.innerHTML=`<b>💡 ¿Sabías qué?</b> ${r.d}`;
+  dato.className='dato show';
+  mostrarContinuar();
+}
+function tiempoAgotadoAccion(){
+  if(state.resuelto) return;
+  pararTimer();
+  const q=document.querySelector('#accion-zona .accion-q');
+  if(q) q.textContent='⏰ ¡Se acabó el tiempo! ¿Lo lograron?';
+}
+
+/* ==================== INICIO / SETUP ==================== */
+function setEquipos(n){
+  sBtn();
+  state.numEquipos = n;
+  document.querySelectorAll('.eq-btn').forEach(b=> b.classList.toggle('sel', +b.dataset.n===n));
+  renderTeamInputs();
+}
+function renderTeamInputs(){
+  const cont = document.getElementById('team-inputs');
+  let prev = {};
+  cont.querySelectorAll('.team-input').forEach((inp,i)=> prev[i]=inp.value);
+  cont.innerHTML = '';
+  for(let i=0;i<state.numEquipos;i++){
+    const row = document.createElement('div');
+    row.className = 'team-row';
+    row.innerHTML = `
+      <span class="team-dot" style="background:${PALETA[i]}"></span>
+      <input class="team-input" maxlength="16" value="${prev[i] || NOMBRES_DEFAULT[i]}">`;
+    cont.appendChild(row);
+  }
+}
+
+/* ==================== RULETA (dibujo) ==================== */
+function construirRuleta(){
+  const grupo = document.getElementById('ruleta-grupo');
+  grupo.innerHTML = '';
+  const radius = 190;
+  const angle = (Math.PI*2)/SEGMENTOS;
+  for(let i=0;i<SEGMENTOS;i++){
+    const cat = CATEGORIES[i];
+    const segCenter = (i*angle) - Math.PI/2;
+    const startA = segCenter - angle/2, endA = segCenter + angle/2;
+    const x1=Math.cos(startA)*radius, y1=Math.sin(startA)*radius;
+    const x2=Math.cos(endA)*radius,   y2=Math.sin(endA)*radius;
+    const p = document.createElementNS('http://www.w3.org/2000/svg','path');
+    p.setAttribute('d', `M 0 0 L ${x1} ${y1} A ${radius} ${radius} 0 0 1 ${x2} ${y2} Z`);
+    p.setAttribute('fill', cat.color);
+    p.setAttribute('stroke', '#fff');
+    p.setAttribute('stroke-width', '4');
+    grupo.appendChild(p);
+
+    // icono
+    const iconDist = radius*0.84;
+    const iconSize = SEGMENTOS>=10 ? 26 : 30;
+    const ic = document.createElementNS('http://www.w3.org/2000/svg','text');
+    ic.setAttribute('x', Math.cos(segCenter)*iconDist);
+    ic.setAttribute('y', Math.sin(segCenter)*iconDist);
+    ic.setAttribute('text-anchor','middle');
+    ic.setAttribute('dominant-baseline','middle');
+    ic.setAttribute('font-size', iconSize);
+    ic.setAttribute('transform',`rotate(${segCenter*180/Math.PI+90}, ${Math.cos(segCenter)*iconDist}, ${Math.sin(segCenter)*iconDist})`);
+    ic.textContent = cat.icon;
+    grupo.appendChild(ic);
+
+    // etiqueta
+    const labelDist = radius*0.60;
+    const labelSize = SEGMENTOS>=10 ? 12.5 : 15;
+    const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x', Math.cos(segCenter)*labelDist);
+    t.setAttribute('y', Math.sin(segCenter)*labelDist);
+    t.setAttribute('text-anchor','middle');
+    t.setAttribute('dominant-baseline','middle');
+    t.setAttribute('fill', cat.textColor);
+    t.setAttribute('font-family','Baloo 2, cursive');
+    t.setAttribute('font-weight','800');
+    t.setAttribute('font-size', labelSize);
+    t.setAttribute('transform',`rotate(${segCenter*180/Math.PI+90}, ${Math.cos(segCenter)*labelDist}, ${Math.sin(segCenter)*labelDist})`);
+    t.textContent = cat.label;
+    grupo.appendChild(t);
+  }
+}
+
+/* ==================== JUEGO ==================== */
+function iniciarJuego(){
+  sBtn(); getAudio();
+  const inputs = document.querySelectorAll('#team-inputs .team-input');
+  state.teams = [];
+  inputs.forEach((inp,i)=>{
+    state.teams.push({ nombre: (inp.value.trim()||NOMBRES_DEFAULT[i]), pts:0, color:PALETA[i] });
+  });
+  state.turno = 0;
+  state.rotacion = 0;
+  state.pools = {};
+  CATEGORIES.forEach(c=> state.pools[c.id] = nuevaBaraja(c.id));
+  construirRuleta();
+  renderScoreboard();
+  document.getElementById('ruleta-svg').style.transform = 'rotate(0deg)';
+  document.getElementById('btn-girar').disabled = false;
+  showScreen('screen-juego');
+}
+
+function nuevaBaraja(catId){
+  const cat = CATEGORIES.find(c=>c.id===catId);
+  const src = cat.tipo==='pregunta' ? PREGUNTAS[catId] : ACCIONES[catId];
+  return shuffle([...src]);
+}
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+function renderScoreboard(){
+  const sb = document.getElementById('scoreboard');
+  sb.className = 'scoreboard' + (state.teams.length >= 4 ? ' grid2' : '');
+  sb.innerHTML = state.teams.map((t,i)=>`
+    <div class="score-item ${i===state.turno?'active':''}" style="--activo:${t.color};--pts:${t.color}">
+      <div class="score-name"><span class="score-dot" style="background:${t.color}"></span>${t.nombre}</div>
+      <div class="score-pts">${t.pts}</div>
+    </div>`).join('');
+  const tt = document.getElementById('turno-titulo');
+  tt.innerHTML = `Es el turno de <b style="--activo:${state.teams[state.turno].color}">${state.teams[state.turno].nombre}</b>`;
+  tt.style.setProperty('--activo', state.teams[state.turno].color);
+}
+
+function girar(){
+  const btn = document.getElementById('btn-girar');
+  btn.disabled = true;
+  sSpin();
+
+  const idx = Math.floor(Math.random()*SEGMENTOS);
+  const cat = CATEGORIES[idx];
+  state.currentCat = cat;
+
+  const rotBase = (360 - idx*ANGULO_SEG) % 360;
+  const jitter = (Math.random()-0.5)*(ANGULO_SEG*0.7);
+  const vueltas = 4 + Math.floor(Math.random()*3);
+  const targetMod = (rotBase + jitter + 360) % 360;
+  const currentMod = state.rotacion % 360;
+  const delta = ((targetMod - currentMod)+360)%360;
+  state.rotacion += vueltas*360 + delta;
+  document.getElementById('ruleta-svg').style.transform = `rotate(${state.rotacion}deg)`;
+
+  setTimeout(()=> abrirReto(cat), 4100);
+}
+
+function sacarDeBaraja(catId){
+  if(!state.pools[catId] || state.pools[catId].length===0) state.pools[catId] = nuevaBaraja(catId);
+  return state.pools[catId].pop();
+}
+
+function abrirReto(cat){
+  state.resuelto = false;
+  state.currentReto = sacarDeBaraja(cat.id);
+  const team = state.teams[state.turno];
+
+  // banner
+  const banner = document.getElementById('reto-banner');
+  banner.style.background = cat.color;
+  banner.style.color = cat.textColor;
+  document.getElementById('reto-icon').textContent = cat.icon;
+  document.getElementById('reto-tipo').textContent = etiquetaTipo(cat);
+  document.getElementById('reto-turno').textContent = 'Turno de: ' + team.nombre;
+
+  // reset zonas
+  const opc = document.getElementById('opciones');
+  const acc = document.getElementById('accion-zona');
+  const dato = document.getElementById('dato');
+  const flash = document.getElementById('puntos-flash');
+  const cont = document.getElementById('btn-continuar');
+  opc.innerHTML=''; acc.innerHTML=''; dato.className='dato'; dato.innerHTML='';
+  flash.className='puntos-flash'; flash.textContent='';
+  cont.className='btn-grande btn-continuar';
+  document.getElementById('reto-instr').textContent='';
+  const vis = document.getElementById('reto-visual');
+  vis.style.display='none'; vis.innerHTML='';
+
+  if(cat.tipo==='pregunta'){
+    const r = state.currentReto;
+    if(r.visual){ vis.innerHTML = r.visual; vis.style.display='flex'; }
+    document.getElementById('reto-pregunta').textContent = r.q;
+    const letras=['A','B','C','D'];
+    r.o.forEach((op,i)=>{
+      const b=document.createElement('button');
+      b.className='opcion';
+      b.innerHTML=`<span class="letra">${letras[i]}</span><span>${op}</span>`;
+      b.onclick=()=>responder(i,b);
+      opc.appendChild(b);
+    });
+  } else {
+    const r = state.currentReto;
+    document.getElementById('reto-pregunta').textContent = r.t;
+    document.getElementById('reto-instr').textContent = r.d;
+    acc.innerHTML = `
+      <div class="accion-q">¿Lo lograron?</div>
+      <button class="ab si"    onclick="resolverAccion(10)">¡SÍ! 🎉 (+10)</button>
+      <button class="ab casi"  onclick="resolverAccion(5)">Casi 😅 (+5)</button>
+      <button class="ab saltar" onclick="resolverAccion(0)">Saltar (0 pts)</button>`;
+  }
+
+  // Temporizador: solo en las categorías con tiempo
+  if(cat.t && cat.t>0){
+    document.getElementById('sin-tiempo').style.display='none';
+    iniciarTimer(cat.t, cat.tipo==='pregunta' ? tiempoAgotadoTrivia : tiempoAgotadoAccion);
+  } else {
+    pararTimer();
+    document.getElementById('sin-tiempo').style.display='block';
+  }
+
+  showScreen('screen-reto');
+}
+
+function etiquetaTipo(cat){
+  const map={ futbol:'Pregunta de Fútbol', videojuegos:'Pregunta Gamer', animales:'Animales y Dinos',
+    ciencia:'Ciencia y Espacio', logos:'Adivina el Logo', emojis:'Adivina con Emojis',
+    fisico:'Reto de Ejercicio', mimica:'Reto de Mímica', chistes:'Cuenta un Chiste',
+    baile:'Reto de Baile', busqueda:'Ojo de Águila' };
+  return map[cat.id]||cat.label;
+}
+
+function responder(idx, btn){
+  if(state.resuelto) return;
+  state.resuelto = true;
+  pararTimer();
+  const r = state.currentReto;
+  const opciones = document.querySelectorAll('#opciones .opcion');
+  opciones.forEach(o=>o.classList.add('bloq'));
+  const correcto = idx===r.c;
+
+  opciones[r.c].classList.add('correcta');
+  if(correcto){
+    sBien();
+    sumarPuntos(10);
+    flashPuntos('+10 🎉', state.teams[state.turno].color);
+    lanzarConfeti(50);
+  } else {
+    sMal();
+    btn.classList.add('incorrecta');
+    flashPuntos('¡Casi! +0', '#94A3B8');
+  }
+  opciones.forEach((o,i)=>{ if(i!==r.c && !o.classList.contains('incorrecta')) o.classList.add('atenuada'); });
+
+  const dato = document.getElementById('dato');
+  dato.innerHTML = `<b>💡 ¿Sabías qué?</b> ${r.d}`;
+  dato.className='dato show';
+  mostrarContinuar();
+}
+
+function resolverAccion(pts){
+  if(state.resuelto) return;
+  state.resuelto = true;
+  pararTimer();
+  document.getElementById('accion-zona').innerHTML='';
+  if(pts>0){
+    sBien();
+    sumarPuntos(pts);
+    flashPuntos('+'+pts+' 🎉', state.teams[state.turno].color);
+    if(pts>=10) lanzarConfeti(40);
+  } else {
+    sBtn();
+    flashPuntos('¡Igual estuvo genial! 👏', '#94A3B8');
+  }
+  mostrarContinuar();
+}
+
+function sumarPuntos(p){ state.teams[state.turno].pts += p; }
+function flashPuntos(txt,color){
+  const f=document.getElementById('puntos-flash');
+  f.textContent=txt; f.style.color=color; f.className='puntos-flash show';
+}
+function mostrarContinuar(){
+  const cont=document.getElementById('btn-continuar');
+  const ultimo = state.turno===state.teams.length-1;
+  cont.textContent = state.teams.length===1 ? 'Seguir jugando ➡️' : 'Turno del siguiente equipo ➡️';
+  cont.className='btn-grande btn-continuar show';
+}
+
+function continuar(){
+  sBtn();
+  pararTimer();
+  state.turno = (state.turno+1) % state.teams.length;
+  renderScoreboard();
+  document.getElementById('btn-girar').disabled = false;
+  showScreen('screen-juego');
+}
+
+/* ==================== FINAL ==================== */
+function terminar(){
+  sWin();
+  pararTimer();
+  const orden = state.teams.map((t,i)=>({...t})).sort((a,b)=> b.pts-a.pts);
+  const max = orden[0].pts;
+  const ganadores = orden.filter(t=>t.pts===max);
+
+  const gc = document.getElementById('ganador-card');
+  if(ganadores.length>1){
+    gc.innerHTML = `<div class="g-nombre">¡EMPATE! 🤝</div><div class="g-pts">${ganadores.map(g=>g.nombre).join(' y ')} · ${max} pts</div>`;
+  } else {
+    gc.innerHTML = `<div class="g-nombre">🏆 ${orden[0].nombre}</div><div class="g-pts">${max} puntos</div>`;
+  }
+
+  const medallas=['🥇','🥈','🥉','🎖️'];
+  document.getElementById('ranking').innerHTML = orden.map((t,i)=>`
+    <div class="rank-row">
+      <span class="rank-pos">${medallas[i]||'▫️'}</span>
+      <span class="rank-name"><span class="score-dot" style="background:${t.color}"></span>${t.nombre}</span>
+      <span class="rank-pts" style="color:${t.color}">${t.pts}</span>
+    </div>`).join('');
+
+  showScreen('screen-final');
+  lanzarConfeti(160);
+}
+
+function reiniciar(){ sBtn(); showScreen('screen-inicio'); }
+
+/* ==================== NAV ==================== */
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='screen-juego'){ sizeWheel(); requestAnimationFrame(sizeWheel); }
+}
+
+// Hace la ruleta lo más grande posible dentro del espacio sobrante (ancho y alto)
+function sizeWheel(){
+  const area = document.querySelector('.wheel-area');
+  const wrap = document.querySelector('.wheel-wrap');
+  if(!area || !wrap) return;
+  const disponible = Math.min(area.clientWidth, area.clientHeight);
+  if(disponible <= 0) return;
+  const size = Math.max(150, Math.min(disponible - 6, 560));
+  wrap.style.width = size + 'px';
+  wrap.style.height = size + 'px';
+}
+addEventListener('resize', ()=>{ if(document.getElementById('screen-juego').classList.contains('active')) sizeWheel(); });
+
+/* ==================== CONFETI ==================== */
+const cvs = document.getElementById('confetti');
+const ctx = cvs.getContext('2d');
+let confItems=[], confAnim=null;
+function resizeCanvas(){ cvs.width=innerWidth; cvs.height=innerHeight; }
+resizeCanvas(); addEventListener('resize', resizeCanvas);
+function lanzarConfeti(n){
+  const colores=['#3B82F6','#EF4444','#22C55E','#FACC15','#A855F7','#EC4899','#FB923C'];
+  for(let i=0;i<n;i++){
+    confItems.push({
+      x: Math.random()*cvs.width, y: -20 - Math.random()*cvs.height*0.3,
+      vx: (Math.random()-0.5)*6, vy: 3+Math.random()*5,
+      s: 6+Math.random()*8, c: colores[Math.floor(Math.random()*colores.length)],
+      rot: Math.random()*6, vr:(Math.random()-0.5)*0.4
+    });
+  }
+  if(!confAnim) tickConfeti();
+}
+function tickConfeti(){
+  ctx.clearRect(0,0,cvs.width,cvs.height);
+  confItems.forEach(p=>{
+    p.x+=p.vx; p.y+=p.vy; p.vy+=0.12; p.rot+=p.vr;
+    ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot);
+    ctx.fillStyle=p.c; ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*0.6); ctx.restore();
+  });
+  confItems = confItems.filter(p=> p.y < cvs.height+30);
+  if(confItems.length>0){ confAnim=requestAnimationFrame(tickConfeti); }
+  else { confAnim=null; ctx.clearRect(0,0,cvs.width,cvs.height); }
+}
+
+/* ==================== INIT ==================== */
+renderTeamInputs();
+if(document.fonts && document.fonts.ready){
+  document.fonts.ready.then(()=>{ if(document.getElementById('screen-juego').classList.contains('active')) sizeWheel(); });
+}
+</script>
+</body>
+</html>
