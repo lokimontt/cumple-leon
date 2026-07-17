@@ -279,6 +279,134 @@
 
   #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 50; }
 
+  /* ============ HUB / ESTACIONES ============ */
+  #screen-hub { justify-content: flex-start; gap: 14px; }
+  .ruleta-meta { font-size: 14px; color: var(--rosa); font-weight: 700; }
+
+  .global-board { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 10px; }
+  .gb-team { background: #fff; border-radius: 18px; padding: 12px 16px; box-shadow: var(--sombra); border: 3px solid var(--gc, #fff); }
+  .gb-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .gb-name { font-family: 'Baloo 2'; font-weight: 800; font-size: 18px; color: var(--texto); display: flex; align-items: center; gap: 8px; }
+  .gb-dot { width: 16px; height: 16px; border-radius: 50%; }
+  .gb-pts { font-family: 'Baloo 2'; font-weight: 800; font-size: 24px; color: var(--gc, var(--morado)); }
+  .gb-pts small { font-size: 13px; color: #94A3B8; font-weight: 700; }
+  .gb-track { height: 16px; background: #EEF2F7; border-radius: 999px; overflow: hidden; }
+  .gb-bar { height: 100%; border-radius: 999px; background: var(--gc, var(--morado)); transition: width .5s ease; min-width: 4px; }
+
+  .hub-titulo { font-family: 'Baloo 2'; font-weight: 700; font-size: 18px; color: #475569; margin-top: 4px; }
+  .estaciones-grid { width: 100%; max-width: 480px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding-bottom: 20px; }
+  .est-card {
+    background: #fff; border: none; border-radius: 20px; padding: 16px 12px; cursor: pointer;
+    box-shadow: var(--sombra); display: flex; flex-direction: column; align-items: center; gap: 6px;
+    transition: transform .12s; border-top: 6px solid var(--ec, var(--morado)); text-align: center;
+  }
+  .est-card:active { transform: scale(.96); }
+  .est-emoji { font-size: 40px; line-height: 1; }
+  .est-nombre { font-family: 'Baloo 2'; font-weight: 800; font-size: 17px; color: var(--texto); line-height: 1.1; }
+  .est-desc { font-size: 12px; color: #64748B; font-weight: 600; line-height: 1.15; }
+  .est-tag { font-size: 10.5px; font-weight: 800; color: var(--ec); background: color-mix(in srgb, var(--ec) 15%, #fff); padding: 2px 8px; border-radius: 999px; margin-top: 2px; }
+
+  /* ============ MODAL SUMAR PUNTOS ============ */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 40; background: rgba(15,23,42,.55);
+    align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(3px);
+  }
+  .modal-overlay.show { display: flex; }
+  .modal-card { background: #fff; border-radius: 26px; padding: 22px; width: 100%; max-width: 400px; box-shadow: var(--sombra-fuerte); text-align: center; }
+  .modal-icon { font-size: 44px; }
+  .modal-titulo { font-family: 'Baloo 2'; font-weight: 800; font-size: 24px; color: var(--texto); margin-top: 4px; }
+  .modal-sub { font-weight: 700; font-size: 15px; color: #64748B; margin-top: 6px; }
+  .modal-teams { display: flex; gap: 10px; margin-top: 12px; }
+  .modal-team {
+    flex: 1; border: 3px solid #E2E8F0; background: #F8FAFC; border-radius: 16px; padding: 12px 8px; cursor: pointer;
+    font-family: 'Baloo 2'; font-weight: 800; font-size: 15px; color: var(--texto); transition: .12s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .modal-team.sel { border-color: var(--tc); background: color-mix(in srgb, var(--tc) 12%, #fff); }
+  .modal-team .gb-dot { width: 14px; height: 14px; }
+  .modal-pts { display: flex; gap: 8px; justify-content: center; margin-top: 10px; flex-wrap: wrap; }
+  .pts-chip {
+    border: 3px solid #E2E8F0; background: #F8FAFC; border-radius: 14px; padding: 10px 0; width: 62px; cursor: pointer;
+    font-family: 'Baloo 2'; font-weight: 800; font-size: 18px; color: var(--texto); transition: .12s;
+  }
+  .pts-chip.sel { border-color: var(--verde); background: #F0FDF4; color: var(--verde); }
+  .modal-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+  .modal-actions .ab { width: 100%; }
+
+  /* ============ EL QUEMADO ============ */
+  #screen-quemado { justify-content: flex-start; gap: 10px; }
+  .q-turno { font-family: 'Baloo 2'; font-weight: 700; font-size: 17px; color: #475569; }
+  .q-turno b { color: var(--activo, var(--rojo)); }
+  .q-pista { background: #FFFBEB; border: 2px dashed var(--amarillo); border-radius: 14px; padding: 8px 16px;
+    font-weight: 700; font-size: 14.5px; color: #713f12; max-width: 460px; text-align: center; }
+  .quemado-figura { width: 180px; height: 200px; }
+  .quemado-figura svg { width: 100%; height: 100%; }
+  .q-palabra { display: flex; flex-wrap: wrap; gap: 7px; justify-content: center; max-width: 480px; }
+  .q-letra { width: 34px; height: 44px; border-bottom: 4px solid #94A3B8; display: flex; align-items: flex-end; justify-content: center;
+    font-family: 'Baloo 2'; font-weight: 800; font-size: 30px; color: var(--texto); }
+  .q-letra.espacio { border: none; width: 16px; }
+  .q-teclado { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; max-width: 480px; margin-top: 4px; }
+  .q-tecla {
+    width: 38px; height: 44px; border: none; border-radius: 10px; background: #fff; box-shadow: 0 3px 8px rgba(0,0,0,.1);
+    font-family: 'Baloo 2'; font-weight: 800; font-size: 18px; color: var(--texto); cursor: pointer; transition: .1s;
+  }
+  .q-tecla:active { transform: scale(.9); }
+  .q-tecla.ok { background: var(--verde); color: #fff; pointer-events: none; }
+  .q-tecla.mal { background: var(--rojo); color: #fff; pointer-events: none; opacity: .6; }
+  .q-tecla.bloq { pointer-events: none; }
+  .q-resultado { font-family: 'Baloo 2'; font-weight: 800; font-size: 20px; text-align: center; min-height: 26px; }
+  .q-resultado .btn-grande { display: block; margin: 10px auto 0; font-size: 18px; padding: 12px 30px;
+    background: linear-gradient(120deg, var(--azul), #2563eb); }
+
+  /* ============ MEMORIA ============ */
+  #screen-memoria { justify-content: flex-start; gap: 8px; }
+  .mem-turno { font-family: 'Baloo 2'; font-weight: 700; font-size: 17px; color: #475569; }
+  .mem-turno b { color: var(--activo, var(--morado)); }
+  .mem-score { display: flex; gap: 10px; }
+  .mem-score .ms { font-family: 'Baloo 2'; font-weight: 800; font-size: 15px; padding: 5px 14px; border-radius: 999px;
+    background: #fff; box-shadow: 0 3px 8px rgba(0,0,0,.08); display: flex; align-items: center; gap: 6px; }
+  .mem-score .ms.act { outline: 3px solid var(--c); }
+  .mem-grid { width: 100%; max-width: 400px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 4px; }
+  .mem-card {
+    aspect-ratio: 1; border: none; border-radius: 14px; cursor: pointer; padding: 0;
+    background: linear-gradient(135deg, var(--morado), #7c3aed); box-shadow: 0 4px 10px rgba(0,0,0,.12);
+    display: flex; align-items: center; justify-content: center; transition: transform .12s;
+  }
+  .mem-card:active { transform: scale(.95); }
+  .mem-card .mc-front { font-family: 'Baloo 2'; font-weight: 800; font-size: 30px; color: #fff; }
+  .mem-card .mc-back { display: none; font-size: clamp(28px, 9vw, 40px); }
+  .mem-card.flipped, .mem-card.matched { background: #fff; animation: pop .3s ease; }
+  .mem-card.flipped .mc-front, .mem-card.matched .mc-front { display: none; }
+  .mem-card.flipped .mc-back, .mem-card.matched .mc-back { display: inline; }
+  .mem-card.matched { opacity: .5; box-shadow: none; }
+  .mem-resultado { font-family: 'Baloo 2'; font-weight: 800; font-size: 19px; text-align: center; min-height: 24px; color: var(--texto); }
+  .mem-resultado .btn-grande { display: block; margin: 10px auto 0; font-size: 18px; padding: 12px 30px;
+    background: linear-gradient(120deg, var(--verde), #16a34a); }
+
+  /* ============ ¿QUIÉN SOY? ============ */
+  #screen-personaje { justify-content: center; }
+  .qs-intro { display: none; flex-direction: column; align-items: center; gap: 18px; max-width: 420px; text-align: center; }
+  .qs-intro.show { display: flex; }
+  .qs-instr { background: #fff; border-radius: 22px; padding: 22px; box-shadow: var(--sombra); }
+  .qs-instr p { font-weight: 600; font-size: 16px; color: #475569; margin-top: 10px; line-height: 1.35; }
+  .qs-turno-lbl { font-family: 'Baloo 2'; font-weight: 800; font-size: 18px; color: var(--activo, var(--cyan)) !important; }
+  .qs-juego { display: none; flex-direction: column; align-items: center; gap: 16px; width: 100%; }
+  .qs-juego.show { display: flex; }
+  .qs-timer { font-family: 'Baloo 2'; font-weight: 800; font-size: 40px; color: var(--verde); }
+  .qs-timer.bajo { color: var(--rojo); }
+  .qs-personaje {
+    background: linear-gradient(135deg, var(--cyan), #0891b2); color: #fff; border-radius: 24px;
+    font-family: 'Baloo 2'; font-weight: 800; font-size: clamp(30px, 9vw, 46px); line-height: 1.1;
+    padding: 40px 24px; width: min(92vw, 460px); text-align: center; box-shadow: var(--sombra-fuerte); min-height: 150px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .qs-cont { font-family: 'Baloo 2'; font-weight: 800; font-size: 20px; color: var(--texto); }
+  .qs-botones { display: flex; gap: 12px; width: min(92vw, 460px); }
+  .qs-botones .ab { flex: 1; font-size: 20px; padding: 18px; }
+  .qs-fin { display: none; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
+  .qs-fin.show { display: flex; }
+  .qs-fin .btn-grande { margin-top: 12px; font-size: 18px; padding: 13px 32px; background: linear-gradient(120deg, var(--verde), #16a34a); }
+
   @media (min-height: 780px) {
     #screen-juego { gap: 12px; }
   }
@@ -302,39 +430,43 @@
   <div class="balloons" style="font-size:26px;letter-spacing:4px;margin:2px 0 0">🎈🎉🎂🎈</div>
   <h1 class="titulo-inicio">La <span class="n1">Ruleta</span><br>de <span class="n2">León</span></h1>
   <div class="edad-badge">¡9 AÑOS! 🥳</div>
-  <p class="sub-inicio">Gira la ruleta, completa el reto y suma puntos para tu equipo.</p>
+  <p class="sub-inicio">Circuito de estaciones · 2 equipos · ¡el primero en llegar a 1.000 puntos gana la fiesta!</p>
 
   <div class="setup-card">
-    <div class="setup-label">¿Cuántos equipos juegan?</div>
-    <div class="equipo-selector" id="equipo-selector">
-      <button class="eq-btn sel" data-n="2" onclick="setEquipos(2)">2</button>
-      <button class="eq-btn" data-n="3" onclick="setEquipos(3)">3</button>
-      <button class="eq-btn" data-n="4" onclick="setEquipos(4)">4</button>
-    </div>
-    <div class="setup-label">Nombres de los equipos</div>
+    <div class="setup-label">Nombres de los 2 equipos</div>
     <div class="team-inputs" id="team-inputs"></div>
   </div>
 
-  <button class="btn-grande btn-jugar" onclick="iniciarJuego()">¡A JUGAR! 🎲</button>
+  <button class="btn-grande btn-jugar" onclick="empezarFiesta()">¡Empezar la fiesta! 🎉</button>
 
   <div class="tipos-mini">
-    <span class="tipo-chip">⚽ Fútbol</span>
-    <span class="tipo-chip">🎮 Videojuegos</span>
-    <span class="tipo-chip">🦖 Animales</span>
-    <span class="tipo-chip">🚀 Ciencia</span>
-    <span class="tipo-chip">🔷 Logos</span>
-    <span class="tipo-chip">🎬 Emojis</span>
-    <span class="tipo-chip">💪 Ejercicio</span>
-    <span class="tipo-chip">🎭 Mímica</span>
-    <span class="tipo-chip">🔍 Ojo de águila</span>
+    <span class="tipo-chip">🎡 Ruleta</span>
+    <span class="tipo-chip">🔥 El Quemado</span>
+    <span class="tipo-chip">🧠 Memoria</span>
+    <span class="tipo-chip">🕵️ Personaje</span>
+    <span class="tipo-chip">🔍 Wally</span>
+    <span class="tipo-chip">🗺️ Tesoro</span>
   </div>
+</div>
+
+<!-- ============ PANTALLA HUB (central de estaciones) ============ -->
+<div id="screen-hub" class="screen">
+  <div class="topbar">
+    <div class="party-name">🎂 Cumpleaños de <span class="em">León</span></div>
+    <button class="btn-fin" onclick="verGanador()">Ganador 🏆</button>
+  </div>
+
+  <div class="global-board" id="global-board"></div>
+
+  <div class="hub-titulo">Elige una estación 👇</div>
+  <div class="estaciones-grid" id="estaciones-grid"></div>
 </div>
 
 <!-- ============ PANTALLA JUEGO ============ -->
 <div id="screen-juego" class="screen">
   <div class="topbar">
-    <div class="party-name">🎂 Cumpleaños de <span class="em">León</span></div>
-    <button class="btn-fin" onclick="terminar()">Terminar 🏁</button>
+    <div class="party-name">🎡 Ruleta <span class="ruleta-meta">· a 130</span></div>
+    <button class="btn-fin" onclick="terminarRuleta()">Guardar y volver 💾</button>
   </div>
   <div class="scoreboard" id="scoreboard"></div>
   <div class="turno-titulo" id="turno-titulo"></div>
@@ -381,13 +513,96 @@
   <button class="btn-grande btn-continuar" id="btn-continuar" onclick="continuar()">Siguiente equipo ➡️</button>
 </div>
 
-<!-- ============ PANTALLA FINAL ============ -->
+<!-- ============ PANTALLA CAMPEÓN ============ -->
 <div id="screen-final" class="screen">
   <div class="final-emoji">🏆</div>
-  <div class="final-titulo">¡Se acabó el juego!</div>
+  <div class="final-titulo" id="final-titulo">¡Tenemos ganador!</div>
   <div class="ganador-card" id="ganador-card"></div>
   <div class="ranking" id="ranking"></div>
-  <button class="btn-grande btn-reiniciar" onclick="reiniciar()">Jugar de nuevo 🔄</button>
+  <button class="btn-grande btn-reiniciar" onclick="volverHubDesdeFinal()">Volver a la fiesta 🎪</button>
+  <button class="btn-grande" style="margin-top:10px;font-size:16px;padding:11px 28px;background:#94A3B8" onclick="reiniciar()">Reiniciar todo 🔄</button>
+</div>
+
+<!-- ============ ESTACIÓN: EL QUEMADO (ahorcado) ============ -->
+<div id="screen-quemado" class="screen">
+  <div class="topbar">
+    <div class="party-name">🔥 El Quemado</div>
+    <button class="btn-fin" onclick="irAlHub()">← Volver</button>
+  </div>
+  <div class="q-turno" id="q-turno"></div>
+  <div class="q-pista" id="q-pista"></div>
+  <div class="quemado-figura" id="quemado-figura"></div>
+  <div class="q-palabra" id="q-palabra"></div>
+  <div class="q-teclado" id="q-teclado"></div>
+  <div class="q-resultado" id="q-resultado"></div>
+</div>
+
+<!-- ============ ESTACIÓN: MEMORIA (parejas) ============ -->
+<div id="screen-memoria" class="screen">
+  <div class="topbar">
+    <div class="party-name">🧠 Memoria</div>
+    <button class="btn-fin" onclick="irAlHub()">← Volver</button>
+  </div>
+  <div class="mem-turno" id="mem-turno"></div>
+  <div class="mem-score" id="mem-score"></div>
+  <div class="mem-grid" id="mem-grid"></div>
+  <div class="mem-resultado" id="mem-resultado"></div>
+</div>
+
+<!-- ============ ESTACIÓN: ¿QUIÉN SOY? (adivina el personaje) ============ -->
+<div id="screen-personaje" class="screen">
+  <div class="topbar">
+    <div class="party-name">🕵️ ¿Quién Soy?</div>
+    <button class="btn-fin" onclick="irAlHub()">← Volver</button>
+  </div>
+
+  <div id="qs-intro" class="qs-intro">
+    <div class="qs-instr">
+      <div style="font-size:46px">🙈📱</div>
+      <p>Una persona del equipo sostiene el celular <b>en la frente</b>, ¡sin mirar!</p>
+      <p>Su equipo le da <b>pistas</b> (sin decir el nombre). Cuando adivina, toca <b>✅</b>. Para saltar, <b>⏭️</b>.</p>
+      <p class="qs-turno-lbl" id="qs-turno-lbl"></p>
+    </div>
+    <button class="btn-grande" style="background:linear-gradient(120deg,var(--cyan),#0891b2)" onclick="empezarQuienSoy()">¡Empezar! (60s) ▶️</button>
+  </div>
+
+  <div id="qs-juego" class="qs-juego">
+    <div class="qs-timer" id="qs-timer">60</div>
+    <div class="qs-personaje" id="qs-personaje"></div>
+    <div class="qs-cont" id="qs-cont">Aciertos: 0</div>
+    <div class="qs-botones">
+      <button class="ab casi" onclick="qsPaso()">⏭️ Paso</button>
+      <button class="ab si" onclick="qsAcierto()">✅ ¡Adivinó!</button>
+    </div>
+  </div>
+
+  <div id="qs-fin" class="qs-fin"></div>
+</div>
+
+<!-- ============ VENTANA: ELEGIR EQUIPO (mini-juegos) ============ -->
+<div id="modal-equipo" class="modal-overlay">
+  <div class="modal-card">
+    <div class="modal-icon" id="me-icon">🎮</div>
+    <div class="modal-titulo" id="me-titulo">¿Qué equipo juega?</div>
+    <div class="modal-teams" id="me-teams"></div>
+    <div class="modal-actions"><button class="ab saltar" onclick="cerrarModalEquipo()">Cancelar</button></div>
+  </div>
+</div>
+
+<!-- ============ VENTANA: SUMAR PUNTOS (estaciones físicas) ============ -->
+<div id="modal-puntos" class="modal-overlay">
+  <div class="modal-card">
+    <div class="modal-icon" id="modal-icon">🔍</div>
+    <div class="modal-titulo" id="modal-titulo">Buscando a Wally</div>
+    <div class="modal-sub">¿Qué equipo ganó esta estación?</div>
+    <div class="modal-teams" id="modal-teams"></div>
+    <div class="modal-sub" style="margin-top:14px">¿Cuántos puntos suma?</div>
+    <div class="modal-pts" id="modal-pts"></div>
+    <div class="modal-actions">
+      <button class="ab si" id="modal-confirmar" onclick="confirmarPuntos()">✅ Sumar puntos</button>
+      <button class="ab saltar" onclick="cerrarModal()">Cancelar</button>
+    </div>
+  </div>
 </div>
 
 <canvas id="confetti"></canvas>
@@ -531,9 +746,10 @@ const ACCIONES = {
 };
 
 /* ==================== ESTADO ==================== */
+const META_GLOBAL = 1000;   // primer equipo en llegar gana la fiesta
+const META_RULETA = 130;    // en la ruleta, primero a 130 gana la estación
 let state = {
-  numEquipos: 2,
-  teams: [],
+  teams: [],        // [{nombre, color, pts}] pts = puntaje GLOBAL (a 1000)
   turno: 0,
   pools: {},        // baraja por categoría, se rebaraja al agotarse
   rotacion: 0,
@@ -541,7 +757,21 @@ let state = {
   currentReto: null,
   resuelto: false,
   timerId: null,
+  ruletaPts: [0,0], // puntos internos de la ruleta (a 130), se reinician cada vez
+  modalEst: null,   // estación abierta en el modal de puntos
+  modalTeam: null,  // equipo elegido en el modal
+  modalPts: 0,      // puntos elegidos en el modal
 };
+
+// Definición de las estaciones del circuito
+const ESTACIONES = [
+  { id:'ruleta',   emoji:'🎡', nombre:'Ruleta',    desc:'Trivia y retos, ¡a 130!', color:'#EC4899', tipo:'ruleta' },
+  { id:'quemado',  emoji:'🔥', nombre:'El Quemado', desc:'Adivina la palabra', color:'#EF4444', tipo:'quemado', pts:100 },
+  { id:'memoria',  emoji:'🧠', nombre:'Memoria',    desc:'Encuentra las parejas', color:'#A855F7', tipo:'memoria', pts:100 },
+  { id:'personaje',emoji:'🕵️', nombre:'¿Quién Soy?', desc:'Adivina el personaje', color:'#06B6D4', tipo:'personaje', pts:100 },
+  { id:'wally',    emoji:'🔍', nombre:'Buscando a Wally', desc:'Encuéntralo en la hoja', color:'#3B82F6', tipo:'fisica', pts:100 },
+  { id:'tesoro',   emoji:'🗺️', nombre:'Búsqueda del Tesoro', desc:'Junta más tesoros', color:'#F59E0B', tipo:'fisica', pts:100 },
+];
 
 /* ==================== AUDIO ==================== */
 let audioCtx = null;
@@ -620,18 +850,12 @@ function tiempoAgotadoAccion(){
 }
 
 /* ==================== INICIO / SETUP ==================== */
-function setEquipos(n){
-  sBtn();
-  state.numEquipos = n;
-  document.querySelectorAll('.eq-btn').forEach(b=> b.classList.toggle('sel', +b.dataset.n===n));
-  renderTeamInputs();
-}
 function renderTeamInputs(){
   const cont = document.getElementById('team-inputs');
   let prev = {};
   cont.querySelectorAll('.team-input').forEach((inp,i)=> prev[i]=inp.value);
   cont.innerHTML = '';
-  for(let i=0;i<state.numEquipos;i++){
+  for(let i=0;i<2;i++){
     const row = document.createElement('div');
     row.className = 'team-row';
     row.innerHTML = `
@@ -639,6 +863,374 @@ function renderTeamInputs(){
       <input class="team-input" maxlength="16" value="${prev[i] || NOMBRES_DEFAULT[i]}">`;
     cont.appendChild(row);
   }
+}
+
+/* ==================== FIESTA / HUB ==================== */
+function empezarFiesta(){
+  sBtn(); getAudio();
+  const inputs = document.querySelectorAll('#team-inputs .team-input');
+  state.teams = [];
+  inputs.forEach((inp,i)=>{
+    state.teams.push({ nombre: (inp.value.trim()||NOMBRES_DEFAULT[i]), pts:0, color:PALETA[i] });
+  });
+  state.pools = {};
+  CATEGORIES.forEach(c=> state.pools[c.id] = nuevaBaraja(c.id));
+  construirRuleta();
+  irAlHub();
+}
+
+function irAlHub(){
+  if(typeof qs !== 'undefined' && qs.timerId){ clearInterval(qs.timerId); qs.timerId=null; }
+  pararTimer();
+  renderHub();
+  showScreen('screen-hub');
+}
+
+function renderHub(){
+  const gb = document.getElementById('global-board');
+  gb.innerHTML = state.teams.map(t=>{
+    const pct = Math.min(100, Math.round(t.pts/META_GLOBAL*100));
+    return `<div class="gb-team" style="--gc:${t.color}">
+      <div class="gb-top">
+        <span class="gb-name"><span class="gb-dot" style="background:${t.color}"></span>${t.nombre}</span>
+        <span class="gb-pts">${t.pts} <small>/ ${META_GLOBAL}</small></span>
+      </div>
+      <div class="gb-track"><div class="gb-bar" style="width:${pct}%"></div></div>
+    </div>`;
+  }).join('');
+  const grid = document.getElementById('estaciones-grid');
+  const tagMap = { ruleta:'🏁 a 130', fisica:'✋ física', proximamente:'🔜 pronto' };
+  grid.innerHTML = ESTACIONES.map(e=>{
+    const tag = tagMap[e.tipo] || '🎮 juego';
+    return `<button class="est-card" style="--ec:${e.color}" onclick="abrirEstacion('${e.id}')">
+      <span class="est-emoji">${e.emoji}</span>
+      <span class="est-nombre">${e.nombre}</span>
+      <span class="est-desc">${e.desc}</span>
+      <span class="est-tag">${tag}</span>
+    </button>`;
+  }).join('');
+}
+
+function abrirEstacion(id){
+  sBtn();
+  const e = ESTACIONES.find(x=>x.id===id);
+  if(!e) return;
+  if(e.tipo==='ruleta') iniciarRuleta();
+  else if(e.id==='quemado') pedirEquipo('🔥','¿Qué equipo juega El Quemado?', iniciarQuemado);
+  else if(e.id==='memoria') iniciarMemoria();
+  else if(e.id==='personaje') pedirEquipo('🕵️','¿Qué equipo juega ¿Quién Soy?', iniciarQuienSoy);
+  else abrirModalPuntos(e);   // solo estaciones físicas (Wally, Tesoro)
+}
+
+/* ==================== MODAL SUMAR PUNTOS ==================== */
+function abrirModalPuntos(est){
+  state.modalEst = est;
+  state.modalTeam = null;
+  state.modalPts = est.pts || 100;
+  document.getElementById('modal-icon').textContent = est.emoji;
+  document.getElementById('modal-titulo').textContent = est.nombre;
+  // equipos
+  document.getElementById('modal-teams').innerHTML = state.teams.map((t,i)=>
+    `<button class="modal-team" style="--tc:${t.color}" onclick="elegirTeam(${i})">
+       <span class="gb-dot" style="background:${t.color}"></span>${t.nombre}
+     </button>`).join('');
+  // opciones de puntos
+  const opciones = [50, est.pts||100, 150];
+  const uniq = [...new Set(opciones)];
+  document.getElementById('modal-pts').innerHTML = uniq.map(p=>
+    `<button class="pts-chip ${p===state.modalPts?'sel':''}" onclick="elegirPts(${p})">+${p}</button>`).join('');
+  document.getElementById('modal-confirmar').disabled = false;
+  document.getElementById('modal-puntos').classList.add('show');
+}
+function elegirTeam(i){
+  sBtn(); state.modalTeam = i;
+  document.querySelectorAll('#modal-teams .modal-team').forEach((b,j)=> b.classList.toggle('sel', j===i));
+}
+function elegirPts(p){
+  sBtn(); state.modalPts = p;
+  document.querySelectorAll('#modal-pts .pts-chip').forEach(b=> b.classList.toggle('sel', b.textContent==='+'+p));
+}
+function confirmarPuntos(){
+  if(state.modalTeam===null){ document.getElementById('modal-titulo').textContent = state.modalEst.nombre + ' — ¡elige el equipo!'; return; }
+  sBien();
+  state.teams[state.modalTeam].pts += state.modalPts;
+  cerrarModal();
+  irAlHub();
+  lanzarConfeti(40);
+  checkCampeon();
+}
+function cerrarModal(){ document.getElementById('modal-puntos').classList.remove('show'); }
+
+function checkCampeon(){
+  const ganador = state.teams.find(t=> t.pts >= META_GLOBAL);
+  if(ganador) setTimeout(()=> verGanador(true), 600);
+}
+
+/* ==================== SELECTOR DE EQUIPO (mini-juegos) ==================== */
+let _equipoCb = null;
+function pedirEquipo(icon, titulo, cb){
+  sBtn(); _equipoCb = cb;
+  document.getElementById('me-icon').textContent = icon;
+  document.getElementById('me-titulo').textContent = titulo;
+  document.getElementById('me-teams').innerHTML = state.teams.map((t,i)=>
+    `<button class="modal-team" style="--tc:${t.color}" onclick="elegirEquipoModal(${i})"><span class="gb-dot" style="background:${t.color}"></span>${t.nombre}</button>`).join('');
+  document.getElementById('modal-equipo').classList.add('show');
+}
+function elegirEquipoModal(i){ sBtn(); document.getElementById('modal-equipo').classList.remove('show'); if(_equipoCb) _equipoCb(i); }
+function cerrarModalEquipo(){ document.getElementById('modal-equipo').classList.remove('show'); }
+
+/* ==================== EL QUEMADO (ahorcado) ==================== */
+const QUEMADO_PALABRAS = [
+  {p:'MINECRAFT', pista:'Videojuego de bloques'},
+  {p:'DINOSAURIO', pista:'Animal gigante extinto'},
+  {p:'CUMPLEAÑOS', pista:'Lo que celebra León hoy'},
+  {p:'ASTRONAUTA', pista:'Viaja al espacio'},
+  {p:'CHOCOLATE', pista:'Dulce café y rico'},
+  {p:'MARIPOSA', pista:'Antes fue oruga'},
+  {p:'BICICLETA', pista:'Tiene dos ruedas y pedales'},
+  {p:'ELEFANTE', pista:'Tiene trompa y orejas grandes'},
+  {p:'ARCOIRIS', pista:'Colores en el cielo tras la lluvia'},
+  {p:'PIZZA', pista:'Comida italiana redonda'},
+  {p:'PIÑATA', pista:'Se rompe para que caigan dulces'},
+  {p:'TIBURON', pista:'Pez grande con muchos dientes'},
+  {p:'VOLCAN', pista:'Montaña que echa lava'},
+  {p:'GUITARRA', pista:'Instrumento con cuerdas'},
+  {p:'PIKACHU', pista:'Pokémon amarillo eléctrico'},
+  {p:'MONTAÑA', pista:'Muy alta, se escala'},
+  {p:'ESTRELLA', pista:'Brilla en el cielo de noche'},
+  {p:'DRAGON', pista:'Criatura que escupe fuego'},
+  {p:'HELADO', pista:'Frío y dulce, en verano'},
+  {p:'FUTBOL', pista:'Deporte de la pelota y el arco'},
+  {p:'ROBOT', pista:'Máquina que parece persona'},
+  {p:'CASTILLO', pista:'Vive un rey o una princesa'},
+];
+let quemado = { equipo:0, palabra:'', pista:'', aciertos:new Set(), errores:0, maxErr:6, terminado:false };
+
+function iniciarQuemado(teamIdx){
+  const w = QUEMADO_PALABRAS[Math.floor(Math.random()*QUEMADO_PALABRAS.length)];
+  quemado = { equipo:teamIdx, palabra:w.p, pista:w.pista, aciertos:new Set(), errores:0, maxErr:6, terminado:false };
+  const t = state.teams[teamIdx];
+  const tt = document.getElementById('q-turno');
+  tt.innerHTML = `Juega <b style="--activo:${t.color}">${t.nombre}</b> · adivina la palabra`;
+  tt.style.setProperty('--activo', t.color);
+  document.getElementById('q-pista').textContent = '💡 Pista: ' + w.pista;
+  document.getElementById('q-resultado').innerHTML = '';
+  construirTeclado();
+  dibujarQuemado();
+  renderPalabraQuemado();
+  showScreen('screen-quemado');
+}
+function construirTeclado(){
+  const letras = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ'.split('');
+  document.getElementById('q-teclado').innerHTML = letras.map(l=>
+    `<button class="q-tecla" id="tecla-${l}" onclick="teclaQuemado('${l}')">${l}</button>`).join('');
+}
+function renderPalabraQuemado(){
+  const cont = document.getElementById('q-palabra');
+  cont.innerHTML = quemado.palabra.split('').map(ch=>{
+    if(ch===' ') return `<div class="q-letra espacio"></div>`;
+    const mostrar = quemado.aciertos.has(ch) || quemado.terminado;
+    return `<div class="q-letra">${mostrar?ch:''}</div>`;
+  }).join('');
+}
+function teclaQuemado(l){
+  if(quemado.terminado) return;
+  const tecla = document.getElementById('tecla-'+l);
+  if(!tecla || tecla.classList.contains('ok') || tecla.classList.contains('mal')) return;
+  if(quemado.palabra.includes(l)){
+    sTick(); quemado.aciertos.add(l); tecla.classList.add('ok');
+    renderPalabraQuemado();
+    // ¿ganó?
+    const completa = quemado.palabra.split('').every(ch=> ch===' ' || quemado.aciertos.has(ch));
+    if(completa) finQuemado(true);
+  } else {
+    sMal(); quemado.errores++; tecla.classList.add('mal');
+    dibujarQuemado();
+    if(quemado.errores >= quemado.maxErr) finQuemado(false);
+  }
+}
+function dibujarQuemado(){
+  const e = quemado.errores;
+  const col = '#7c2d12'; // color "quemado"
+  const linea = (x1,y1,x2,y2,show)=> show?`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${col}" stroke-width="7" stroke-linecap="round"/>`:'';
+  const quemadoTotal = e>=6;
+  document.getElementById('quemado-figura').innerHTML = `
+    <svg viewBox="0 0 120 200">
+      <line x1="10" y1="192" x2="110" y2="192" stroke="#CBD5E1" stroke-width="6" stroke-linecap="round"/>
+      ${e>=1?`<circle cx="60" cy="40" r="20" fill="none" stroke="${col}" stroke-width="7"/>`:''}
+      ${linea(60,60,60,120, e>=2)}
+      ${linea(60,75,35,100, e>=3)}
+      ${linea(60,75,85,100, e>=4)}
+      ${linea(60,120,40,165, e>=5)}
+      ${linea(60,120,80,165, e>=6)}
+      ${quemadoTotal?`<text x="60" y="46" text-anchor="middle" font-size="22">🔥</text><text x="30" y="150" font-size="20">🔥</text><text x="78" y="150" font-size="20">🔥</text>`:''}
+    </svg>`;
+}
+function finQuemado(gano){
+  quemado.terminado = true;
+  document.querySelectorAll('#q-teclado .q-tecla').forEach(t=>t.classList.add('bloq'));
+  renderPalabraQuemado();
+  const res = document.getElementById('q-resultado');
+  let pts;
+  if(gano){
+    sWin(); lanzarConfeti(70);
+    pts = 50 + 10*(quemado.maxErr - quemado.errores); // 60–110 según errores
+    res.innerHTML = `<span style="color:var(--verde)">¡Adivinaron! 🎉 +${pts} pts</span>`;
+  } else {
+    sTimeout();
+    pts = 10;
+    res.innerHTML = `<span style="color:var(--rojo)">¡Quemado! 🔥 La palabra era "${quemado.palabra}". +${pts} pts</span>`;
+  }
+  res.innerHTML += `<button class="btn-grande" onclick="cerrarQuemado(${pts})">Guardar puntos 💾</button>`;
+}
+function cerrarQuemado(pts){
+  sBtn();
+  state.teams[quemado.equipo].pts += pts;
+  irAlHub();
+  checkCampeon();
+}
+
+/* ==================== MEMORIA (parejas) ==================== */
+const MEM_EMOJIS = ['⚽','🎮','🦖','🚀','🍕','🎂','🎈','🐶','🌟','🎁','🍦','🐱','🦄','🌈','🍭','🚗','🐢','🦋'];
+let mem = { cards:[], first:null, lock:false, turno:0, pares:[0,0] };
+
+function iniciarMemoria(){
+  sBtn(); getAudio();
+  const pool = shuffle([...MEM_EMOJIS]).slice(0,6);
+  const cards = shuffle([...pool, ...pool].map(e=>({emoji:e, flipped:false, matched:false})));
+  mem = { cards, first:null, lock:false, turno:0, pares:[0,0] };
+  document.getElementById('mem-resultado').innerHTML = '';
+  renderMemoria();
+  showScreen('screen-memoria');
+}
+function renderMemoria(){
+  const t = state.teams[mem.turno];
+  const tt = document.getElementById('mem-turno');
+  tt.innerHTML = `Turno de <b style="--activo:${t.color}">${t.nombre}</b>`;
+  tt.style.setProperty('--activo', t.color);
+  document.getElementById('mem-score').innerHTML = state.teams.map((tm,i)=>
+    `<span class="ms ${i===mem.turno?'act':''}" style="--c:${tm.color}"><span class="gb-dot" style="background:${tm.color};width:12px;height:12px"></span>${tm.nombre}: ${mem.pares[i]}</span>`).join('');
+  document.getElementById('mem-grid').innerHTML = mem.cards.map((c,i)=>
+    `<button class="mem-card ${c.flipped?'flipped':''} ${c.matched?'matched':''}" onclick="flipCard(${i})">
+       <span class="mc-front">?</span><span class="mc-back">${c.emoji}</span>
+     </button>`).join('');
+}
+function flipCard(i){
+  if(mem.lock) return;
+  const c = mem.cards[i];
+  if(c.flipped || c.matched) return;
+  sTick();
+  c.flipped = true;
+  renderMemoria();
+  if(mem.first===null){ mem.first = i; return; }
+  const a = mem.cards[mem.first];
+  if(a.emoji===c.emoji){
+    sBien();
+    a.matched = c.matched = true;
+    mem.pares[mem.turno]++;
+    mem.first = null;
+    renderMemoria();
+    if(mem.cards.every(x=>x.matched)) finMemoria();
+  } else {
+    mem.lock = true;
+    setTimeout(()=>{
+      a.flipped = c.flipped = false;
+      mem.first = null; mem.lock = false;
+      mem.turno = (mem.turno+1) % 2;
+      renderMemoria();
+    }, 950);
+  }
+}
+function finMemoria(){
+  setTimeout(()=>{
+    sWin(); lanzarConfeti(80);
+    const [p0,p1] = mem.pares;
+    let pts;
+    if(p0===p1) pts=[70,70];
+    else if(p0>p1) pts=[100,40];
+    else pts=[40,100];
+    const gan = p0===p1 ? '¡Empate! 🤝' : '🏆 ' + (p0>p1 ? state.teams[0].nombre : state.teams[1].nombre);
+    document.getElementById('mem-resultado').innerHTML =
+      `<div>${gan} · parejas ${p0}–${p1}</div>
+       <button class="btn-grande" onclick="cerrarMemoria(${pts[0]},${pts[1]})">Guardar puntos 💾</button>`;
+  }, 550);
+}
+function cerrarMemoria(p0,p1){
+  sBtn();
+  state.teams[0].pts += p0; state.teams[1].pts += p1;
+  irAlHub();
+  checkCampeon();
+}
+
+/* ==================== ¿QUIÉN SOY? (adivina el personaje) ==================== */
+const QS_PERSONAJES = [
+  'Mario','Luigi','Sonic','Pikachu','Bob Esponja','Patricio','Spider-Man','Batman','Superman','Elsa (Frozen)',
+  'Woody','Buzz Lightyear','Shrek','Un Minion','Harry Potter','Messi','Cristiano Ronaldo','Goku','Mickey Mouse',
+  'Dora la Exploradora','Peppa Pig','Bluey','Kirby','Yoshi','Donkey Kong','Hulk','Iron Man','Capitán América',
+  'Olaf','Simba (El Rey León)','Nemo','Rayo McQueen','Pocoyó','Un dinosaurio T-rex','Un pirata','Un astronauta'
+];
+let qs = { equipo:0, restante:60, aciertos:0, timerId:null, pool:[], idx:0 };
+
+function iniciarQuienSoy(teamIdx){
+  sBtn();
+  qs = { equipo:teamIdx, restante:60, aciertos:0, timerId:null, pool: shuffle([...QS_PERSONAJES]), idx:0 };
+  const t = state.teams[teamIdx];
+  const lbl = document.getElementById('qs-turno-lbl');
+  lbl.textContent = 'Juega: ' + t.nombre;
+  lbl.style.setProperty('--activo', t.color);
+  document.getElementById('qs-intro').classList.add('show');
+  document.getElementById('qs-juego').classList.remove('show');
+  document.getElementById('qs-fin').classList.remove('show');
+  showScreen('screen-personaje');
+}
+function empezarQuienSoy(){
+  sBtn();
+  document.getElementById('qs-intro').classList.remove('show');
+  document.getElementById('qs-juego').classList.add('show');
+  document.getElementById('qs-cont').textContent = 'Aciertos: 0';
+  siguientePersonaje();
+  qs.restante = 60;
+  actualizarQsTimer();
+  qs.timerId = setInterval(()=>{
+    qs.restante--;
+    actualizarQsTimer();
+    if(qs.restante<=5 && qs.restante>0) sTick();
+    if(qs.restante<=0){ clearInterval(qs.timerId); qs.timerId=null; finQuienSoy(); }
+  }, 1000);
+}
+function actualizarQsTimer(){
+  const el = document.getElementById('qs-timer');
+  el.textContent = qs.restante;
+  el.classList.toggle('bajo', qs.restante<=10);
+}
+function siguientePersonaje(){
+  if(qs.idx >= qs.pool.length){ qs.pool = shuffle([...QS_PERSONAJES]); qs.idx = 0; }
+  document.getElementById('qs-personaje').textContent = qs.pool[qs.idx];
+  qs.idx++;
+}
+function qsAcierto(){
+  if(!qs.timerId) return;
+  sBien(); qs.aciertos++;
+  document.getElementById('qs-cont').textContent = 'Aciertos: ' + qs.aciertos;
+  siguientePersonaje();
+}
+function qsPaso(){ if(!qs.timerId) return; sBtn(); siguientePersonaje(); }
+function finQuienSoy(){
+  sTimeout(); if(qs.aciertos>0){ sWin(); lanzarConfeti(70); }
+  document.getElementById('qs-juego').classList.remove('show');
+  const pts = qs.aciertos * 15;
+  const fin = document.getElementById('qs-fin');
+  fin.innerHTML = `<div class="final-emoji">🎭</div>
+    <div style="font-family:'Baloo 2';font-weight:800;font-size:26px;color:var(--texto)">¡${qs.aciertos} adivinados!</div>
+    <div style="font-weight:700;color:#475569;font-size:16px">+${pts} puntos para ${state.teams[qs.equipo].nombre}</div>
+    <button class="btn-grande" onclick="cerrarQuienSoy(${pts})">Guardar puntos 💾</button>`;
+  fin.classList.add('show');
+}
+function cerrarQuienSoy(pts){
+  sBtn();
+  state.teams[qs.equipo].pts += pts;
+  irAlHub();
+  checkCampeon();
 }
 
 /* ==================== RULETA (dibujo) ==================== */
@@ -692,18 +1284,12 @@ function construirRuleta(){
 }
 
 /* ==================== JUEGO ==================== */
-function iniciarJuego(){
+// ESTACIÓN RULETA: carrera interna a 130; al ganarla, los puntos van al global
+function iniciarRuleta(){
   sBtn(); getAudio();
-  const inputs = document.querySelectorAll('#team-inputs .team-input');
-  state.teams = [];
-  inputs.forEach((inp,i)=>{
-    state.teams.push({ nombre: (inp.value.trim()||NOMBRES_DEFAULT[i]), pts:0, color:PALETA[i] });
-  });
+  state.ruletaPts = [0,0];
   state.turno = 0;
   state.rotacion = 0;
-  state.pools = {};
-  CATEGORIES.forEach(c=> state.pools[c.id] = nuevaBaraja(c.id));
-  construirRuleta();
   renderScoreboard();
   document.getElementById('ruleta-svg').style.transform = 'rotate(0deg)';
   document.getElementById('btn-girar').disabled = false;
@@ -719,11 +1305,11 @@ function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.rand
 
 function renderScoreboard(){
   const sb = document.getElementById('scoreboard');
-  sb.className = 'scoreboard' + (state.teams.length >= 4 ? ' grid2' : '');
+  sb.className = 'scoreboard';
   sb.innerHTML = state.teams.map((t,i)=>`
     <div class="score-item ${i===state.turno?'active':''}" style="--activo:${t.color};--pts:${t.color}">
       <div class="score-name"><span class="score-dot" style="background:${t.color}"></span>${t.nombre}</div>
-      <div class="score-pts">${t.pts}</div>
+      <div class="score-pts">${state.ruletaPts[i]}<span style="font-size:13px;color:#94A3B8"> /${META_RULETA}</span></div>
     </div>`).join('');
   const tt = document.getElementById('turno-titulo');
   tt.innerHTML = `Es el turno de <b style="--activo:${state.teams[state.turno].color}">${state.teams[state.turno].nombre}</b>`;
@@ -901,43 +1487,61 @@ function resolverAccion(pts){
   mostrarContinuar();
 }
 
-function sumarPuntos(p){ state.teams[state.turno].pts += p; }
+function sumarPuntos(p){ state.ruletaPts[state.turno] += p; }
 function flashPuntos(txt,color){
   const f=document.getElementById('puntos-flash');
   f.textContent=txt; f.style.color=color; f.className='puntos-flash show';
 }
 function mostrarContinuar(){
   const cont=document.getElementById('btn-continuar');
-  const ultimo = state.turno===state.teams.length-1;
-  cont.textContent = state.teams.length===1 ? 'Seguir jugando ➡️' : 'Turno del siguiente equipo ➡️';
+  const gano = state.ruletaPts.some(p=> p>=META_RULETA);
+  cont.textContent = gano ? '🏁 ¡Terminar la ruleta!' : 'Turno del otro equipo ➡️';
   cont.className='btn-grande btn-continuar show';
 }
 
 function continuar(){
   sBtn();
   pararTimer();
+  if(state.ruletaPts.some(p=> p>=META_RULETA)){ finishRuleta(); return; }
   state.turno = (state.turno+1) % state.teams.length;
   renderScoreboard();
   document.getElementById('btn-girar').disabled = false;
   showScreen('screen-juego');
 }
 
-/* ==================== FINAL ==================== */
-function terminar(){
+// Termina la ruleta y pasa los puntos internos al marcador global
+function finishRuleta(){
   sWin();
+  state.teams.forEach((t,i)=> t.pts += state.ruletaPts[i]);
+  irAlHub();
+  lanzarConfeti(90);
+  checkCampeon();
+}
+// "Guardar y volver": guarda lo que llevan y vuelve al hub (sin llegar a 130)
+function terminarRuleta(){
+  sBtn();
   pararTimer();
-  const orden = state.teams.map((t,i)=>({...t})).sort((a,b)=> b.pts-a.pts);
-  const max = orden[0].pts;
-  const ganadores = orden.filter(t=>t.pts===max);
+  state.teams.forEach((t,i)=> t.pts += state.ruletaPts[i]);
+  irAlHub();
+  checkCampeon();
+}
+
+/* ==================== GANADOR / CAMPEÓN ==================== */
+function verGanador(esCampeon){
+  sWin(); pararTimer();
+  const orden = state.teams.map(t=>({...t})).sort((a,b)=> b.pts-a.pts);
+  const empate = orden[0].pts===orden[1].pts;
+  document.getElementById('final-titulo').textContent =
+    esCampeon===true ? '¡Campeón de la fiesta! 🎉' : (empate ? '¡Van empatados!' : '¿Quién va ganando?');
 
   const gc = document.getElementById('ganador-card');
-  if(ganadores.length>1){
-    gc.innerHTML = `<div class="g-nombre">¡EMPATE! 🤝</div><div class="g-pts">${ganadores.map(g=>g.nombre).join(' y ')} · ${max} pts</div>`;
+  if(empate){
+    gc.innerHTML = `<div class="g-nombre">¡EMPATE! 🤝</div><div class="g-pts">${orden[0].pts} puntos cada uno</div>`;
   } else {
-    gc.innerHTML = `<div class="g-nombre">🏆 ${orden[0].nombre}</div><div class="g-pts">${max} puntos</div>`;
+    gc.innerHTML = `<div class="g-nombre">🏆 ${orden[0].nombre}</div><div class="g-pts">${orden[0].pts} puntos</div>`;
   }
 
-  const medallas=['🥇','🥈','🥉','🎖️'];
+  const medallas=['🥇','🥈'];
   document.getElementById('ranking').innerHTML = orden.map((t,i)=>`
     <div class="rank-row">
       <span class="rank-pos">${medallas[i]||'▫️'}</span>
@@ -946,9 +1550,9 @@ function terminar(){
     </div>`).join('');
 
   showScreen('screen-final');
-  lanzarConfeti(160);
+  lanzarConfeti(esCampeon===true ? 200 : 80);
 }
-
+function volverHubDesdeFinal(){ sBtn(); irAlHub(); }
 function reiniciar(){ sBtn(); showScreen('screen-inicio'); }
 
 /* ==================== NAV ==================== */
