@@ -243,6 +243,7 @@
   .ab:active { transform: scale(.97); }
   .ab.si { background: linear-gradient(120deg, var(--verde), #16a34a); }
   .ab.casi { background: linear-gradient(120deg, var(--naranjo), #ea580c); }
+  .ab.ver { background: linear-gradient(120deg, var(--morado), #7c3aed); font-size: 20px; padding: 17px; }
   .ab.saltar { background: #E2E8F0; color: #64748B; box-shadow: none; font-size: 15px; padding: 11px; }
 
   .btn-continuar {
@@ -325,8 +326,6 @@
     <span class="tipo-chip">🎬 Emojis</span>
     <span class="tipo-chip">💪 Ejercicio</span>
     <span class="tipo-chip">🎭 Mímica</span>
-    <span class="tipo-chip">😂 Chistes</span>
-    <span class="tipo-chip">🕺 Baile</span>
     <span class="tipo-chip">🔍 Ojo de águila</span>
   </div>
 </div>
@@ -407,9 +406,7 @@ const CATEGORIES = [
   { id:'logos',       icon:'🔷', label:'LOGOS',    color:'#6366F1', textColor:'#fff', tipo:'pregunta', t:25 },
   { id:'emojis',      icon:'🎬', label:'EMOJIS',   color:'#14B8A6', textColor:'#fff', tipo:'pregunta', t:25 },
   { id:'fisico',      icon:'💪', label:'FÍSICO',   color:'#EF4444', textColor:'#fff', tipo:'accion',   t:0  },
-  { id:'mimica',      icon:'🎭', label:'MÍMICA',   color:'#EC4899', textColor:'#fff', tipo:'accion',   t:40 },
-  { id:'chistes',     icon:'😂', label:'CHISTES',  color:'#FACC15', textColor:'#7c4a03', tipo:'accion', t:0  },
-  { id:'baile',       icon:'🕺', label:'BAILE',    color:'#8B5CF6', textColor:'#fff', tipo:'accion',   t:0  },
+  { id:'mimica',      icon:'🎭', label:'MÍMICA',   color:'#EC4899', textColor:'#fff', tipo:'accion',   t:40, secreto:true },
   { id:'busqueda',    icon:'🔍', label:'ÁGUILA',   color:'#3B82F6', textColor:'#fff', tipo:'accion',   t:30 },
 ];
 const SEGMENTOS = CATEGORIES.length;
@@ -500,7 +497,6 @@ const ACCIONES = {
     { t:'15 saltos de tijera', d:'¡Abre y cierra brazos y piernas 15 veces! (jumping jacks)' },
     { t:'10 sentadillas', d:'Baja como si te sentaras en una silla invisible, 10 veces.' },
     { t:'20 saltos de conejo', d:'Salta con los dos pies juntos 20 veces.' },
-    { t:'Carrera ida y vuelta', d:'Corre hasta la pared y vuelve 3 veces, lo más rápido que puedas.' },
     { t:'Plancha por 20 segundos', d:'Apóyate en brazos y pies, cuerpo recto. ¡Aguanta 20 segundos!' },
     { t:'15 abdominales', d:'Acuéstate y sube el cuerpo 15 veces. ¡Pueden ayudarte sujetando los pies!' },
     { t:'10 flexiones (lagartijas)', d:'Baja y sube apoyando las manos. Se vale hacerlas con las rodillas apoyadas.' },
@@ -520,18 +516,6 @@ const ACCIONES = {
     { t:'Nadar en el mar', d:'Haz como que nadas y flotas en el agua.' },
     { t:'Un superhéroe volando', d:'Pose de vuelo y salva el día... ¡mudo!' },
   ],
-  baile: [
-    { t:'Baila 20 segundos', d:'¡Muéstranos tu mejor paso de baile por 20 segundos!' },
-    { t:'Feliz cumpleaños robot', d:'Cántale "Feliz cumpleaños" a León con voz de robot.' },
-    { t:'Habla como pollito', d:'Di lo que quieras "piando" como pollito por 15 segundos.' },
-    { t:'Camina como cangrejo', d:'Cruza la sala caminando de lado, como un cangrejo.' },
-    { t:'Cara de miedo y de risa', d:'Haz tu cara más terrorífica y luego la más chistosa.' },
-    { t:'Inventa un festejo de gol', d:'Crea un baile nuevo para celebrar goles. ¡Pónganle nombre!' },
-    { t:'Risa contagiosa', d:'Ríete fuerte durante 10 segundos... ¡a ver quién no se contagia!' },
-    { t:'Imita a tu animal favorito', d:'Con movimiento Y sonido. ¿Adivinan cuál es?' },
-    { t:'Trabalenguas', d:'Di 2 veces seguidas: "Tres tristes tigres tragaban trigo".' },
-    { t:'Baile del piso', d:'Haz el paso más gracioso que puedas... ¡todo el equipo junto!' },
-  ],
   busqueda: [
     { t:'Busca 3 cosas ROJAS', d:'Encuentra y trae 3 objetos de color rojo antes de contar hasta 20.' },
     { t:'Cuenta las zapatillas', d:'¿Cuántas personas en la sala tienen puestas zapatillas? Cuéntalas.' },
@@ -543,20 +527,6 @@ const ACCIONES = {
     { t:'Más chico que tu mano', d:'Encuentra un objeto más pequeño que tu mano.' },
     { t:'La persona más alta', d:'Busca a la persona más alta de la fiesta y ponte a su lado.' },
     { t:'Algo que suene', d:'Encuentra algo que haga ruido... ¡y hazlo sonar!' },
-  ],
-  chistes: [
-    { t:'Cuenta tu chiste favorito 😄', d:'Si haces reír a tu equipo, ¡puntos asegurados!' },
-    { t:'Cuenta un chiste que te sepas 🤣', d:'El que quieras... ¡pero que dé risa!' },
-    { t:'Invéntate un chiste ahora mismo 💡', d:'Aunque sea medio malo, ¡a reír!' },
-    { t:'Cuenta el chiste MÁS malo que sepas 😅', d:'Tan malo que igual da risa.' },
-    { t:'Cuenta un chiste con voz de robot 🤖', d:'Bip bop... ¡cuéntalo como robot!' },
-    { t:'Cuenta un chiste sin reírte tú 😂', d:'Si te ríes tú primero... ¡no vale!' },
-    { t:'Cuenta un colmo o una adivinanza chistosa 🤔', d:'"¿Cuál es el colmo de...?"' },
-    { t:'Haz reír a tu equipo en 20 segundos 😆', d:'Chiste, cara chistosa o lo que se te ocurra.' },
-    { t:'Cuenta un chiste de animales 🐒', d:'De perros, gatos, monos... ¡el que sea!' },
-    { t:'Cuenta el chiste típico de tu familia 👨‍👩‍👧', d:'Ese que siempre cuentan en tu casa.' },
-    { t:'Pon tu cara más chistosa 10 segundos 😜', d:'A ver quién aguanta sin reírse.' },
-    { t:'Guerra de risas 👀', d:'Mira a un rival 10 segundos sin reírte. Si aguantas, ganas.' },
   ],
 };
 
@@ -788,6 +758,7 @@ function sacarDeBaraja(catId){
 
 function abrirReto(cat){
   state.resuelto = false;
+  state.currentCat = cat;
   state.currentReto = sacarDeBaraja(cat.id);
   const team = state.teams[state.turno];
 
@@ -824,6 +795,11 @@ function abrirReto(cat){
       b.onclick=()=>responder(i,b);
       opc.appendChild(b);
     });
+  } else if(cat.secreto){
+    // Mímica secreta: solo quien actúa mira la pantalla
+    document.getElementById('reto-pregunta').textContent = '🤫 ¡Mímica secreta!';
+    document.getElementById('reto-instr').textContent = 'Elijan a UNA persona del equipo para actuar. Solo esa persona mira la pantalla (¡tapen la vista al resto!). Después lo actúa SIN hablar y los demás adivinan.';
+    acc.innerHTML = `<button class="ab ver" onclick="verMimica()">👀 Ver mi mímica (en secreto)</button>`;
   } else {
     const r = state.currentReto;
     document.getElementById('reto-pregunta').textContent = r.t;
@@ -835,8 +811,11 @@ function abrirReto(cat){
       <button class="ab saltar" onclick="resolverAccion(0)">Saltar (0 pts)</button>`;
   }
 
-  // Temporizador: solo en las categorías con tiempo
-  if(cat.t && cat.t>0){
+  // Temporizador: en mímica secreta arranca recién al empezar a actuar (en ocultarMimica)
+  if(cat.secreto){
+    pararTimer();
+    document.getElementById('sin-tiempo').style.display='none';
+  } else if(cat.t && cat.t>0){
     document.getElementById('sin-tiempo').style.display='none';
     iniciarTimer(cat.t, cat.tipo==='pregunta' ? tiempoAgotadoTrivia : tiempoAgotadoAccion);
   } else {
@@ -850,9 +829,31 @@ function abrirReto(cat){
 function etiquetaTipo(cat){
   const map={ futbol:'Pregunta de Fútbol', videojuegos:'Pregunta Gamer', animales:'Animales y Dinos',
     ciencia:'Ciencia y Espacio', logos:'Adivina el Logo', emojis:'Adivina con Emojis',
-    fisico:'Reto de Ejercicio', mimica:'Reto de Mímica', chistes:'Cuenta un Chiste',
-    baile:'Reto de Baile', busqueda:'Ojo de Águila' };
+    fisico:'Reto de Ejercicio', mimica:'Mímica Secreta', busqueda:'Ojo de Águila' };
   return map[cat.id]||cat.label;
+}
+
+// MÍMICA SECRETA: quien actúa mira la palabra, luego la oculta y actúa
+function verMimica(){
+  sBtn();
+  const r = state.currentReto;
+  document.getElementById('reto-pregunta').textContent = '🎭 ' + r.t;
+  document.getElementById('reto-instr').textContent = r.d + '  (¡Solo tú lo viste! Ocúltalo y actúalo.)';
+  document.getElementById('accion-zona').innerHTML =
+    `<button class="ab casi" onclick="ocultarMimica()">🙈 Ocultar y ¡a actuar!</button>`;
+}
+function ocultarMimica(){
+  sBtn();
+  document.getElementById('reto-pregunta').textContent = '🎭 ¡Actúa sin hablar!';
+  document.getElementById('reto-instr').textContent = 'El resto del equipo adivina qué es.';
+  document.getElementById('accion-zona').innerHTML = `
+    <div class="accion-q">¿Lo adivinaron?</div>
+    <button class="ab si"    onclick="resolverAccion(10)">¡SÍ! 🎉 (+10)</button>
+    <button class="ab casi"  onclick="resolverAccion(5)">Casi 😅 (+5)</button>
+    <button class="ab saltar" onclick="resolverAccion(0)">Saltar (0 pts)</button>`;
+  // Ahora sí arranca el cronómetro para adivinar
+  const cat = state.currentCat;
+  if(cat && cat.t>0) iniciarTimer(cat.t, tiempoAgotadoAccion);
 }
 
 function responder(idx, btn){
