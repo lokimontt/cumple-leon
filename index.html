@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<title>🎉 La Ruleta de León · 9 años</title>
+<title>🎉 La Fiesta de León · 9 años</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -337,6 +337,8 @@
   #screen-quemado { justify-content: flex-start; gap: 10px; }
   .q-turno { font-family: 'Baloo 2'; font-weight: 700; font-size: 17px; color: #475569; }
   .q-turno b { color: var(--activo, var(--rojo)); }
+  .q-progreso { font-family: 'Baloo 2'; font-weight: 800; font-size: 14px; color: #64748B; background: #F1F5F9;
+    padding: 4px 14px; border-radius: 999px; }
   .q-pista { background: #FFFBEB; border: 2px dashed var(--amarillo); border-radius: 14px; padding: 8px 16px;
     font-weight: 700; font-size: 14.5px; color: #713f12; max-width: 460px; text-align: center; }
   .quemado-figura { width: 180px; height: 200px; }
@@ -385,26 +387,25 @@
 
   /* ============ ¿QUIÉN SOY? ============ */
   #screen-personaje { justify-content: center; }
-  .qs-intro { display: none; flex-direction: column; align-items: center; gap: 18px; max-width: 420px; text-align: center; }
-  .qs-intro.show { display: flex; }
+  .qs-fase { display: none; flex-direction: column; align-items: center; gap: 16px; width: 100%; max-width: 460px; text-align: center; }
+  .qs-fase.show { display: flex; }
   .qs-instr { background: #fff; border-radius: 22px; padding: 22px; box-shadow: var(--sombra); }
   .qs-instr p { font-weight: 600; font-size: 16px; color: #475569; margin-top: 10px; line-height: 1.35; }
-  .qs-turno-lbl { font-family: 'Baloo 2'; font-weight: 800; font-size: 18px; color: var(--activo, var(--cyan)) !important; }
-  .qs-juego { display: none; flex-direction: column; align-items: center; gap: 16px; width: 100%; }
-  .qs-juego.show { display: flex; }
-  .qs-timer { font-family: 'Baloo 2'; font-weight: 800; font-size: 40px; color: var(--verde); }
+  .qs-turno-lbl { font-family: 'Baloo 2'; font-weight: 800; font-size: 19px; color: var(--activo, var(--cyan)) !important; }
+  .qs-timer { font-family: 'Baloo 2'; font-weight: 800; font-size: 44px; color: var(--verde); }
   .qs-timer.bajo { color: var(--rojo); }
+  .qs-reveal-timer { font-family: 'Baloo 2'; font-weight: 800; font-size: 30px; color: var(--naranjo); }
   .qs-personaje {
     background: linear-gradient(135deg, var(--cyan), #0891b2); color: #fff; border-radius: 24px;
-    font-family: 'Baloo 2'; font-weight: 800; font-size: clamp(30px, 9vw, 46px); line-height: 1.1;
-    padding: 40px 24px; width: min(92vw, 460px); text-align: center; box-shadow: var(--sombra-fuerte); min-height: 150px;
-    display: flex; align-items: center; justify-content: center;
+    padding: 28px 24px; width: min(92vw, 460px); box-shadow: var(--sombra-fuerte);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
   }
-  .qs-cont { font-family: 'Baloo 2'; font-weight: 800; font-size: 20px; color: var(--texto); }
+  .qs-emoji { font-size: clamp(64px, 20vw, 96px); line-height: 1; }
+  .qs-nombre { font-family: 'Baloo 2'; font-weight: 800; font-size: clamp(26px, 7vw, 38px); line-height: 1.1; }
+  .qs-act-msg { font-family: 'Baloo 2'; font-weight: 800; font-size: 22px; color: var(--texto); line-height: 1.25; }
+  .qs-act-msg span { font-size: 16px; color: #64748B; }
   .qs-botones { display: flex; gap: 12px; width: min(92vw, 460px); }
-  .qs-botones .ab { flex: 1; font-size: 20px; padding: 18px; }
-  .qs-fin { display: none; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
-  .qs-fin.show { display: flex; }
+  .qs-botones .ab { flex: 1; font-size: 19px; padding: 18px; }
   .qs-fin .btn-grande { margin-top: 12px; font-size: 18px; padding: 13px 32px; background: linear-gradient(120deg, var(--verde), #16a34a); }
 
   @media (min-height: 780px) {
@@ -428,7 +429,7 @@
     <span class="foto-badge">9</span>
   </div>
   <div class="balloons" style="font-size:26px;letter-spacing:4px;margin:2px 0 0">🎈🎉🎂🎈</div>
-  <h1 class="titulo-inicio">La <span class="n1">Ruleta</span><br>de <span class="n2">León</span></h1>
+  <h1 class="titulo-inicio">La <span class="n1">Fiesta</span><br>de <span class="n2">León</span></h1>
   <div class="edad-badge">¡9 AÑOS! 🥳</div>
   <p class="sub-inicio">Circuito de estaciones · 2 equipos · ¡el primero en llegar a 1.000 puntos gana la fiesta!</p>
 
@@ -530,6 +531,7 @@
     <button class="btn-fin" onclick="irAlHub()">← Volver</button>
   </div>
   <div class="q-turno" id="q-turno"></div>
+  <div class="q-progreso" id="q-progreso"></div>
   <div class="q-pista" id="q-pista"></div>
   <div class="quemado-figura" id="quemado-figura"></div>
   <div class="q-palabra" id="q-palabra"></div>
@@ -556,27 +558,37 @@
     <button class="btn-fin" onclick="irAlHub()">← Volver</button>
   </div>
 
-  <div id="qs-intro" class="qs-intro">
+  <div id="qs-prep" class="qs-fase">
     <div class="qs-instr">
-      <div style="font-size:46px">🙈📱</div>
-      <p>Una persona del equipo sostiene el celular <b>en la frente</b>, ¡sin mirar!</p>
-      <p>Su equipo le da <b>pistas</b> (sin decir el nombre). Cuando adivina, toca <b>✅</b>. Para saltar, <b>⏭️</b>.</p>
+      <div style="font-size:46px">🙈</div>
       <p class="qs-turno-lbl" id="qs-turno-lbl"></p>
+      <p>Elijan a <b>UN jugador</b> del equipo para actuar.</p>
+      <p>El <b>resto del equipo</b>: ¡dense vuelta y no miren! 🔄</p>
+      <p>Solo el jugador toca el botón para ver el personaje en secreto.</p>
     </div>
-    <button class="btn-grande" style="background:linear-gradient(120deg,var(--cyan),#0891b2)" onclick="empezarQuienSoy()">¡Empezar! (60s) ▶️</button>
+    <button class="btn-grande" style="background:linear-gradient(120deg,var(--cyan),#0891b2)" onclick="qsVer()">👀 Ver mi personaje</button>
   </div>
 
-  <div id="qs-juego" class="qs-juego">
-    <div class="qs-timer" id="qs-timer">60</div>
-    <div class="qs-personaje" id="qs-personaje"></div>
-    <div class="qs-cont" id="qs-cont">Aciertos: 0</div>
+  <div id="qs-reveal" class="qs-fase">
+    <div class="qs-reveal-timer" id="qs-reveal-timer">10</div>
+    <div class="qs-personaje">
+      <div class="qs-emoji" id="qs-emoji"></div>
+      <div class="qs-nombre" id="qs-nombre"></div>
+    </div>
+    <p style="font-weight:700;color:#475569">¡Memorízalo! Se oculta solo…</p>
+    <button class="btn-grande" style="background:linear-gradient(120deg,var(--naranjo),#ea580c)" onclick="qsOcultar()">🙈 Ocultar y actuar</button>
+  </div>
+
+  <div id="qs-act" class="qs-fase">
+    <div class="qs-timer" id="qs-timer">30</div>
+    <div class="qs-act-msg">🎭 ¡Actúa sin decir el nombre!<br><span>Tu equipo adivina</span></div>
     <div class="qs-botones">
-      <button class="ab casi" onclick="qsPaso()">⏭️ Paso</button>
-      <button class="ab si" onclick="qsAcierto()">✅ ¡Adivinó!</button>
+      <button class="ab saltar" onclick="qsFalla(false)">❌ No lograron</button>
+      <button class="ab si" onclick="qsAdivino()">✅ ¡Adivinaron!</button>
     </div>
   </div>
 
-  <div id="qs-fin" class="qs-fin"></div>
+  <div id="qs-fin" class="qs-fase"></div>
 </div>
 
 <!-- ============ VENTANA: ELEGIR EQUIPO (mini-juegos) ============ -->
@@ -880,7 +892,10 @@ function empezarFiesta(){
 }
 
 function irAlHub(){
-  if(typeof qs !== 'undefined' && qs.timerId){ clearInterval(qs.timerId); qs.timerId=null; }
+  if(typeof qs !== 'undefined'){
+    if(qs.revealTimer){ clearInterval(qs.revealTimer); qs.revealTimer=null; }
+    if(qs.actTimer){ clearInterval(qs.actTimer); qs.actTimer=null; }
+  }
   pararTimer();
   renderHub();
   showScreen('screen-hub');
@@ -982,43 +997,59 @@ function cerrarModalEquipo(){ document.getElementById('modal-equipo').classList.
 /* ==================== EL QUEMADO (ahorcado) ==================== */
 const QUEMADO_PALABRAS = [
   {p:'MINECRAFT', pista:'Videojuego de bloques'},
-  {p:'DINOSAURIO', pista:'Animal gigante extinto'},
+  {p:'DINOSAURIO', pista:'Reptil gigante ya extinto'},
   {p:'CUMPLEAÑOS', pista:'Lo que celebra León hoy'},
-  {p:'ASTRONAUTA', pista:'Viaja al espacio'},
-  {p:'CHOCOLATE', pista:'Dulce café y rico'},
-  {p:'MARIPOSA', pista:'Antes fue oruga'},
-  {p:'BICICLETA', pista:'Tiene dos ruedas y pedales'},
-  {p:'ELEFANTE', pista:'Tiene trompa y orejas grandes'},
+  {p:'ASTRONAUTA', pista:'Viaja al espacio en cohete'},
+  {p:'MURCIELAGO', pista:'Vuela de noche y duerme colgado'},
+  {p:'TELESCOPIO', pista:'Sirve para ver las estrellas de cerca'},
+  {p:'COCODRILO', pista:'Reptil de río con gran mandíbula'},
+  {p:'CANGREJO', pista:'Camina de lado y tiene tenazas'},
+  {p:'PARAGUAS', pista:'Te protege de la lluvia'},
+  {p:'HELICOPTERO', pista:'Vuela con hélices que giran arriba'},
+  {p:'CALABAZA', pista:'Naranja, típica de Halloween'},
+  {p:'ARDILLA', pista:'Sube árboles y guarda nueces'},
+  {p:'TORNADO', pista:'Remolino de viento muy fuerte'},
+  {p:'PINGUINO', pista:'Ave que no vuela y vive en el hielo'},
+  {p:'PIRAMIDE', pista:'Construcción egipcia con punta'},
+  {p:'SEMAFORO', pista:'Rojo, amarillo y verde en la calle'},
+  {p:'CAMALEON', pista:'Cambia de color para esconderse'},
+  {p:'BRUJULA', pista:'Marca el norte para no perderte'},
+  {p:'CATAPULTA', pista:'Máquina antigua que lanzaba piedras'},
+  {p:'BUMERANG', pista:'Lo lanzas y vuelve a tu mano'},
+  {p:'ESQUELETO', pista:'Todos los huesos del cuerpo'},
+  {p:'IGUANA', pista:'Lagarto grande y verde'},
   {p:'ARCOIRIS', pista:'Colores en el cielo tras la lluvia'},
-  {p:'PIZZA', pista:'Comida italiana redonda'},
-  {p:'PIÑATA', pista:'Se rompe para que caigan dulces'},
-  {p:'TIBURON', pista:'Pez grande con muchos dientes'},
   {p:'VOLCAN', pista:'Montaña que echa lava'},
-  {p:'GUITARRA', pista:'Instrumento con cuerdas'},
-  {p:'PIKACHU', pista:'Pokémon amarillo eléctrico'},
-  {p:'MONTAÑA', pista:'Muy alta, se escala'},
-  {p:'ESTRELLA', pista:'Brilla en el cielo de noche'},
-  {p:'DRAGON', pista:'Criatura que escupe fuego'},
-  {p:'HELADO', pista:'Frío y dulce, en verano'},
-  {p:'FUTBOL', pista:'Deporte de la pelota y el arco'},
-  {p:'ROBOT', pista:'Máquina que parece persona'},
+  {p:'PIÑATA', pista:'Se rompe para que caigan dulces'},
   {p:'CASTILLO', pista:'Vive un rey o una princesa'},
 ];
-let quemado = { equipo:0, palabra:'', pista:'', aciertos:new Set(), errores:0, maxErr:6, terminado:false };
+const Q_RONDAS = 6, Q_PTS = 20;
+let quemado = { equipo:0, ronda:1, total:0, palabra:'', pista:'', aciertos:new Set(), errores:0, maxErr:6, terminado:false };
+let _qUsados = [];
 
 function iniciarQuemado(teamIdx){
-  const w = QUEMADO_PALABRAS[Math.floor(Math.random()*QUEMADO_PALABRAS.length)];
-  quemado = { equipo:teamIdx, palabra:w.p, pista:w.pista, aciertos:new Set(), errores:0, maxErr:6, terminado:false };
-  const t = state.teams[teamIdx];
+  quemado.equipo = teamIdx; quemado.ronda = 1; quemado.total = 0;
+  cargarPalabraQuemado();
+  showScreen('screen-quemado');
+}
+function cargarPalabraQuemado(){
+  if(_qUsados.length >= QUEMADO_PALABRAS.length) _qUsados = [];
+  let idx;
+  do { idx = Math.floor(Math.random()*QUEMADO_PALABRAS.length); } while(_qUsados.includes(idx));
+  _qUsados.push(idx);
+  const w = QUEMADO_PALABRAS[idx];
+  quemado.palabra = w.p; quemado.pista = w.pista;
+  quemado.aciertos = new Set(); quemado.errores = 0; quemado.terminado = false;
+  const t = state.teams[quemado.equipo];
   const tt = document.getElementById('q-turno');
-  tt.innerHTML = `Juega <b style="--activo:${t.color}">${t.nombre}</b> · adivina la palabra`;
+  tt.innerHTML = `Juega <b style="--activo:${t.color}">${t.nombre}</b>`;
   tt.style.setProperty('--activo', t.color);
-  document.getElementById('q-pista').textContent = '💡 Pista: ' + w.pista;
+  document.getElementById('q-progreso').textContent = `Palabra ${quemado.ronda}/${Q_RONDAS} · ${quemado.total} pts`;
+  document.getElementById('q-pista').textContent = '💡 ' + w.pista;
   document.getElementById('q-resultado').innerHTML = '';
   construirTeclado();
   dibujarQuemado();
   renderPalabraQuemado();
-  showScreen('screen-quemado');
 }
 function construirTeclado(){
   const letras = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ'.split('');
@@ -1040,48 +1071,55 @@ function teclaQuemado(l){
   if(quemado.palabra.includes(l)){
     sTick(); quemado.aciertos.add(l); tecla.classList.add('ok');
     renderPalabraQuemado();
-    // ¿ganó?
     const completa = quemado.palabra.split('').every(ch=> ch===' ' || quemado.aciertos.has(ch));
-    if(completa) finQuemado(true);
+    if(completa) finRondaQuemado(true);
   } else {
     sMal(); quemado.errores++; tecla.classList.add('mal');
     dibujarQuemado();
-    if(quemado.errores >= quemado.maxErr) finQuemado(false);
+    if(quemado.errores >= quemado.maxErr) finRondaQuemado(false);
   }
 }
+// Muñeco COMPLETO desde el inicio; cada parte se "quema" (roja + fuego) por cada error
 function dibujarQuemado(){
   const e = quemado.errores;
-  const col = '#7c2d12'; // color "quemado"
-  const linea = (x1,y1,x2,y2,show)=> show?`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${col}" stroke-width="7" stroke-linecap="round"/>`:'';
-  const quemadoTotal = e>=6;
+  const norm = '#334155', fuego = '#EF4444';
+  const c = idx => idx<=e ? fuego : norm;
+  const fl = (x,y,idx) => idx<=e ? `<text x="${x}" y="${y}" text-anchor="middle" font-size="17">🔥</text>` : '';
   document.getElementById('quemado-figura').innerHTML = `
-    <svg viewBox="0 0 120 200">
-      <line x1="10" y1="192" x2="110" y2="192" stroke="#CBD5E1" stroke-width="6" stroke-linecap="round"/>
-      ${e>=1?`<circle cx="60" cy="40" r="20" fill="none" stroke="${col}" stroke-width="7"/>`:''}
-      ${linea(60,60,60,120, e>=2)}
-      ${linea(60,75,35,100, e>=3)}
-      ${linea(60,75,85,100, e>=4)}
-      ${linea(60,120,40,165, e>=5)}
-      ${linea(60,120,80,165, e>=6)}
-      ${quemadoTotal?`<text x="60" y="46" text-anchor="middle" font-size="22">🔥</text><text x="30" y="150" font-size="20">🔥</text><text x="78" y="150" font-size="20">🔥</text>`:''}
+    <svg viewBox="0 0 120 210">
+      <line x1="10" y1="202" x2="110" y2="202" stroke="#CBD5E1" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="60" cy="42" r="20" fill="none" stroke="${c(1)}" stroke-width="7"/>
+      <line x1="60" y1="62" x2="60" y2="122" stroke="${c(2)}" stroke-width="7" stroke-linecap="round"/>
+      <line x1="60" y1="76" x2="34" y2="102" stroke="${c(3)}" stroke-width="7" stroke-linecap="round"/>
+      <line x1="60" y1="76" x2="86" y2="102" stroke="${c(4)}" stroke-width="7" stroke-linecap="round"/>
+      <line x1="60" y1="122" x2="40" y2="172" stroke="${c(5)}" stroke-width="7" stroke-linecap="round"/>
+      <line x1="60" y1="122" x2="80" y2="172" stroke="${c(6)}" stroke-width="7" stroke-linecap="round"/>
+      ${fl(60,28,1)}${fl(74,96,2)}${fl(30,98,3)}${fl(90,98,4)}${fl(32,158,5)}${fl(88,158,6)}
     </svg>`;
 }
-function finQuemado(gano){
+function finRondaQuemado(gano){
   quemado.terminado = true;
   document.querySelectorAll('#q-teclado .q-tecla').forEach(t=>t.classList.add('bloq'));
   renderPalabraQuemado();
   const res = document.getElementById('q-resultado');
-  let pts;
   if(gano){
-    sWin(); lanzarConfeti(70);
-    pts = 50 + 10*(quemado.maxErr - quemado.errores); // 60–110 según errores
-    res.innerHTML = `<span style="color:var(--verde)">¡Adivinaron! 🎉 +${pts} pts</span>`;
+    sWin(); lanzarConfeti(50); quemado.total += Q_PTS;
+    res.innerHTML = `<span style="color:var(--verde)">¡Correcto! 🎉 +${Q_PTS} pts</span>`;
   } else {
     sTimeout();
-    pts = 10;
-    res.innerHTML = `<span style="color:var(--rojo)">¡Quemado! 🔥 La palabra era "${quemado.palabra}". +${pts} pts</span>`;
+    res.innerHTML = `<span style="color:var(--rojo)">¡Quemado! 🔥 Era "${quemado.palabra}"</span>`;
   }
-  res.innerHTML += `<button class="btn-grande" onclick="cerrarQuemado(${pts})">Guardar puntos 💾</button>`;
+  document.getElementById('q-progreso').textContent = `Palabra ${quemado.ronda}/${Q_RONDAS} · ${quemado.total} pts`;
+  const ultima = quemado.ronda >= Q_RONDAS;
+  res.innerHTML += `<button class="btn-grande" onclick="${ultima?'finQuemadoStation()':'siguienteRondaQuemado()'}">${ultima?'Terminar 🏁':'Siguiente palabra ➡️'}</button>`;
+}
+function siguienteRondaQuemado(){ sBtn(); quemado.ronda++; cargarPalabraQuemado(); }
+function finQuemadoStation(){
+  sWin(); lanzarConfeti(90);
+  const t = state.teams[quemado.equipo];
+  document.getElementById('q-resultado').innerHTML =
+    `<span style="color:${t.color}">${t.nombre} completó las ${Q_RONDAS} · ${quemado.total} pts 🔥</span>
+     <button class="btn-grande" onclick="cerrarQuemado(${quemado.total})">Guardar puntos 💾</button>`;
 }
 function cerrarQuemado(pts){
   sBtn();
@@ -1164,67 +1202,92 @@ function cerrarMemoria(p0,p1){
 
 /* ==================== ¿QUIÉN SOY? (adivina el personaje) ==================== */
 const QS_PERSONAJES = [
-  'Mario','Luigi','Sonic','Pikachu','Bob Esponja','Patricio','Spider-Man','Batman','Superman','Elsa (Frozen)',
-  'Woody','Buzz Lightyear','Shrek','Un Minion','Harry Potter','Messi','Cristiano Ronaldo','Goku','Mickey Mouse',
-  'Dora la Exploradora','Peppa Pig','Bluey','Kirby','Yoshi','Donkey Kong','Hulk','Iron Man','Capitán América',
-  'Olaf','Simba (El Rey León)','Nemo','Rayo McQueen','Pocoyó','Un dinosaurio T-rex','Un pirata','Un astronauta'
+  {n:'Mario', e:'🍄'}, {n:'Pikachu', e:'⚡'}, {n:'Spider-Man', e:'🕷️'}, {n:'Batman', e:'🦇'},
+  {n:'Elsa (Frozen)', e:'❄️'}, {n:'Bob Esponja', e:'🧽'}, {n:'Shrek', e:'👹'}, {n:'Un Minion', e:'🍌'},
+  {n:'Sonic', e:'💨'}, {n:'Messi', e:'⚽'}, {n:'Un dinosaurio T-rex', e:'🦖'}, {n:'Un pirata', e:'🏴‍☠️'},
+  {n:'Un astronauta', e:'👨‍🚀'}, {n:'Woody (Toy Story)', e:'🤠'}, {n:'Harry Potter', e:'🧙'}, {n:'Hulk', e:'💚'},
+  {n:'Un fantasma', e:'👻'}, {n:'Una sirena', e:'🧜‍♀️'}, {n:'Mickey Mouse', e:'🐭'}, {n:'Simba (Rey León)', e:'🦁'},
+  {n:'Un unicornio', e:'🦄'}, {n:'Rayo McQueen (Cars)', e:'🏎️'}, {n:'Un vampiro', e:'🧛'}, {n:'Un superhéroe', e:'🦸'},
+  {n:'Una bruja', e:'🧙‍♀️'}, {n:'Un robot', e:'🤖'}
 ];
-let qs = { equipo:0, restante:60, aciertos:0, timerId:null, pool:[], idx:0 };
+const QS_PTS = 30;
+let qs = { equipo:0, personaje:null, revealTimer:null, actTimer:null, restante:30 };
 
 function iniciarQuienSoy(teamIdx){
   sBtn();
-  qs = { equipo:teamIdx, restante:60, aciertos:0, timerId:null, pool: shuffle([...QS_PERSONAJES]), idx:0 };
+  const p = QS_PERSONAJES[Math.floor(Math.random()*QS_PERSONAJES.length)];
+  qs = { equipo:teamIdx, personaje:p, revealTimer:null, actTimer:null, restante:30 };
   const t = state.teams[teamIdx];
   const lbl = document.getElementById('qs-turno-lbl');
   lbl.textContent = 'Juega: ' + t.nombre;
   lbl.style.setProperty('--activo', t.color);
-  document.getElementById('qs-intro').classList.add('show');
-  document.getElementById('qs-juego').classList.remove('show');
-  document.getElementById('qs-fin').classList.remove('show');
+  mostrarFaseQs('qs-prep');
   showScreen('screen-personaje');
 }
-function empezarQuienSoy(){
+function mostrarFaseQs(id){
+  ['qs-prep','qs-reveal','qs-act','qs-fin'].forEach(f=> document.getElementById(f).classList.toggle('show', f===id));
+}
+function qsVer(){
   sBtn();
-  document.getElementById('qs-intro').classList.remove('show');
-  document.getElementById('qs-juego').classList.add('show');
-  document.getElementById('qs-cont').textContent = 'Aciertos: 0';
-  siguientePersonaje();
-  qs.restante = 60;
-  actualizarQsTimer();
-  qs.timerId = setInterval(()=>{
-    qs.restante--;
-    actualizarQsTimer();
-    if(qs.restante<=5 && qs.restante>0) sTick();
-    if(qs.restante<=0){ clearInterval(qs.timerId); qs.timerId=null; finQuienSoy(); }
+  document.getElementById('qs-emoji').textContent = qs.personaje.e;
+  document.getElementById('qs-nombre').textContent = qs.personaje.n;
+  mostrarFaseQs('qs-reveal');
+  let r = 10;
+  document.getElementById('qs-reveal-timer').textContent = r;
+  qs.revealTimer = setInterval(()=>{
+    r--;
+    document.getElementById('qs-reveal-timer').textContent = r;
+    if(r<=0) qsOcultar();
   }, 1000);
 }
-function actualizarQsTimer(){
+function qsOcultar(){
+  if(qs.revealTimer){ clearInterval(qs.revealTimer); qs.revealTimer=null; }
+  sBtn();
+  mostrarFaseQs('qs-act');
+  qs.restante = 30;
+  actQsTimer();
+  qs.actTimer = setInterval(()=>{
+    qs.restante--;
+    actQsTimer();
+    if(qs.restante<=5 && qs.restante>0) sTick();
+    if(qs.restante<=0){ clearInterval(qs.actTimer); qs.actTimer=null; qsFalla(true); }
+  }, 1000);
+}
+function actQsTimer(){
   const el = document.getElementById('qs-timer');
   el.textContent = qs.restante;
   el.classList.toggle('bajo', qs.restante<=10);
 }
-function siguientePersonaje(){
-  if(qs.idx >= qs.pool.length){ qs.pool = shuffle([...QS_PERSONAJES]); qs.idx = 0; }
-  document.getElementById('qs-personaje').textContent = qs.pool[qs.idx];
-  qs.idx++;
+function qsAdivino(){
+  if(!qs.actTimer) return;
+  clearInterval(qs.actTimer); qs.actTimer=null;
+  finQuienSoy(true);
 }
-function qsAcierto(){
-  if(!qs.timerId) return;
-  sBien(); qs.aciertos++;
-  document.getElementById('qs-cont').textContent = 'Aciertos: ' + qs.aciertos;
-  siguientePersonaje();
+function qsFalla(porTiempo){
+  if(!porTiempo && !qs.actTimer) return;
+  if(qs.actTimer){ clearInterval(qs.actTimer); qs.actTimer=null; }
+  finQuienSoy(false);
 }
-function qsPaso(){ if(!qs.timerId) return; sBtn(); siguientePersonaje(); }
-function finQuienSoy(){
-  sTimeout(); if(qs.aciertos>0){ sWin(); lanzarConfeti(70); }
-  document.getElementById('qs-juego').classList.remove('show');
-  const pts = qs.aciertos * 15;
+function finQuienSoy(gano){
+  const pts = gano ? QS_PTS : 0;
+  if(gano){ sWin(); lanzarConfeti(70); } else sTimeout();
+  const t = state.teams[qs.equipo];
   const fin = document.getElementById('qs-fin');
-  fin.innerHTML = `<div class="final-emoji">🎭</div>
-    <div style="font-family:'Baloo 2';font-weight:800;font-size:26px;color:var(--texto)">¡${qs.aciertos} adivinados!</div>
-    <div style="font-weight:700;color:#475569;font-size:16px">+${pts} puntos para ${state.teams[qs.equipo].nombre}</div>
-    <button class="btn-grande" onclick="cerrarQuienSoy(${pts})">Guardar puntos 💾</button>`;
-  fin.classList.add('show');
+  if(gano){
+    fin.innerHTML = `<div class="final-emoji">🎉</div>
+      <div style="font-family:'Baloo 2';font-weight:800;font-size:26px;color:var(--texto)">¡Adivinaron!</div>
+      <div style="font-size:44px">${qs.personaje.e}</div>
+      <div style="font-weight:700;color:#475569">Era: <b>${qs.personaje.n}</b></div>
+      <div style="font-family:'Baloo 2';font-weight:800;color:${t.color}">+${pts} pts para ${t.nombre}</div>
+      <button class="btn-grande" onclick="cerrarQuienSoy(${pts})">Guardar puntos 💾</button>`;
+  } else {
+    fin.innerHTML = `<div class="final-emoji">⏱️</div>
+      <div style="font-family:'Baloo 2';font-weight:800;font-size:24px;color:var(--texto)">¡Se acabó el tiempo!</div>
+      <div style="font-size:44px">${qs.personaje.e}</div>
+      <div style="font-weight:700;color:#475569">Era: <b>${qs.personaje.n}</b></div>
+      <button class="btn-grande" style="background:#94A3B8" onclick="cerrarQuienSoy(0)">Volver al hub 🎪</button>`;
+  }
+  mostrarFaseQs('qs-fin');
 }
 function cerrarQuienSoy(pts){
   sBtn();
