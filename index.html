@@ -344,6 +344,21 @@
     color: var(--ic, var(--morado)); background: color-mix(in srgb, var(--ic) 14%, #fff); padding: 5px 14px; border-radius: 999px; }
   .info-instr { margin-top: 12px; font-size: 15px; font-weight: 600; color: #475569; line-height: 1.45; text-align: left; }
 
+  /* Historia del tesoro */
+  .historia-card { max-width: 460px; max-height: 88vh; overflow-y: auto; background: #FFFDF5; }
+  .historia-emoji { font-size: 42px; text-align: center; }
+  .historia-titulo { font-family: 'Baloo 2'; font-weight: 800; font-size: 23px; color: var(--texto); text-align: center; margin-top: 4px; line-height: 1.1; }
+  .historia-musica { display: block; margin: 10px auto 0; border: none; cursor: pointer; font-family: 'Baloo 2'; font-weight: 800;
+    font-size: 12px; color: #713f12; background: #FEF3C7; padding: 6px 14px; border-radius: 999px; }
+  .historia-texto { text-align: left; margin-top: 14px; font-size: 15.5px; line-height: 1.5; color: #44372a; font-weight: 500; }
+  .historia-texto p { margin-bottom: 10px; }
+  .historia-texto .h-lead { font-style: italic; color: #92702a; font-size: 13.5px; }
+  .historia-texto blockquote { margin: 12px 0; padding: 10px 14px; border-left: 4px solid var(--naranjo);
+    background: #FFF7E6; border-radius: 8px; font-style: italic; color: #713f12; }
+  .historia-texto blockquote.juramento { border-left-color: var(--morado); background: #FAF5FF; color: #6b21a8;
+    font-style: normal; font-weight: 800; text-align: center; }
+  .historia-card .modal-actions { position: sticky; bottom: -22px; background: #FFFDF5; padding-top: 10px; margin-top: 6px; }
+
   /* Panel "por niño": sumar +10 por cada ganador */
   .mj-teams { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
   .mj-team {
@@ -664,6 +679,20 @@
   </div>
 </div>
 
+<!-- ============ VENTANA: HISTORIA DEL TESORO (con música pirata) ============ -->
+<div id="modal-historia" class="modal-overlay">
+  <div class="modal-card historia-card">
+    <div class="historia-emoji">🏴‍☠️🗺️</div>
+    <div class="historia-titulo" id="historia-titulo">Historia</div>
+    <button class="historia-musica" id="historia-musica" onclick="toggleMusicaPirata()">🔊 Música pirata: ON</button>
+    <div class="historia-texto" id="historia-texto"></div>
+    <div class="modal-actions">
+      <button class="ab si" onclick="empezarDesdeHistoria()">🗺️ ¡A buscar el tesoro!</button>
+      <button class="ab saltar" onclick="cerrarHistoria()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
 <!-- ============ VENTANA: ELEGIR EQUIPO (mini-juegos) ============ -->
 <div id="modal-equipo" class="modal-overlay">
   <div class="modal-card">
@@ -877,7 +906,18 @@ const ESTACIONES = [
   { id:'wally',    emoji:'🔍', nombre:'Buscando a Wally', desc:'Al que lo encuentra: +80', color:'#3B82F6', tipo:'fisica', modo:'fijo', pts:80,
     instr:'Todos miran la lámina y buscan a Wally. El primer niño que lo encuentra y lo señala gana. Su equipo suma +80.' },
   { id:'tesoro',   emoji:'🗺️', nombre:'Búsqueda del Tesoro', desc:'Al equipo ganador: +200', color:'#F59E0B', tipo:'fisica', modo:'fijo', pts:200,
-    instr:'Sigue las pistas por la casa/patio y junta los tesoros escondidos. El equipo que junte más tesoros (o los encuentre primero) gana +200.' },
+    instr:'Sigue las pistas por la casa/patio y junta los tesoros escondidos. El equipo que junte más tesoros (o los encuentre primero) gana +200.',
+    historiaTitulo:'🏴‍☠️ El cofre de las dos fuerzas',
+    historia:`<p class="h-lead">Historia para leer en voz alta antes de comenzar (2 minutos).</p>
+<p>Cuenta la leyenda que, hace muchos años, un explorador llamado <b>Capitán Enigma</b> encontró un cofre mágico. En su interior había un tesoro capaz de convertir cualquier día en una aventura inolvidable.</p>
+<p>Anoche, el Capitán Enigma llegó en secreto a esta parcela y escondió aquí el cofre. Pero antes de partir dividió su ubicación en dos claves y creó dos caminos diferentes para protegerla.</p>
+<p>El primer camino pertenece a los <b style="color:#EF4444">Guardianes del Fuego</b>, valientes, rápidos y de corazón rojo. El segundo pertenece a los <b style="color:#3B82F6">Guardianes del Océano</b>, ingeniosos, tranquilos y de espíritu azul.</p>
+<p>Cada equipo deberá resolver siete pistas y encontrar únicamente los sobres de su color. Tendrán que permanecer juntos, escuchar todas las ideas y avanzar sin correr, empujar ni trepar.</p>
+<p>Sin embargo, el Capitán Enigma dejó una advertencia:</p>
+<blockquote>“Un solo equipo podrá ganar la carrera, pero ninguno podrá abrir el camino hacia el tesoro por sí solo. El fuego ilumina y el océano revela. Solo cuando las dos fuerzas se reúnan aparecerá la ubicación final”.</blockquote>
+<p>Cuando un equipo consiga su media clave, deberá regresar a la <b>Base Central</b> y esperar al otro. Allí unirán sus descubrimientos y llamarán a un adulto para completar la última misión.</p>
+<p>Guardianes, levanten una mano y repitan:</p>
+<blockquote class="juramento">“Prometemos pensar, ayudarnos y permanecer juntos. ¡Que comience la doble ruta del tesoro!”</blockquote>` },
   { id:'saco',     emoji:'🦘', nombre:'Carrera en Saco', desc:'+10 por cada niño que gana', color:'#22C55E', tipo:'fisica', modo:'porJugador', pts:10,
     instr:'Cada niño mete las piernas dentro de un saco y salta hasta la meta sin salirse. El ganador de cada carrera suma +10 para su equipo. Juegan los niños que quieran, uno contra uno.' },
   { id:'vaso',     emoji:'🥤', nombre:'Carrera con Vaso', desc:'+10 por cada niño que gana', color:'#0EA5E9', tipo:'fisica', modo:'porJugador', pts:10,
@@ -1005,6 +1045,56 @@ function sWin(){ [523,587,659,784,880,1046].forEach((f,i)=>setTimeout(()=>tono(f
 function sTick(){ tono(1000,0.04,'sine',0.09); }
 function sTimeout(){ tono(420,0.22,'sawtooth',0.16); setTimeout(()=>tono(300,0.28,'sawtooth',0.16),170); }
 
+/* ==================== MÚSICA PIRATA (para la historia del tesoro) ==================== */
+// Melodía original en Re menor, aire de marcha pirata. Sintetizada (sin archivos ni internet).
+let musicaPirataOn = false, musicaTimeout = null;
+const MELODIA_PIRATA = [
+  [293.66,0.28],[440.00,0.28],[587.33,0.28],[440.00,0.28],
+  [466.16,0.42],[440.00,0.14],[392.00,0.28],[349.23,0.28],
+  [329.63,0.28],[392.00,0.28],[466.16,0.28],[440.00,0.28],
+  [349.23,0.42],[329.63,0.14],[293.66,0.56],
+  [440.00,0.28],[440.00,0.28],[466.16,0.28],[523.25,0.28],
+  [587.33,0.42],[523.25,0.14],[440.00,0.28],[349.23,0.28],
+  [392.00,0.28],[349.23,0.28],[329.63,0.28],[293.66,0.28],
+  [329.63,0.42],[349.23,0.14],[293.66,0.70],
+];
+function tonoPirata(freq,dur){
+  const ac=getAudio(); if(!ac)return;
+  // melodía
+  const o=ac.createOscillator(), g=ac.createGain();
+  o.type='triangle'; o.frequency.value=freq;
+  g.gain.setValueAtTime(0.0001, ac.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.15, ac.currentTime+0.03);
+  g.gain.exponentialRampToValueAtTime(0.0001, ac.currentTime+dur);
+  o.connect(g); g.connect(ac.destination);
+  o.start(); o.stop(ac.currentTime+dur+0.02);
+  // bajo una octava abajo (más suave)
+  const ob=ac.createOscillator(), gb=ac.createGain();
+  ob.type='sine'; ob.frequency.value=freq/2;
+  gb.gain.setValueAtTime(0.0001, ac.currentTime);
+  gb.gain.exponentialRampToValueAtTime(0.09, ac.currentTime+0.04);
+  gb.gain.exponentialRampToValueAtTime(0.0001, ac.currentTime+dur);
+  ob.connect(gb); gb.connect(ac.destination);
+  ob.start(); ob.stop(ac.currentTime+dur+0.02);
+}
+function reproducirMusicaPirata(){
+  if(musicaPirataOn) return;
+  musicaPirataOn = true;
+  let i = 0;
+  const paso = ()=>{
+    if(!musicaPirataOn) return;
+    const [f,d] = MELODIA_PIRATA[i % MELODIA_PIRATA.length];
+    tonoPirata(f,d);
+    i++;
+    musicaTimeout = setTimeout(paso, d*1000);
+  };
+  paso();
+}
+function detenerMusicaPirata(){
+  musicaPirataOn = false;
+  if(musicaTimeout){ clearTimeout(musicaTimeout); musicaTimeout=null; }
+}
+
 /* ==================== FOTO ==================== */
 const FOTO_INTENTOS = ['leon.jpg','leon.jpeg','leon.png','leon.JPG','leon.PNG','leon.HEIC'];
 let fotoIdx = 0;
@@ -1099,6 +1189,7 @@ function irAlHub(){
   }
   if(typeof mem !== 'undefined' && mem.timerId){ clearInterval(mem.timerId); mem.timerId=null; }
   pararTimer();
+  detenerMusicaPirata();
   renderHub();
   showScreen('screen-hub');
   guardarNube();   // sincroniza el marcador tras cada estación / cambio de puntos
@@ -1164,8 +1255,45 @@ function mostrarInstrucciones(id){
   document.getElementById('info-instr').textContent = e.instr || '';
   document.getElementById('modal-info').classList.add('show');
 }
-function jugarDesdeInfo(){ const id = infoEstId; cerrarInfo(); if(id) abrirEstacion(id); }
+function jugarDesdeInfo(){
+  const id = infoEstId; cerrarInfo();
+  if(!id) return;
+  const e = ESTACIONES.find(x=>x.id===id);
+  if(e && e.historia) mostrarHistoria(id);   // estaciones con historia la muestran antes de jugar
+  else abrirEstacion(id);
+}
 function cerrarInfo(){ document.getElementById('modal-info').classList.remove('show'); }
+
+/* ==================== HISTORIA (cuento + música pirata antes de jugar) ==================== */
+let historiaEstId = null;
+function mostrarHistoria(id){
+  const e = ESTACIONES.find(x=>x.id===id); if(!e) return;
+  historiaEstId = id;
+  document.getElementById('historia-titulo').textContent = e.historiaTitulo || 'Historia';
+  document.getElementById('historia-texto').innerHTML = e.historia;
+  document.getElementById('modal-historia').classList.add('show');
+  document.getElementById('modal-historia').scrollTop = 0;
+  getAudio();
+  reproducirMusicaPirata();
+  actualizarBotonMusica();
+}
+function empezarDesdeHistoria(){
+  detenerMusicaPirata();
+  document.getElementById('modal-historia').classList.remove('show');
+  if(historiaEstId) abrirEstacion(historiaEstId);
+}
+function cerrarHistoria(){
+  detenerMusicaPirata();
+  document.getElementById('modal-historia').classList.remove('show');
+}
+function toggleMusicaPirata(){
+  if(musicaPirataOn) detenerMusicaPirata(); else reproducirMusicaPirata();
+  actualizarBotonMusica();
+}
+function actualizarBotonMusica(){
+  const b = document.getElementById('historia-musica');
+  if(b) b.textContent = musicaPirataOn ? '🔊 Música pirata: ON' : '🔇 Música pirata: OFF';
+}
 
 /* ==================== MODAL SUMAR PUNTOS ==================== */
 function abrirModalPuntos(est){
