@@ -293,14 +293,20 @@
   .gb-track { height: 12px; background: #EEF2F7; border-radius: 999px; overflow: hidden; }
   .gb-bar { height: 100%; border-radius: 999px; background: var(--gc, var(--morado)); transition: width .5s ease; min-width: 4px; }
 
+  .sync-status { font-family: 'Baloo 2'; font-weight: 800; font-size: 11.5px; color: #16a34a; text-align: center; margin-top: -4px; }
+  .sync-status.off { color: #94A3B8; }
   .hub-titulo { font-family: 'Baloo 2'; font-weight: 700; font-size: 18px; color: #475569; margin-top: 4px; }
   .estaciones-grid { width: 100%; max-width: 480px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding-bottom: 12px; }
   .est-card {
+    position: relative;
     background: #fff; border: none; border-radius: 16px; padding: 10px 5px; cursor: pointer;
     box-shadow: var(--sombra); display: flex; flex-direction: column; align-items: center; gap: 3px;
     transition: transform .12s; border-top: 5px solid var(--ec, var(--morado)); text-align: center;
   }
   .est-card:active { transform: scale(.96); }
+  .est-info { position: absolute; top: 2px; right: 2px; width: 24px; height: 24px; display: flex; align-items: center;
+    justify-content: center; font-size: 13px; line-height: 1; opacity: .55; z-index: 2; border-radius: 50%; }
+  .est-info:active { opacity: 1; transform: scale(.85); background: #F1F5F9; }
   .est-emoji { font-size: 30px; line-height: 1; }
   .est-nombre { font-family: 'Baloo 2'; font-weight: 800; font-size: 12.5px; color: var(--texto); line-height: 1.05; }
   .est-desc { font-size: 10px; color: #64748B; font-weight: 600; line-height: 1.12; }
@@ -332,6 +338,27 @@
   .pts-chip.sel { border-color: var(--verde); background: #F0FDF4; color: var(--verde); }
   .modal-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
   .modal-actions .ab { width: 100%; }
+  .modal-actions .ab:disabled { opacity: .45; }
+  .pts-fijo { font-family: 'Baloo 2'; font-weight: 800; font-size: 26px; color: var(--verde);
+    background: #F0FDF4; border: 3px solid var(--verde); border-radius: 16px; padding: 10px 0; }
+
+  /* Modal de instrucciones */
+  .info-puntos { display: inline-block; margin: 10px auto 0; font-family: 'Baloo 2'; font-weight: 800; font-size: 13.5px;
+    color: var(--ic, var(--morado)); background: color-mix(in srgb, var(--ic) 14%, #fff); padding: 5px 14px; border-radius: 999px; }
+  .info-instr { margin-top: 12px; font-size: 15px; font-weight: 600; color: #475569; line-height: 1.45; text-align: left; }
+
+  /* Panel "por niño": sumar +10 por cada ganador */
+  .mj-teams { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+  .mj-team {
+    display: flex; align-items: center; gap: 10px; width: 100%; cursor: pointer;
+    border: 3px solid var(--tc, #E2E8F0); background: color-mix(in srgb, var(--tc) 8%, #fff);
+    border-radius: 18px; padding: 14px 16px; transition: transform .1s;
+  }
+  .mj-team:active { transform: scale(.97); }
+  .mj-team .gb-dot { width: 18px; height: 18px; flex: none; }
+  .mj-name { font-family: 'Baloo 2'; font-weight: 800; font-size: 17px; color: var(--texto); flex: 1; text-align: left; }
+  .mj-plus { font-family: 'Baloo 2'; font-weight: 800; font-size: 20px; color: var(--tc); }
+  .mj-count { font-family: 'Baloo 2'; font-weight: 700; font-size: 13px; color: #64748B; min-width: 54px; text-align: right; }
 
   /* ============ TURNO (banner + mini marcador para estaciones por turnos) ============ */
   .turno-banner {
@@ -487,6 +514,7 @@
   </div>
 
   <div class="global-board" id="global-board"></div>
+  <div id="sync-status" class="sync-status"></div>
 
   <div class="hub-titulo">Elige una estación 👇</div>
   <div class="estaciones-grid" id="estaciones-grid"></div>
@@ -625,6 +653,20 @@
   <div id="qs-fin" class="qs-fase"></div>
 </div>
 
+<!-- ============ VENTANA: INSTRUCCIONES (¿cómo se juega?) ============ -->
+<div id="modal-info" class="modal-overlay">
+  <div class="modal-card">
+    <div class="modal-icon" id="info-icon">🎡</div>
+    <div class="modal-titulo" id="info-titulo">Estación</div>
+    <div class="info-puntos" id="info-puntos"></div>
+    <div class="info-instr" id="info-instr"></div>
+    <div class="modal-actions">
+      <button class="ab si" onclick="jugarDesdeInfo()">🎮 ¡Jugar!</button>
+      <button class="ab saltar" onclick="cerrarInfo()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
 <!-- ============ VENTANA: ELEGIR EQUIPO (mini-juegos) ============ -->
 <div id="modal-equipo" class="modal-overlay">
   <div class="modal-card">
@@ -635,6 +677,20 @@
   </div>
 </div>
 
+<!-- ============ VENTANA: SUMAR +10 POR NIÑO (carreras) ============ -->
+<div id="modal-jugadores" class="modal-overlay">
+  <div class="modal-card">
+    <div class="modal-icon" id="mj-icon">🦘</div>
+    <div class="modal-titulo" id="mj-titulo">Carrera</div>
+    <div class="modal-sub" id="mj-sub"></div>
+    <div class="mj-teams" id="mj-teams"></div>
+    <div class="modal-actions">
+      <button class="ab casi" id="mj-deshacer" onclick="deshacerJugador()">↩️ Deshacer último</button>
+      <button class="ab si" onclick="cerrarJugadores()">✅ Listo</button>
+    </div>
+  </div>
+</div>
+
 <!-- ============ VENTANA: SUMAR PUNTOS (estaciones físicas) ============ -->
 <div id="modal-puntos" class="modal-overlay">
   <div class="modal-card">
@@ -642,7 +698,7 @@
     <div class="modal-titulo" id="modal-titulo">Buscando a Wally</div>
     <div class="modal-sub">¿Qué equipo ganó esta estación?</div>
     <div class="modal-teams" id="modal-teams"></div>
-    <div class="modal-sub" style="margin-top:14px">¿Cuántos puntos suma?</div>
+    <div class="modal-sub" id="modal-pts-label" style="margin-top:14px">¿Cuántos puntos suma?</div>
     <div class="modal-pts" id="modal-pts"></div>
     <div class="modal-actions">
       <button class="ab si" id="modal-confirmar" onclick="confirmarPuntos()">✅ Sumar puntos</button>
@@ -653,6 +709,7 @@
 
 <canvas id="confetti"></canvas>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 /* ==================== DATOS ==================== */
 const PALETA = ['#3B82F6','#EF4444','#22C55E','#FACC15'];
@@ -796,6 +853,7 @@ const META_GLOBAL = 1000;   // primer equipo en llegar gana la fiesta
 const META_RULETA = 130;    // en la ruleta, primero a 130 gana la estación
 let state = {
   teams: [],        // [{nombre, color, pts}] pts = puntaje GLOBAL (a 1000)
+  iniciado: false,  // la fiesta ya se configuró (equipos definidos) — para sincronizar
   turno: 0,
   pools: {},        // baraja por categoría, se rebaraja al agotarse
   rotacion: 0,
@@ -811,19 +869,124 @@ let state = {
 
 // Definición de las estaciones del circuito
 const ESTACIONES = [
-  { id:'ruleta',   emoji:'🎡', nombre:'Ruleta',    desc:'Trivia y retos, ¡a 130!', color:'#EC4899', tipo:'ruleta' },
-  { id:'quemado',  emoji:'🔥', nombre:'El Quemado', desc:'Adivina la palabra', color:'#EF4444', tipo:'quemado', pts:100 },
-  { id:'memoria',  emoji:'🧠', nombre:'Memoria',    desc:'Encuentra las parejas', color:'#A855F7', tipo:'memoria', pts:100 },
-  { id:'personaje',emoji:'🕵️', nombre:'¿Quién Soy?', desc:'Adivina el personaje', color:'#06B6D4', tipo:'personaje', pts:100 },
-  { id:'wally',    emoji:'🔍', nombre:'Buscando a Wally', desc:'Encuéntralo en la hoja', color:'#3B82F6', tipo:'fisica', pts:100 },
-  { id:'tesoro',   emoji:'🗺️', nombre:'Búsqueda del Tesoro', desc:'Junta más tesoros', color:'#F59E0B', tipo:'fisica', pts:100 },
-  { id:'saco',     emoji:'🦘', nombre:'Carrera en Saco', desc:'Salta hasta la meta', color:'#22C55E', tipo:'fisica', pts:100 },
-  { id:'vaso',     emoji:'🥤', nombre:'Carrera con Vaso', desc:'Lleva el agua sin derramar', color:'#0EA5E9', tipo:'fisica', pts:100 },
-  { id:'pelotas',  emoji:'🪣', nombre:'Caja de Pelotas', desc:'Encesta más pelotas', color:'#F97316', tipo:'fisica', pts:100 },
-  { id:'limbo',    emoji:'🤸', nombre:'Limbo', desc:'¿Quién pasa más bajo?', color:'#8B5CF6', tipo:'fisica', pts:100 },
-  { id:'gorra',    emoji:'🧢', nombre:'Gorra Saltarina', desc:'¡A saltar con la gorra!', color:'#14B8A6', tipo:'fisica', pts:100 },
-  { id:'sorpresa', emoji:'🎲', nombre:'Juego Sorpresa', desc:'El que inventen en el momento', color:'#F43F5E', tipo:'fisica', pts:100 },
+  { id:'ruleta',   emoji:'🎡', nombre:'Ruleta',    desc:'Trivia y retos, ¡a 130!', color:'#EC4899', tipo:'ruleta',
+    instr:'Gira la ruleta y, según dónde caiga, responde una pregunta o haz un reto (baile, mímica, físico…). Los equipos se turnan. El primero en llegar a 130 gana la ronda y esos puntos van al marcador.' },
+  { id:'quemado',  emoji:'🔥', nombre:'El Quemado', desc:'Adivina la palabra', color:'#EF4444', tipo:'quemado', pts:100,
+    instr:'Adivina la palabra escondida letra por letra usando la pista. Cada letra errada "quema" al muñeco; con 6 errores se pierde. Cada equipo adivina 4 palabras, turnándose. +20 por palabra acertada.' },
+  { id:'memoria',  emoji:'🧠', nombre:'Memoria',    desc:'Encuentra las parejas', color:'#A855F7', tipo:'memoria', pts:100,
+    instr:'Da vuelta las cartas de a dos y encuentra todas las parejas iguales antes de que se acabe el tiempo. Los equipos se turnan. +50 por cada juego completado a tiempo.' },
+  { id:'personaje',emoji:'🕵️', nombre:'¿Quién Soy?', desc:'Adivina el personaje', color:'#06B6D4', tipo:'personaje', pts:100,
+    instr:'Un niño del equipo mira el personaje en secreto y lo actúa SIN hablar. El resto de su equipo adivina antes de que se acabe el tiempo. +10 cada vez que aciertan.' },
+  { id:'wally',    emoji:'🔍', nombre:'Buscando a Wally', desc:'Al que lo encuentra: +80', color:'#3B82F6', tipo:'fisica', modo:'fijo', pts:80,
+    instr:'Todos miran la lámina y buscan a Wally. El primer niño que lo encuentra y lo señala gana. Su equipo suma +80.' },
+  { id:'tesoro',   emoji:'🗺️', nombre:'Búsqueda del Tesoro', desc:'Al equipo ganador: +200', color:'#F59E0B', tipo:'fisica', modo:'fijo', pts:200,
+    instr:'Sigue las pistas por la casa/patio y junta los tesoros escondidos. El equipo que junte más tesoros (o los encuentre primero) gana +200.' },
+  { id:'saco',     emoji:'🦘', nombre:'Carrera en Saco', desc:'+10 por cada niño que gana', color:'#22C55E', tipo:'fisica', modo:'porJugador', pts:10,
+    instr:'Cada niño mete las piernas dentro de un saco y salta hasta la meta sin salirse. El ganador de cada carrera suma +10 para su equipo. Juegan los niños que quieran, uno contra uno.' },
+  { id:'vaso',     emoji:'🥤', nombre:'Carrera con Vaso', desc:'+10 por cada niño que gana', color:'#0EA5E9', tipo:'fisica', modo:'porJugador', pts:10,
+    instr:'En el suelo hay una fila larga de vasos. El niño va a buscarlos de uno en uno y los apila en una base. El primero que recoja todos los vasos, uno a uno, y arme la pila, gana +10 para su equipo.' },
+  { id:'pelotas',  emoji:'🪣', nombre:'Caja de Pelotas', desc:'+10 por cada niño que gana', color:'#F97316', tipo:'fisica', modo:'porJugador', pts:10,
+    instr:'Cada niño se amarra a la cadera una caja con un orificio atrás y 4 pelotas de ping-pong adentro. Sin usar las manos, tiene que moverse y saltar hasta que salgan todas las pelotas. El primero que las saca todas gana +10.' },
+  { id:'limbo',    emoji:'🤸', nombre:'Limbo', desc:'Al equipo del ganador: +80', color:'#8B5CF6', tipo:'fisica', modo:'fijo', pts:80,
+    instr:'Pasa por debajo de la barra doblándote hacia atrás, sin tocarla ni caerte. La barra baja cada ronda. El último niño que aguanta gana, y su equipo suma +80.' },
+  { id:'gorra',    emoji:'🧢', nombre:'Gorra Saltarina', desc:'+10 por cada niño que gana', color:'#14B8A6', tipo:'fisica', modo:'porJugador', pts:10,
+    instr:'El niño usa una gorra con un slinky (resorte) pegado. Solo moviendo la cabeza, sin usar las manos, tiene que hacer que el slinky quede bien puesto/estirado. El que lo logra gana +10 para su equipo.' },
+  { id:'sorpresa', emoji:'🎲', nombre:'Juego Sorpresa', desc:'Puntos a elección', color:'#F43F5E', tipo:'fisica', modo:'elegir', pts:100,
+    instr:'Comodín para cualquier juego que inventen en el momento. Al terminar, elige el equipo ganador y cuántos puntos suma (50, 100 o 150).' },
 ];
+
+/* ==================== SINCRONIZACIÓN EN LA NUBE (Supabase) ==================== */
+// Marcador compartido y en vivo entre todos los dispositivos (living + celulares).
+const SB_URL = 'https://umfhwngavttstgugmwdf.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVtZmh3bmdhdnR0c3RndWdtd2RmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQzNTUwNjUsImV4cCI6MjA5OTkzMTA2NX0.zZFp3uUfIbvnjBNQhVCpLlbM68aITKDgmHstoXXrdPQ';
+const SALA = 'leon';
+let sb = null, syncCanal = null, aplicandoRemoto = false;
+let guardando = false, guardarPendiente = false, ultimoGuardadoTs = 0;
+
+function initSync(){
+  try { if(window.supabase){ sb = window.supabase.createClient(SB_URL, SB_KEY); } }
+  catch(e){ sb = null; }
+}
+
+function setSyncStatus(txt, ok){
+  const el = document.getElementById('sync-status');
+  if(el){ el.textContent = txt; el.classList.toggle('off', !ok); }
+}
+
+// Reconstruye pools + ruleta y marca la fiesta como iniciada a partir de una lista de equipos
+function hidratarEquipos(equipos){
+  state.teams = equipos.map(t=>({ nombre:t.nombre, color:t.color, pts:t.pts||0 }));
+  state.iniciado = true;
+  if(!Object.keys(state.pools).length){
+    CATEGORIES.forEach(c=> state.pools[c.id] = nuevaBaraja(c.id));
+    construirRuleta();
+  }
+}
+
+// Al cargar: la nube es la fuente de verdad. El respaldo local solo se usa si la nube no responde (sin internet).
+async function cargarNube(){
+  if(sb){
+    try {
+      const { data, error } = await sb.from('marcador').select('equipos,iniciado').eq('id', SALA).maybeSingle();
+      if(!error){
+        if(data && data.iniciado && Array.isArray(data.equipos) && data.equipos.length){
+          hidratarEquipos(data.equipos); return true;
+        }
+        return false;   // la nube respondió que no hay fiesta en curso → ignorar caché vieja
+      }
+    } catch(e){}
+  }
+  // solo si la nube no respondió (sin conexión): usar el último marcador guardado en este dispositivo
+  try {
+    const cache = JSON.parse(localStorage.getItem('marcadorLeon')||'null');
+    if(cache && cache.iniciado && cache.equipos && cache.equipos.length){ hidratarEquipos(cache.equipos); return true; }
+  } catch(e){}
+  return false;
+}
+
+// Guarda el marcador (nube + respaldo local). Se llama tras cada cambio de puntos.
+// Serializa las escrituras: solo una a la vez, y si llegan más cambios coalescen en un único
+// envío con el estado más nuevo (evita que escrituras rápidas se pisen o lleguen desordenadas).
+async function guardarNube(){
+  if(!state.iniciado || !state.teams.length) return;
+  const equipos = state.teams.map(t=>({ nombre:t.nombre, color:t.color, pts:t.pts }));
+  try { localStorage.setItem('marcadorLeon', JSON.stringify({ equipos, iniciado:true })); } catch(e){}
+  if(!sb || aplicandoRemoto) return;
+  if(guardando){ guardarPendiente = true; return; }
+  guardando = true;
+  try { await sb.from('marcador').update({ equipos, iniciado:true, updated_at:new Date().toISOString() }).eq('id', SALA); }
+  catch(e){}
+  ultimoGuardadoTs = Date.now();
+  guardando = false;
+  if(guardarPendiente){ guardarPendiente = false; guardarNube(); }   // reenvía el estado más reciente
+}
+
+// Escucha cambios de otros dispositivos y actualiza el marcador en vivo
+function suscribirNube(){
+  if(!sb || syncCanal) return;
+  syncCanal = sb.channel('marcador-'+SALA)
+    .on('postgres_changes', { event:'UPDATE', schema:'public', table:'marcador', filter:'id=eq.'+SALA }, (payload)=>{
+      const eq = payload.new && payload.new.equipos;
+      if(!Array.isArray(eq) || !eq.length) return;
+      // Si este dispositivo está sumando puntos ahora (o recién lo hizo), su estado local manda:
+      // así se ignoran ecos viejos que llegan tarde y no revierten el marcador.
+      if(guardando || guardarPendiente || (Date.now()-ultimoGuardadoTs < 1500)) return;
+      aplicandoRemoto = true;
+      const eraIniciado = state.iniciado;
+      hidratarEquipos(eq);
+      // si este dispositivo aún estaba en la portada, se une a la fiesta en curso
+      if(!eraIniciado && document.getElementById('screen-inicio').classList.contains('active')){
+        renderHub(); showScreen('screen-hub');
+      } else if(document.getElementById('screen-hub').classList.contains('active')){
+        renderHub();
+      }
+      aplicandoRemoto = false;
+    })
+    .subscribe((estado)=>{
+      if(estado==='SUBSCRIBED') setSyncStatus('🟢 Sincronizado en vivo', true);
+      else if(estado==='CHANNEL_ERROR' || estado==='TIMED_OUT') setSyncStatus('🔴 Reconectando…', false);
+    });
+}
 
 /* ==================== AUDIO ==================== */
 let audioCtx = null;
@@ -928,6 +1091,7 @@ function empezarFiesta(){
   state.pools = {};
   CATEGORIES.forEach(c=> state.pools[c.id] = nuevaBaraja(c.id));
   construirRuleta();
+  state.iniciado = true;
   irAlHub();
 }
 
@@ -940,6 +1104,7 @@ function irAlHub(){
   pararTimer();
   renderHub();
   showScreen('screen-hub');
+  guardarNube();   // sincroniza el marcador tras cada estación / cambio de puntos
 }
 
 function renderHub(){
@@ -959,6 +1124,7 @@ function renderHub(){
   grid.innerHTML = ESTACIONES.map(e=>{
     const tag = tagMap[e.tipo] || '🎮 juego';
     return `<button class="est-card" style="--ec:${e.color}" onclick="abrirEstacion('${e.id}')">
+      <span class="est-info" onclick="event.stopPropagation(); mostrarInstrucciones('${e.id}')">ℹ️</span>
       <span class="est-emoji">${e.emoji}</span>
       <span class="est-nombre">${e.nombre}</span>
       <span class="est-desc">${e.desc}</span>
@@ -975,8 +1141,35 @@ function abrirEstacion(id){
   else if(e.id==='quemado') pedirEquipo('🔥','¿Qué equipo empieza El Quemado?', iniciarQuemado);
   else if(e.id==='memoria') pedirEquipo('🧠','¿Qué equipo empieza Memoria?', iniciarMemoria);
   else if(e.id==='personaje') pedirEquipo('🕵️','¿Qué equipo juega ¿Quién Soy?', iniciarQuienSoy);
-  else abrirModalPuntos(e);   // solo estaciones físicas (Wally, Tesoro)
+  else if(e.modo==='porJugador') abrirModalJugadores(e);   // suma +10 por cada niño ganador
+  else abrirModalPuntos(e);   // físicas de premio fijo (Wally, Tesoro, Limbo) o a elección (Sorpresa)
 }
+
+/* ==================== MODAL INSTRUCCIONES (¿cómo se juega?) ==================== */
+let infoEstId = null;
+function puntosTexto(e){
+  if(e.tipo==='ruleta') return '🏁 Carrera a 130 · pregunta +10 · reto hasta +10';
+  if(e.tipo==='quemado') return '🔥 +20 por palabra adivinada';
+  if(e.tipo==='memoria') return '🧠 +50 por juego completado a tiempo';
+  if(e.tipo==='personaje') return '🕵️ +10 cada vez que aciertan';
+  if(e.modo==='porJugador') return `🏃 +${e.pts} por cada niño que gana`;
+  if(e.modo==='elegir') return '🎲 Puntos a elección (50 / 100 / 150)';
+  return `🏆 +${e.pts} al equipo ganador`;
+}
+function mostrarInstrucciones(id){
+  sBtn();
+  const e = ESTACIONES.find(x=>x.id===id); if(!e) return;
+  infoEstId = id;
+  document.getElementById('info-icon').textContent = e.emoji;
+  document.getElementById('info-titulo').textContent = e.nombre;
+  const chip = document.getElementById('info-puntos');
+  chip.textContent = puntosTexto(e);
+  chip.style.setProperty('--ic', e.color);
+  document.getElementById('info-instr').textContent = e.instr || '';
+  document.getElementById('modal-info').classList.add('show');
+}
+function jugarDesdeInfo(){ const id = infoEstId; cerrarInfo(); if(id) abrirEstacion(id); }
+function cerrarInfo(){ document.getElementById('modal-info').classList.remove('show'); }
 
 /* ==================== MODAL SUMAR PUNTOS ==================== */
 function abrirModalPuntos(est){
@@ -990,11 +1183,18 @@ function abrirModalPuntos(est){
     `<button class="modal-team" style="--tc:${t.color}" onclick="elegirTeam(${i})">
        <span class="gb-dot" style="background:${t.color}"></span>${t.nombre}
      </button>`).join('');
-  // opciones de puntos
-  const opciones = [50, est.pts||100, 150];
-  const uniq = [...new Set(opciones)];
-  document.getElementById('modal-pts').innerHTML = uniq.map(p=>
-    `<button class="pts-chip ${p===state.modalPts?'sel':''}" onclick="elegirPts(${p})">+${p}</button>`).join('');
+  // puntos: 'elegir' muestra opciones (50/100/150); 'fijo' muestra un valor único
+  const ptsBox = document.getElementById('modal-pts');
+  const ptsLabel = document.getElementById('modal-pts-label');
+  if(est.modo==='elegir'){
+    ptsLabel.textContent = '¿Cuántos puntos suma?';
+    const uniq = [...new Set([50, est.pts||100, 150])];
+    ptsBox.innerHTML = uniq.map(p=>
+      `<button class="pts-chip ${p===state.modalPts?'sel':''}" onclick="elegirPts(${p})">+${p}</button>`).join('');
+  } else {
+    ptsLabel.textContent = 'Se asignan al equipo ganador:';
+    ptsBox.innerHTML = `<div class="pts-fijo">+${state.modalPts} pts</div>`;
+  }
   document.getElementById('modal-confirmar').disabled = false;
   document.getElementById('modal-puntos').classList.add('show');
 }
@@ -1016,6 +1216,54 @@ function confirmarPuntos(){
   checkCampeon();
 }
 function cerrarModal(){ document.getElementById('modal-puntos').classList.remove('show'); }
+
+/* ===== PANEL "POR NIÑO": suma +10 por cada niño que gana (Saco, Vaso, Pelotas, Gorra) ===== */
+let mjEst = null, mjHist = [];
+function abrirModalJugadores(est){
+  mjEst = est; mjHist = [];
+  document.getElementById('mj-icon').textContent = est.emoji;
+  document.getElementById('mj-titulo').textContent = est.nombre;
+  document.getElementById('mj-sub').textContent = `+${est.pts||10} por cada niño que gana. Toca el equipo del ganador de cada ronda.`;
+  renderMjTeams();
+  document.getElementById('modal-jugadores').classList.add('show');
+}
+function renderMjTeams(){
+  const p = mjEst.pts || 10;
+  document.getElementById('mj-teams').innerHTML = state.teams.map((t,i)=>{
+    const suma = mjHist.filter(x=>x===i).length * p;
+    return `<button class="mj-team" style="--tc:${t.color}" onclick="sumarJugador(${i})">
+       <span class="gb-dot" style="background:${t.color}"></span>
+       <span class="mj-name">${t.nombre}</span>
+       <span class="mj-plus">+${p}</span>
+       <span class="mj-count">${suma} pts</span>
+     </button>`;
+  }).join('');
+  document.getElementById('mj-deshacer').disabled = mjHist.length===0;
+}
+function sumarJugador(i){
+  sBien();
+  const p = mjEst.pts || 10;
+  state.teams[i].pts += p;
+  mjHist.push(i);
+  renderMjTeams();
+  lanzarConfeti(14);
+  guardarNube();   // sincroniza en vivo con los demás dispositivos
+}
+function deshacerJugador(){
+  if(mjHist.length===0) return;
+  sBtn();
+  const i = mjHist.pop();
+  const p = mjEst.pts || 10;
+  state.teams[i].pts = Math.max(0, state.teams[i].pts - p);
+  renderMjTeams();
+  guardarNube();
+}
+function cerrarJugadores(){
+  sBtn();
+  document.getElementById('modal-jugadores').classList.remove('show');
+  irAlHub();
+  checkCampeon();
+}
 
 function checkCampeon(){
   const ganador = state.teams.find(t=> t.pts >= META_GLOBAL);
@@ -1312,7 +1560,7 @@ const QS_PERSONAJES = [
   {n:'Un unicornio', e:'🦄'}, {n:'Rayo McQueen (Cars)', e:'🏎️'}, {n:'Un vampiro', e:'🧛'}, {n:'Un superhéroe', e:'🦸'},
   {n:'Una bruja', e:'🧙‍♀️'}, {n:'Un robot', e:'🤖'}
 ];
-const QS_PTS = 30;
+const QS_PTS = 10;
 let qs = { equipo:0, personaje:null, revealTimer:null, actTimer:null, restante:30 };
 
 function iniciarQuienSoy(teamIdx){
@@ -1718,7 +1966,14 @@ function verGanador(esCampeon){
   lanzarConfeti(esCampeon===true ? 200 : 80);
 }
 function volverHubDesdeFinal(){ sBtn(); irAlHub(); }
-function reiniciar(){ sBtn(); showScreen('screen-inicio'); }
+async function reiniciar(){
+  sBtn();
+  state.iniciado = false;
+  state.teams.forEach(t=> t.pts = 0);
+  try { localStorage.removeItem('marcadorLeon'); } catch(e){}
+  if(sb){ try { await sb.from('marcador').update({ equipos:[], iniciado:false, updated_at:new Date().toISOString() }).eq('id', SALA); } catch(e){} }
+  showScreen('screen-inicio');
+}
 
 /* ==================== NAV ==================== */
 function showScreen(id){
@@ -1773,6 +2028,10 @@ function tickConfeti(){
 
 /* ==================== INIT ==================== */
 renderTeamInputs();
+initSync();
+suscribirNube();
+setSyncStatus(sb ? '🟡 Conectando…' : '📴 Solo este dispositivo', !!sb);
+cargarNube().then(hay=>{ if(hay){ renderHub(); showScreen('screen-hub'); } });
 if(document.fonts && document.fonts.ready){
   document.fonts.ready.then(()=>{ if(document.getElementById('screen-juego').classList.contains('active')) sizeWheel(); });
 }
