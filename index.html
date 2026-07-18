@@ -364,11 +364,12 @@
   #screen-memoria { justify-content: flex-start; gap: 8px; }
   .mem-turno { font-family: 'Baloo 2'; font-weight: 700; font-size: 17px; color: #475569; }
   .mem-turno b { color: var(--activo, var(--morado)); }
-  .mem-score { display: flex; gap: 10px; }
-  .mem-score .ms { font-family: 'Baloo 2'; font-weight: 800; font-size: 15px; padding: 5px 14px; border-radius: 999px;
-    background: #fff; box-shadow: 0 3px 8px rgba(0,0,0,.08); display: flex; align-items: center; gap: 6px; }
-  .mem-score .ms.act { outline: 3px solid var(--c); }
-  .mem-grid { width: 100%; max-width: 400px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 4px; }
+  .mem-info { display: flex; gap: 12px; align-items: center; }
+  .mem-timer { font-family: 'Baloo 2'; font-weight: 800; font-size: 26px; color: var(--verde); min-width: 40px; text-align: center; }
+  .mem-timer.bajo { color: var(--rojo); }
+  .mem-progreso { font-family: 'Baloo 2'; font-weight: 800; font-size: 12.5px; color: #64748B; background: #F1F5F9;
+    padding: 5px 12px; border-radius: 999px; }
+  .mem-grid { width: 100%; max-width: 380px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 2px; }
   .mem-card {
     aspect-ratio: 1; border: none; border-radius: 14px; cursor: pointer; padding: 0;
     background: linear-gradient(135deg, var(--morado), #7c3aed); box-shadow: 0 4px 10px rgba(0,0,0,.12);
@@ -424,7 +425,7 @@
 <!-- ============ PANTALLA INICIO ============ -->
 <div id="screen-inicio" class="screen active">
   <div class="foto-marco">
-    <img id="foto-leon" class="foto-leon" src="leon.jpg" alt="León" onerror="fotoError(this)">
+    <img id="foto-leon" class="foto-leon" src="leon.jpg?v=2" alt="León" onerror="fotoError(this)">
     <div id="foto-fallback" class="foto-fallback">🥳</div>
     <span class="foto-badge">9</span>
   </div>
@@ -546,7 +547,10 @@
     <button class="btn-fin" onclick="irAlHub()">← Volver</button>
   </div>
   <div class="mem-turno" id="mem-turno"></div>
-  <div class="mem-score" id="mem-score"></div>
+  <div class="mem-info">
+    <span class="mem-timer" id="mem-timer">60</span>
+    <span class="mem-progreso" id="mem-progreso"></span>
+  </div>
   <div class="mem-grid" id="mem-grid"></div>
   <div class="mem-resultado" id="mem-resultado"></div>
 </div>
@@ -896,6 +900,7 @@ function irAlHub(){
     if(qs.revealTimer){ clearInterval(qs.revealTimer); qs.revealTimer=null; }
     if(qs.actTimer){ clearInterval(qs.actTimer); qs.actTimer=null; }
   }
+  if(typeof mem !== 'undefined' && mem.timerId){ clearInterval(mem.timerId); mem.timerId=null; }
   pararTimer();
   renderHub();
   showScreen('screen-hub');
@@ -932,7 +937,7 @@ function abrirEstacion(id){
   if(!e) return;
   if(e.tipo==='ruleta') iniciarRuleta();
   else if(e.id==='quemado') pedirEquipo('🔥','¿Qué equipo juega El Quemado?', iniciarQuemado);
-  else if(e.id==='memoria') iniciarMemoria();
+  else if(e.id==='memoria') pedirEquipo('🧠','¿Qué equipo juega Memoria?', iniciarMemoria);
   else if(e.id==='personaje') pedirEquipo('🕵️','¿Qué equipo juega ¿Quién Soy?', iniciarQuienSoy);
   else abrirModalPuntos(e);   // solo estaciones físicas (Wally, Tesoro)
 }
@@ -1129,32 +1134,51 @@ function cerrarQuemado(pts){
 }
 
 /* ==================== MEMORIA (parejas) ==================== */
-const MEM_EMOJIS = ['⚽','🎮','🦖','🚀','🍕','🎂','🎈','🐶','🌟','🎁','🍦','🐱','🦄','🌈','🍭','🚗','🐢','🦋'];
-let mem = { cards:[], first:null, lock:false, turno:0, pares:[0,0] };
+const MEM_EMOJIS = ['⚽','🎮','🦖','🚀','🍕','🎂','🎈','🐶','🌟','🎁','🍦','🐱','🦄','🌈','🍭','🚗','🐢','🦋','🐸','🍩','🎸','🐙'];
+const MEM_JUEGOS = 3, MEM_PARES = 10, MEM_SEGS = 60, MEM_PTS = 50;
+let mem = { equipo:0, juego:1, total:0, cards:[], first:null, lock:false, timerId:null, restante:60, terminado:false };
 
-function iniciarMemoria(){
+// Memoria por equipo: 3 juegos de 20 cartas, 60s cada uno, +50 por juego completado (máx 150)
+function iniciarMemoria(teamIdx){
   sBtn(); getAudio();
-  const pool = shuffle([...MEM_EMOJIS]).slice(0,6);
-  const cards = shuffle([...pool, ...pool].map(e=>({emoji:e, flipped:false, matched:false})));
-  mem = { cards, first:null, lock:false, turno:0, pares:[0,0] };
-  document.getElementById('mem-resultado').innerHTML = '';
-  renderMemoria();
+  mem.equipo = teamIdx; mem.juego = 1; mem.total = 0;
+  cargarJuegoMemoria();
   showScreen('screen-memoria');
 }
-function renderMemoria(){
-  const t = state.teams[mem.turno];
+function cargarJuegoMemoria(){
+  const pool = shuffle([...MEM_EMOJIS]).slice(0, MEM_PARES);
+  mem.cards = shuffle([...pool, ...pool].map(e=>({emoji:e, flipped:false, matched:false})));
+  mem.first = null; mem.lock = false; mem.terminado = false; mem.restante = MEM_SEGS;
+  const t = state.teams[mem.equipo];
   const tt = document.getElementById('mem-turno');
-  tt.innerHTML = `Turno de <b style="--activo:${t.color}">${t.nombre}</b>`;
+  tt.innerHTML = `Juega <b style="--activo:${t.color}">${t.nombre}</b>`;
   tt.style.setProperty('--activo', t.color);
-  document.getElementById('mem-score').innerHTML = state.teams.map((tm,i)=>
-    `<span class="ms ${i===mem.turno?'act':''}" style="--c:${tm.color}"><span class="gb-dot" style="background:${tm.color};width:12px;height:12px"></span>${tm.nombre}: ${mem.pares[i]}</span>`).join('');
+  document.getElementById('mem-resultado').innerHTML = '';
+  actMemInfo();
+  renderMemoria();
+  clearInterval(mem.timerId);
+  mem.timerId = setInterval(()=>{
+    mem.restante--;
+    actMemInfo();
+    if(mem.restante<=5 && mem.restante>0) sTick();
+    if(mem.restante<=0){ clearInterval(mem.timerId); mem.timerId=null; finJuegoMemoria(false); }
+  }, 1000);
+}
+function actMemInfo(){
+  const tel = document.getElementById('mem-timer');
+  tel.textContent = mem.restante;
+  tel.classList.toggle('bajo', mem.restante<=10);
+  const pares = mem.cards.filter(c=>c.matched).length/2;
+  document.getElementById('mem-progreso').textContent = `Juego ${mem.juego}/${MEM_JUEGOS} · ${mem.total} pts · pares ${pares}/${MEM_PARES}`;
+}
+function renderMemoria(){
   document.getElementById('mem-grid').innerHTML = mem.cards.map((c,i)=>
     `<button class="mem-card ${c.flipped?'flipped':''} ${c.matched?'matched':''}" onclick="flipCard(${i})">
        <span class="mc-front">?</span><span class="mc-back">${c.emoji}</span>
      </button>`).join('');
 }
 function flipCard(i){
-  if(mem.lock) return;
+  if(mem.lock || mem.terminado) return;
   const c = mem.cards[i];
   if(c.flipped || c.matched) return;
   sTick();
@@ -1165,37 +1189,47 @@ function flipCard(i){
   if(a.emoji===c.emoji){
     sBien();
     a.matched = c.matched = true;
-    mem.pares[mem.turno]++;
     mem.first = null;
-    renderMemoria();
-    if(mem.cards.every(x=>x.matched)) finMemoria();
+    renderMemoria(); actMemInfo();
+    if(mem.cards.every(x=>x.matched)) finJuegoMemoria(true);
   } else {
     mem.lock = true;
     setTimeout(()=>{
+      if(mem.terminado) return;
       a.flipped = c.flipped = false;
       mem.first = null; mem.lock = false;
-      mem.turno = (mem.turno+1) % 2;
       renderMemoria();
-    }, 950);
+    }, 800);
   }
 }
-function finMemoria(){
-  setTimeout(()=>{
-    sWin(); lanzarConfeti(80);
-    const [p0,p1] = mem.pares;
-    let pts;
-    if(p0===p1) pts=[70,70];
-    else if(p0>p1) pts=[100,40];
-    else pts=[40,100];
-    const gan = p0===p1 ? '¡Empate! 🤝' : '🏆 ' + (p0>p1 ? state.teams[0].nombre : state.teams[1].nombre);
-    document.getElementById('mem-resultado').innerHTML =
-      `<div>${gan} · parejas ${p0}–${p1}</div>
-       <button class="btn-grande" onclick="cerrarMemoria(${pts[0]},${pts[1]})">Guardar puntos 💾</button>`;
-  }, 550);
+function finJuegoMemoria(gano){
+  mem.terminado = true;
+  clearInterval(mem.timerId); mem.timerId = null;
+  const res = document.getElementById('mem-resultado');
+  if(gano){
+    sWin(); lanzarConfeti(50); mem.total += MEM_PTS;
+    res.innerHTML = `<div style="color:var(--verde)">¡Completado a tiempo! 🎉 +${MEM_PTS} pts</div>`;
+  } else {
+    sTimeout();
+    mem.cards.forEach(c=>{ if(!c.matched) c.flipped=true; });
+    renderMemoria();
+    res.innerHTML = `<div style="color:var(--rojo)">¡Se acabó el tiempo! ⏱️ +0</div>`;
+  }
+  actMemInfo();
+  const ultimo = mem.juego >= MEM_JUEGOS;
+  res.innerHTML += `<button class="btn-grande" onclick="${ultimo?'finMemoriaStation()':'siguienteJuegoMemoria()'}">${ultimo?'Terminar 🏁':'Siguiente juego ➡️'}</button>`;
 }
-function cerrarMemoria(p0,p1){
+function siguienteJuegoMemoria(){ sBtn(); mem.juego++; cargarJuegoMemoria(); }
+function finMemoriaStation(){
+  sWin(); lanzarConfeti(90);
+  const t = state.teams[mem.equipo];
+  document.getElementById('mem-resultado').innerHTML =
+    `<div style="color:${t.color}">${t.nombre}: ${mem.total} de ${MEM_JUEGOS*MEM_PTS} pts 🧠</div>
+     <button class="btn-grande" onclick="cerrarMemoria(${mem.total})">Guardar puntos 💾</button>`;
+}
+function cerrarMemoria(pts){
   sBtn();
-  state.teams[0].pts += p0; state.teams[1].pts += p1;
+  state.teams[mem.equipo].pts += pts;
   irAlHub();
   checkCampeon();
 }
