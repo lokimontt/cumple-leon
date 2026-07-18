@@ -333,10 +333,34 @@
   .modal-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
   .modal-actions .ab { width: 100%; }
 
+  /* ============ TURNO (banner + mini marcador para estaciones por turnos) ============ */
+  .turno-banner {
+    width: 100%; max-width: 480px; border-radius: 18px; padding: 12px 18px;
+    background: var(--tb, var(--morado)); color: #fff; box-shadow: var(--sombra);
+    font-family: 'Baloo 2'; font-weight: 800; font-size: clamp(17px, 4.6vw, 21px);
+    display: flex; align-items: center; justify-content: center; gap: 10px; text-align: center;
+  }
+  .turno-banner .tb-dot { width: 16px; height: 16px; border-radius: 50%; background: #fff;
+    box-shadow: inset 0 -2px 3px rgba(0,0,0,.2); flex: none; }
+  .turno-banner.pulsar { animation: turnoPop .55s ease; }
+  @keyframes turnoPop { 0%{transform:scale(.9);opacity:.3} 55%{transform:scale(1.05)} 100%{transform:scale(1);opacity:1} }
+
+  .mini-board { width: 100%; max-width: 480px; display: flex; gap: 8px; }
+  .mini-team {
+    flex: 1 1 0; min-width: 0; background: #fff; border-radius: 14px; padding: 8px 6px; text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,.07); border: 3px solid transparent; transition: .2s; position: relative;
+  }
+  .mini-team.on { border-color: var(--mc, var(--morado)); transform: translateY(-3px); box-shadow: 0 8px 18px rgba(0,0,0,.15); }
+  .mini-team.on::after {
+    content: '▶ JUEGA'; position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+    background: var(--mc, var(--morado)); color: #fff; font-family: 'Baloo 2'; font-weight: 800; font-size: 9px;
+    padding: 2px 8px; border-radius: 999px; white-space: nowrap;
+  }
+  .mini-name { font-family: 'Baloo 2'; font-weight: 800; font-size: 13px; color: var(--texto); line-height: 1.1; overflow-wrap: break-word; }
+  .mini-pts { font-family: 'Baloo 2'; font-weight: 800; font-size: 22px; color: var(--mc, var(--morado)); line-height: 1; margin-top: 2px; }
+
   /* ============ EL QUEMADO ============ */
   #screen-quemado { justify-content: flex-start; gap: 10px; }
-  .q-turno { font-family: 'Baloo 2'; font-weight: 700; font-size: 17px; color: #475569; }
-  .q-turno b { color: var(--activo, var(--rojo)); }
   .q-progreso { font-family: 'Baloo 2'; font-weight: 800; font-size: 14px; color: #64748B; background: #F1F5F9;
     padding: 4px 14px; border-radius: 999px; }
   .q-pista { background: #FFFBEB; border: 2px dashed var(--amarillo); border-radius: 14px; padding: 8px 16px;
@@ -362,8 +386,6 @@
 
   /* ============ MEMORIA ============ */
   #screen-memoria { justify-content: flex-start; gap: 8px; }
-  .mem-turno { font-family: 'Baloo 2'; font-weight: 700; font-size: 17px; color: #475569; }
-  .mem-turno b { color: var(--activo, var(--morado)); }
   .mem-info { display: flex; gap: 12px; align-items: center; }
   .mem-timer { font-family: 'Baloo 2'; font-weight: 800; font-size: 26px; color: var(--verde); min-width: 40px; text-align: center; }
   .mem-timer.bajo { color: var(--rojo); }
@@ -531,7 +553,8 @@
     <div class="party-name">🔥 El Quemado</div>
     <button class="btn-fin" onclick="irAlHub()">← Volver</button>
   </div>
-  <div class="q-turno" id="q-turno"></div>
+  <div class="turno-banner" id="q-banner"></div>
+  <div class="mini-board" id="q-board"></div>
   <div class="q-progreso" id="q-progreso"></div>
   <div class="q-pista" id="q-pista"></div>
   <div class="quemado-figura" id="quemado-figura"></div>
@@ -546,7 +569,8 @@
     <div class="party-name">🧠 Memoria</div>
     <button class="btn-fin" onclick="irAlHub()">← Volver</button>
   </div>
-  <div class="mem-turno" id="mem-turno"></div>
+  <div class="turno-banner" id="mem-banner"></div>
+  <div class="mini-board" id="mem-board"></div>
   <div class="mem-info">
     <span class="mem-timer" id="mem-timer">60</span>
     <span class="mem-progreso" id="mem-progreso"></span>
@@ -936,8 +960,8 @@ function abrirEstacion(id){
   const e = ESTACIONES.find(x=>x.id===id);
   if(!e) return;
   if(e.tipo==='ruleta') iniciarRuleta();
-  else if(e.id==='quemado') pedirEquipo('🔥','¿Qué equipo juega El Quemado?', iniciarQuemado);
-  else if(e.id==='memoria') pedirEquipo('🧠','¿Qué equipo juega Memoria?', iniciarMemoria);
+  else if(e.id==='quemado') pedirEquipo('🔥','¿Qué equipo empieza El Quemado?', iniciarQuemado);
+  else if(e.id==='memoria') pedirEquipo('🧠','¿Qué equipo empieza Memoria?', iniciarMemoria);
   else if(e.id==='personaje') pedirEquipo('🕵️','¿Qué equipo juega ¿Quién Soy?', iniciarQuienSoy);
   else abrirModalPuntos(e);   // solo estaciones físicas (Wally, Tesoro)
 }
@@ -999,45 +1023,79 @@ function pedirEquipo(icon, titulo, cb){
 function elegirEquipoModal(i){ sBtn(); document.getElementById('modal-equipo').classList.remove('show'); if(_equipoCb) _equipoCb(i); }
 function cerrarModalEquipo(){ document.getElementById('modal-equipo').classList.remove('show'); }
 
+/* ==================== TURNO: banner + mini marcador (estaciones por turnos) ==================== */
+function setTurnoBanner(bannerId, activeIdx){
+  const t = state.teams[activeIdx];
+  const b = document.getElementById(bannerId);
+  if(!b) return;
+  b.style.setProperty('--tb', t.color);
+  b.innerHTML = `<span class="tb-dot"></span>Ahora juega: ${t.nombre}`;
+  // reinicia la animación de pulso para que se note el cambio de turno
+  b.classList.remove('pulsar'); void b.offsetWidth; b.classList.add('pulsar');
+}
+function renderMiniBoard(boardId, activeIdx, puntos){
+  const cont = document.getElementById(boardId);
+  if(!cont) return;
+  cont.innerHTML = state.teams.map((t,i)=>
+    `<div class="mini-team ${i===activeIdx?'on':''}" style="--mc:${t.color}">
+       <div class="mini-name">${t.nombre}</div>
+       <div class="mini-pts">${puntos[i]}</div>
+     </div>`).join('');
+}
+// orden de turnos alternado empezando por 'inicial' (ej: 2 equipos, 3 rondas c/u → A,B,A,B,A,B)
+function ordenTurnos(inicial, rondasPorEquipo){
+  const orden = [];
+  const n = state.teams.length;
+  for(let r=0;r<rondasPorEquipo;r++)
+    for(let k=0;k<n;k++) orden.push((inicial+k)%n);
+  return orden;
+}
+
 /* ==================== EL QUEMADO (ahorcado) ==================== */
 const QUEMADO_PALABRAS = [
-  {p:'MINECRAFT', pista:'Videojuego de bloques'},
-  {p:'DINOSAURIO', pista:'Reptil gigante ya extinto'},
-  {p:'CUMPLEAÑOS', pista:'Lo que celebra León hoy'},
-  {p:'ASTRONAUTA', pista:'Viaja al espacio en cohete'},
-  {p:'MURCIELAGO', pista:'Vuela de noche y duerme colgado'},
-  {p:'TELESCOPIO', pista:'Sirve para ver las estrellas de cerca'},
-  {p:'COCODRILO', pista:'Reptil de río con gran mandíbula'},
-  {p:'CANGREJO', pista:'Camina de lado y tiene tenazas'},
-  {p:'PARAGUAS', pista:'Te protege de la lluvia'},
-  {p:'HELICOPTERO', pista:'Vuela con hélices que giran arriba'},
-  {p:'CALABAZA', pista:'Naranja, típica de Halloween'},
-  {p:'ARDILLA', pista:'Sube árboles y guarda nueces'},
-  {p:'TORNADO', pista:'Remolino de viento muy fuerte'},
-  {p:'PINGUINO', pista:'Ave que no vuela y vive en el hielo'},
-  {p:'PIRAMIDE', pista:'Construcción egipcia con punta'},
-  {p:'SEMAFORO', pista:'Rojo, amarillo y verde en la calle'},
-  {p:'CAMALEON', pista:'Cambia de color para esconderse'},
-  {p:'BRUJULA', pista:'Marca el norte para no perderte'},
-  {p:'CATAPULTA', pista:'Máquina antigua que lanzaba piedras'},
-  {p:'BUMERANG', pista:'Lo lanzas y vuelve a tu mano'},
-  {p:'ESQUELETO', pista:'Todos los huesos del cuerpo'},
-  {p:'IGUANA', pista:'Lagarto grande y verde'},
-  {p:'ARCOIRIS', pista:'Colores en el cielo tras la lluvia'},
-  {p:'VOLCAN', pista:'Montaña que echa lava'},
-  {p:'PIÑATA', pista:'Se rompe para que caigan dulces'},
-  {p:'CASTILLO', pista:'Vive un rey o una princesa'},
+  {p:'LABERINTO', pista:'Lleno de pasillos y vueltas; es fácil perderse dentro'},
+  {p:'CAMUFLAJE', pista:'Truco para confundirse con el entorno y no ser visto'},
+  {p:'METEORITO', pista:'Roca del espacio que cruza el cielo y cae a la Tierra'},
+  {p:'TERREMOTO', pista:'Cuando el suelo se mueve y tiembla con fuerza'},
+  {p:'SUBMARINO', pista:'Puede viajar muchos metros por debajo del agua'},
+  {p:'GALAXIA', pista:'Reúne miles de millones de estrellas'},
+  {p:'CAMALEON', pista:'Mueve los ojos por separado y cambia de color'},
+  {p:'ORQUESTA', pista:'Muchos instrumentos tocando una misma canción'},
+  {p:'ERUPCION', pista:'Lo que ocurre cuando un volcán despierta'},
+  {p:'ANTARTIDA', pista:'El continente más frío, cubierto de hielo'},
+  {p:'MANDIBULA', pista:'El hueso que mueves cada vez que masticas'},
+  {p:'TELESCOPIO', pista:'Acerca lo que está lejísimos en el cielo'},
+  {p:'PARACAIDAS', pista:'Se abre en el aire para bajar despacio'},
+  {p:'CANGURO', pista:'Da grandes saltos y lleva a su cría en una bolsa'},
+  {p:'RELAMPAGO', pista:'Destello de luz que ves antes de oír el trueno'},
+  {p:'MURCIELAGO', pista:'El único mamífero que vuela de verdad'},
+  {p:'ARMADILLO', pista:'Se enrolla en una bolita gracias a su caparazón'},
+  {p:'OBSIDIANA', pista:'Roca negra que aparece cuando la lava toca el agua'},
+  {p:'BRUJULA', pista:'Su aguja siempre señala hacia el norte'},
+  {p:'PENTAGONO', pista:'Una figura que tiene cinco lados'},
+  {p:'HORMIGUERO', pista:'Ciudad bajo tierra llena de insectos obreros'},
+  {p:'MARIPOSA', pista:'Empezó siendo oruga antes de tener alas'},
+  {p:'ACUARIO', pista:'Lugar para visitar lleno de grandes peceras'},
+  {p:'CARABELA', pista:'Barco a vela de los antiguos exploradores'},
+  {p:'ESTALACTITA', pista:'Punta de roca que cuelga del techo de una cueva'},
+  {p:'CONSTELACION', pista:'Estrellas que juntas dibujan una figura'},
 ];
-const Q_RONDAS = 6, Q_PTS = 20;
-let quemado = { equipo:0, ronda:1, total:0, palabra:'', pista:'', aciertos:new Set(), errores:0, maxErr:6, terminado:false };
+const Q_RONDAS_EQUIPO = 3, Q_PTS = 20;   // cada equipo adivina 3 palabras (van alternando)
+let quemado = { inicial:0, equipo:0, ronda:1, totalRondas:6, orden:[], puntos:[], palabra:'', pista:'', aciertos:new Set(), errores:0, maxErr:6, terminado:false };
 let _qUsados = [];
 
 function iniciarQuemado(teamIdx){
-  quemado.equipo = teamIdx; quemado.ronda = 1; quemado.total = 0;
+  quemado.inicial = teamIdx;
+  quemado.orden = ordenTurnos(teamIdx, Q_RONDAS_EQUIPO);
+  quemado.totalRondas = quemado.orden.length;
+  quemado.ronda = 1;
+  quemado.puntos = state.teams.map(()=>0);
+  _qUsados = [];
   cargarPalabraQuemado();
   showScreen('screen-quemado');
 }
 function cargarPalabraQuemado(){
+  quemado.equipo = quemado.orden[quemado.ronda-1];
   if(_qUsados.length >= QUEMADO_PALABRAS.length) _qUsados = [];
   let idx;
   do { idx = Math.floor(Math.random()*QUEMADO_PALABRAS.length); } while(_qUsados.includes(idx));
@@ -1045,11 +1103,9 @@ function cargarPalabraQuemado(){
   const w = QUEMADO_PALABRAS[idx];
   quemado.palabra = w.p; quemado.pista = w.pista;
   quemado.aciertos = new Set(); quemado.errores = 0; quemado.terminado = false;
-  const t = state.teams[quemado.equipo];
-  const tt = document.getElementById('q-turno');
-  tt.innerHTML = `Juega <b style="--activo:${t.color}">${t.nombre}</b>`;
-  tt.style.setProperty('--activo', t.color);
-  document.getElementById('q-progreso').textContent = `Palabra ${quemado.ronda}/${Q_RONDAS} · ${quemado.total} pts`;
+  setTurnoBanner('q-banner', quemado.equipo);
+  renderMiniBoard('q-board', quemado.equipo, quemado.puntos);
+  document.getElementById('q-progreso').textContent = `Palabra ${quemado.ronda}/${quemado.totalRondas}`;
   document.getElementById('q-pista').textContent = '💡 ' + w.pista;
   document.getElementById('q-resultado').innerHTML = '';
   construirTeclado();
@@ -1107,52 +1163,56 @@ function finRondaQuemado(gano){
   document.querySelectorAll('#q-teclado .q-tecla').forEach(t=>t.classList.add('bloq'));
   renderPalabraQuemado();
   const res = document.getElementById('q-resultado');
+  const nombre = state.teams[quemado.equipo].nombre;
   if(gano){
-    sWin(); lanzarConfeti(50); quemado.total += Q_PTS;
-    res.innerHTML = `<span style="color:var(--verde)">¡Correcto! 🎉 +${Q_PTS} pts</span>`;
+    sWin(); lanzarConfeti(50); quemado.puntos[quemado.equipo] += Q_PTS;
+    res.innerHTML = `<span style="color:var(--verde)">¡${nombre} lo logró! 🎉 +${Q_PTS} pts</span>`;
   } else {
     sTimeout();
     res.innerHTML = `<span style="color:var(--rojo)">¡Quemado! 🔥 Era "${quemado.palabra}"</span>`;
   }
-  document.getElementById('q-progreso').textContent = `Palabra ${quemado.ronda}/${Q_RONDAS} · ${quemado.total} pts`;
-  const ultima = quemado.ronda >= Q_RONDAS;
-  res.innerHTML += `<button class="btn-grande" onclick="${ultima?'finQuemadoStation()':'siguienteRondaQuemado()'}">${ultima?'Terminar 🏁':'Siguiente palabra ➡️'}</button>`;
+  renderMiniBoard('q-board', quemado.equipo, quemado.puntos);
+  const ultima = quemado.ronda >= quemado.totalRondas;
+  const proximo = ultima ? null : state.teams[quemado.orden[quemado.ronda]].nombre;
+  res.innerHTML += `<button class="btn-grande" onclick="${ultima?'finQuemadoStation()':'siguienteRondaQuemado()'}">${ultima?'Terminar 🏁':'Turno de '+proximo+' ➡️'}</button>`;
 }
 function siguienteRondaQuemado(){ sBtn(); quemado.ronda++; cargarPalabraQuemado(); }
 function finQuemadoStation(){
   sWin(); lanzarConfeti(90);
-  const t = state.teams[quemado.equipo];
+  const filas = state.teams.map((t,i)=>
+    `<div style="color:${t.color}">${t.nombre}: ${quemado.puntos[i]} pts 🔥</div>`).join('');
   document.getElementById('q-resultado').innerHTML =
-    `<span style="color:${t.color}">${t.nombre} completó las ${Q_RONDAS} · ${quemado.total} pts 🔥</span>
-     <button class="btn-grande" onclick="cerrarQuemado(${quemado.total})">Guardar puntos 💾</button>`;
+    `${filas}<button class="btn-grande" onclick="cerrarQuemado()">Guardar puntos 💾</button>`;
 }
-function cerrarQuemado(pts){
+function cerrarQuemado(){
   sBtn();
-  state.teams[quemado.equipo].pts += pts;
+  state.teams.forEach((t,i)=> t.pts += (quemado.puntos[i]||0));
   irAlHub();
   checkCampeon();
 }
 
 /* ==================== MEMORIA (parejas) ==================== */
 const MEM_EMOJIS = ['⚽','🎮','🦖','🚀','🍕','🎂','🎈','🐶','🌟','🎁','🍦','🐱','🦄','🌈','🍭','🚗','🐢','🦋','🐸','🍩','🎸','🐙'];
-const MEM_JUEGOS = 3, MEM_PARES = 10, MEM_SEGS = 60, MEM_PTS = 50;
-let mem = { equipo:0, juego:1, total:0, cards:[], first:null, lock:false, timerId:null, restante:60, terminado:false };
+const MEM_JUEGOS_EQUIPO = 2, MEM_PARES = 10, MEM_SEGS = 60, MEM_PTS = 50;
+let mem = { inicial:0, equipo:0, juego:1, totalJuegos:4, orden:[], puntos:[], cards:[], first:null, lock:false, timerId:null, restante:60, terminado:false };
 
-// Memoria por equipo: 3 juegos de 20 cartas, 60s cada uno, +50 por juego completado (máx 150)
+// Memoria: los equipos se van turnando (2 juegos cada uno), 20 cartas, 60s, +50 por juego completado
 function iniciarMemoria(teamIdx){
   sBtn(); getAudio();
-  mem.equipo = teamIdx; mem.juego = 1; mem.total = 0;
+  mem.inicial = teamIdx; mem.juego = 1;
+  mem.orden = ordenTurnos(teamIdx, MEM_JUEGOS_EQUIPO);
+  mem.totalJuegos = mem.orden.length;
+  mem.puntos = state.teams.map(()=>0);
   cargarJuegoMemoria();
   showScreen('screen-memoria');
 }
 function cargarJuegoMemoria(){
+  mem.equipo = mem.orden[mem.juego-1];
   const pool = shuffle([...MEM_EMOJIS]).slice(0, MEM_PARES);
   mem.cards = shuffle([...pool, ...pool].map(e=>({emoji:e, flipped:false, matched:false})));
   mem.first = null; mem.lock = false; mem.terminado = false; mem.restante = MEM_SEGS;
-  const t = state.teams[mem.equipo];
-  const tt = document.getElementById('mem-turno');
-  tt.innerHTML = `Juega <b style="--activo:${t.color}">${t.nombre}</b>`;
-  tt.style.setProperty('--activo', t.color);
+  setTurnoBanner('mem-banner', mem.equipo);
+  renderMiniBoard('mem-board', mem.equipo, mem.puntos);
   document.getElementById('mem-resultado').innerHTML = '';
   actMemInfo();
   renderMemoria();
@@ -1169,7 +1229,7 @@ function actMemInfo(){
   tel.textContent = mem.restante;
   tel.classList.toggle('bajo', mem.restante<=10);
   const pares = mem.cards.filter(c=>c.matched).length/2;
-  document.getElementById('mem-progreso').textContent = `Juego ${mem.juego}/${MEM_JUEGOS} · ${mem.total} pts · pares ${pares}/${MEM_PARES}`;
+  document.getElementById('mem-progreso').textContent = `Juego ${mem.juego}/${mem.totalJuegos} · pares ${pares}/${MEM_PARES}`;
 }
 function renderMemoria(){
   document.getElementById('mem-grid').innerHTML = mem.cards.map((c,i)=>
@@ -1206,9 +1266,10 @@ function finJuegoMemoria(gano){
   mem.terminado = true;
   clearInterval(mem.timerId); mem.timerId = null;
   const res = document.getElementById('mem-resultado');
+  const nombre = state.teams[mem.equipo].nombre;
   if(gano){
-    sWin(); lanzarConfeti(50); mem.total += MEM_PTS;
-    res.innerHTML = `<div style="color:var(--verde)">¡Completado a tiempo! 🎉 +${MEM_PTS} pts</div>`;
+    sWin(); lanzarConfeti(50); mem.puntos[mem.equipo] += MEM_PTS;
+    res.innerHTML = `<div style="color:var(--verde)">¡${nombre} lo completó a tiempo! 🎉 +${MEM_PTS} pts</div>`;
   } else {
     sTimeout();
     mem.cards.forEach(c=>{ if(!c.matched) c.flipped=true; });
@@ -1216,20 +1277,22 @@ function finJuegoMemoria(gano){
     res.innerHTML = `<div style="color:var(--rojo)">¡Se acabó el tiempo! ⏱️ +0</div>`;
   }
   actMemInfo();
-  const ultimo = mem.juego >= MEM_JUEGOS;
-  res.innerHTML += `<button class="btn-grande" onclick="${ultimo?'finMemoriaStation()':'siguienteJuegoMemoria()'}">${ultimo?'Terminar 🏁':'Siguiente juego ➡️'}</button>`;
+  renderMiniBoard('mem-board', mem.equipo, mem.puntos);
+  const ultimo = mem.juego >= mem.totalJuegos;
+  const proximo = ultimo ? null : state.teams[mem.orden[mem.juego]].nombre;
+  res.innerHTML += `<button class="btn-grande" onclick="${ultimo?'finMemoriaStation()':'siguienteJuegoMemoria()'}">${ultimo?'Terminar 🏁':'Turno de '+proximo+' ➡️'}</button>`;
 }
 function siguienteJuegoMemoria(){ sBtn(); mem.juego++; cargarJuegoMemoria(); }
 function finMemoriaStation(){
   sWin(); lanzarConfeti(90);
-  const t = state.teams[mem.equipo];
+  const filas = state.teams.map((t,i)=>
+    `<div style="color:${t.color}">${t.nombre}: ${mem.puntos[i]} pts 🧠</div>`).join('');
   document.getElementById('mem-resultado').innerHTML =
-    `<div style="color:${t.color}">${t.nombre}: ${mem.total} de ${MEM_JUEGOS*MEM_PTS} pts 🧠</div>
-     <button class="btn-grande" onclick="cerrarMemoria(${mem.total})">Guardar puntos 💾</button>`;
+    `${filas}<button class="btn-grande" onclick="cerrarMemoria()">Guardar puntos 💾</button>`;
 }
-function cerrarMemoria(pts){
+function cerrarMemoria(){
   sBtn();
-  state.teams[mem.equipo].pts += pts;
+  state.teams.forEach((t,i)=> t.pts += (mem.puntos[i]||0));
   irAlHub();
   checkCampeon();
 }
