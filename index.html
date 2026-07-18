@@ -1083,7 +1083,7 @@ const QUEMADO_PALABRAS = [
   {p:'CARABELA', pista:'Barco a vela de los antiguos exploradores'},
   {p:'CONSTELACION', pista:'Estrellas que juntas dibujan una figura'},
 ];
-const Q_RONDAS_EQUIPO = 3, Q_PTS = 20;   // cada equipo adivina 3 palabras (van alternando)
+const Q_RONDAS_EQUIPO = 4, Q_PTS = 20;   // cada equipo adivina 4 palabras (van alternando)
 let quemado = { inicial:0, equipo:0, ronda:1, totalRondas:6, orden:[], puntos:[], palabra:'', pista:'', aciertos:new Set(), errores:0, maxErr:6, terminado:false };
 let _qUsados = [];
 
@@ -1108,7 +1108,8 @@ function cargarPalabraQuemado(){
   quemado.aciertos = new Set(); quemado.errores = 0; quemado.terminado = false;
   setTurnoBanner('q-banner', quemado.equipo);
   renderMiniBoard('q-board', quemado.equipo, quemado.puntos);
-  document.getElementById('q-progreso').textContent = `Palabra ${quemado.ronda}/${quemado.totalRondas}`;
+  const palabraEquipo = Math.floor((quemado.ronda-1)/state.teams.length) + 1;
+  document.getElementById('q-progreso').textContent = `Palabra ${palabraEquipo}/${Q_RONDAS_EQUIPO}`;
   document.getElementById('q-pista').textContent = '💡 ' + w.pista;
   document.getElementById('q-resultado').innerHTML = '';
   construirTeclado();
@@ -1232,7 +1233,8 @@ function actMemInfo(){
   tel.textContent = mem.restante;
   tel.classList.toggle('bajo', mem.restante<=10);
   const pares = mem.cards.filter(c=>c.matched).length/2;
-  document.getElementById('mem-progreso').textContent = `Juego ${mem.juego}/${mem.totalJuegos} · pares ${pares}/${MEM_PARES}`;
+  const juegoEquipo = Math.floor((mem.juego-1)/state.teams.length) + 1;
+  document.getElementById('mem-progreso').textContent = `Juego ${juegoEquipo}/${MEM_JUEGOS_EQUIPO} · pares ${pares}/${MEM_PARES}`;
 }
 function renderMemoria(){
   document.getElementById('mem-grid').innerHTML = mem.cards.map((c,i)=>
