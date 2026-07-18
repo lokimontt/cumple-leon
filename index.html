@@ -304,9 +304,6 @@
     transition: transform .12s; border-top: 5px solid var(--ec, var(--morado)); text-align: center;
   }
   .est-card:active { transform: scale(.96); }
-  .est-info { position: absolute; top: 2px; right: 2px; width: 24px; height: 24px; display: flex; align-items: center;
-    justify-content: center; font-size: 13px; line-height: 1; opacity: .55; z-index: 2; border-radius: 50%; }
-  .est-info:active { opacity: 1; transform: scale(.85); background: #F1F5F9; }
   .est-emoji { font-size: 30px; line-height: 1; }
   .est-nombre { font-family: 'Baloo 2'; font-weight: 800; font-size: 12.5px; color: var(--texto); line-height: 1.05; }
   .est-desc { font-size: 10px; color: #64748B; font-weight: 600; line-height: 1.12; }
@@ -1123,8 +1120,7 @@ function renderHub(){
   const tagMap = { ruleta:'🏁 a 130', fisica:'✋ física', proximamente:'🔜 pronto' };
   grid.innerHTML = ESTACIONES.map(e=>{
     const tag = tagMap[e.tipo] || '🎮 juego';
-    return `<button class="est-card" style="--ec:${e.color}" onclick="abrirEstacion('${e.id}')">
-      <span class="est-info" onclick="event.stopPropagation(); mostrarInstrucciones('${e.id}')">ℹ️</span>
+    return `<button class="est-card" style="--ec:${e.color}" onclick="mostrarInstrucciones('${e.id}')">
       <span class="est-emoji">${e.emoji}</span>
       <span class="est-nombre">${e.nombre}</span>
       <span class="est-desc">${e.desc}</span>
