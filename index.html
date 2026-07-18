@@ -280,31 +280,31 @@
   #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 50; }
 
   /* ============ HUB / ESTACIONES ============ */
-  #screen-hub { justify-content: flex-start; gap: 14px; }
+  #screen-hub { justify-content: flex-start; gap: 10px; }
   .ruleta-meta { font-size: 14px; color: var(--rosa); font-weight: 700; }
 
-  .global-board { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 10px; }
-  .gb-team { background: #fff; border-radius: 18px; padding: 12px 16px; box-shadow: var(--sombra); border: 3px solid var(--gc, #fff); }
-  .gb-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-  .gb-name { font-family: 'Baloo 2'; font-weight: 800; font-size: 18px; color: var(--texto); display: flex; align-items: center; gap: 8px; }
+  .global-board { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 8px; }
+  .gb-team { background: #fff; border-radius: 16px; padding: 9px 14px; box-shadow: var(--sombra); border: 3px solid var(--gc, #fff); }
+  .gb-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+  .gb-name { font-family: 'Baloo 2'; font-weight: 800; font-size: 16px; color: var(--texto); display: flex; align-items: center; gap: 8px; }
   .gb-dot { width: 16px; height: 16px; border-radius: 50%; }
-  .gb-pts { font-family: 'Baloo 2'; font-weight: 800; font-size: 24px; color: var(--gc, var(--morado)); }
-  .gb-pts small { font-size: 13px; color: #94A3B8; font-weight: 700; }
-  .gb-track { height: 16px; background: #EEF2F7; border-radius: 999px; overflow: hidden; }
+  .gb-pts { font-family: 'Baloo 2'; font-weight: 800; font-size: 21px; color: var(--gc, var(--morado)); }
+  .gb-pts small { font-size: 12px; color: #94A3B8; font-weight: 700; }
+  .gb-track { height: 12px; background: #EEF2F7; border-radius: 999px; overflow: hidden; }
   .gb-bar { height: 100%; border-radius: 999px; background: var(--gc, var(--morado)); transition: width .5s ease; min-width: 4px; }
 
   .hub-titulo { font-family: 'Baloo 2'; font-weight: 700; font-size: 18px; color: #475569; margin-top: 4px; }
-  .estaciones-grid { width: 100%; max-width: 480px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding-bottom: 20px; }
+  .estaciones-grid { width: 100%; max-width: 480px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding-bottom: 12px; }
   .est-card {
-    background: #fff; border: none; border-radius: 20px; padding: 16px 12px; cursor: pointer;
-    box-shadow: var(--sombra); display: flex; flex-direction: column; align-items: center; gap: 6px;
-    transition: transform .12s; border-top: 6px solid var(--ec, var(--morado)); text-align: center;
+    background: #fff; border: none; border-radius: 16px; padding: 10px 5px; cursor: pointer;
+    box-shadow: var(--sombra); display: flex; flex-direction: column; align-items: center; gap: 3px;
+    transition: transform .12s; border-top: 5px solid var(--ec, var(--morado)); text-align: center;
   }
   .est-card:active { transform: scale(.96); }
-  .est-emoji { font-size: 40px; line-height: 1; }
-  .est-nombre { font-family: 'Baloo 2'; font-weight: 800; font-size: 17px; color: var(--texto); line-height: 1.1; }
-  .est-desc { font-size: 12px; color: #64748B; font-weight: 600; line-height: 1.15; }
-  .est-tag { font-size: 10.5px; font-weight: 800; color: var(--ec); background: color-mix(in srgb, var(--ec) 15%, #fff); padding: 2px 8px; border-radius: 999px; margin-top: 2px; }
+  .est-emoji { font-size: 30px; line-height: 1; }
+  .est-nombre { font-family: 'Baloo 2'; font-weight: 800; font-size: 12.5px; color: var(--texto); line-height: 1.05; }
+  .est-desc { font-size: 10px; color: #64748B; font-weight: 600; line-height: 1.12; }
+  .est-tag { display: none; }
 
   /* ============ MODAL SUMAR PUNTOS ============ */
   .modal-overlay {
